@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1365480639 source:c:\documents and settings\administrador\escritorio\lyc-unlam-1-cuat-2013-grupo-17\pruebasvn\main.c
+	<stdlib.h>
+	"mensaje.h"
+
+1365480377 c:\documents and settings\administrador\escritorio\lyc-unlam-1-cuat-2013-grupo-17\pruebasvn\mensaje.h
+
+1365480550 source:c:\documents and settings\administrador\escritorio\lyc-unlam-1-cuat-2013-grupo-17\pruebasvn\mensaje.c
+	"mensaje.h"
+	"operacion.h"
+	<stdio.h>
+
+1365480377 c:\documents and settings\administrador\escritorio\lyc-unlam-1-cuat-2013-grupo-17\pruebasvn\operacion.h
+
+1365480377 source:c:\documents and settings\administrador\escritorio\lyc-unlam-1-cuat-2013-grupo-17\pruebasvn\operacion.c
+	"operacion.h"
+
