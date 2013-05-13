@@ -18,6 +18,9 @@
     <ClCompile Include="AnalizadorLexico.c">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnalizadorLexico.h">
