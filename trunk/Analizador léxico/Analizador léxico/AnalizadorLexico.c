@@ -27,12 +27,21 @@ int tipoToken;
 tablaDeSimbolos TS[LONG_TS];
 
 /*Contador de la cantidad total de tokens identificados*/
-int contadorDeTokens = 1;
+int cantTokensIdentificados = 0;
+
+/*Contador de la cantidad de tokens en al TS*/
+int cantTokensEnTS = 0;
+
+/*Vector de palabras reservadas*/
+char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "THEN", "ELSE", "FI", "WPRINT", "FILTERC", "DO", 
+										"WHILE", "AND", "OR", "NOT", "VAR", "ENDVAR", "INT", "FLOAT", "STRING" }; 
 
 char tipoTokenSalida[LONG_TIPO_TOKEN];
 
 void inicializarAL(FILE *fuente)
 {
+	int i;
+
 	/*Vinculo el archivo de código para que lo utilice el Analizador Léxico*/
 	archivoFuente = fuente;
 
@@ -42,163 +51,16 @@ void inicializarAL(FILE *fuente)
 	/*Inicializo las matrices de nuevoEstado y proceso*/
 	inicializarMatrices();
 
-	inicializarTS();
-}
-
-void inicializarTS()
-{
-	int i = 0;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"FOR");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"for");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"ROF");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"rof");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"IF");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"if");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"THEN");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"then");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"ELSE");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"else");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"FI");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"fi");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"WPRINT");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"wprint");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"FILTERC");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"filterc");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"DO");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"do");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"WHILE");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"while");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"AND");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"and");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"OR");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"or");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"NOT");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"not");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"VAR");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"var");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"ENDVAR");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"endvar");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"INT");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"int");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"FLOAT");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"float");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"STRING");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"string");
-	TS[i].tipo = PALABRA_RESERVADA;
-	++i;
-
-	for( ; i < LONG_TS; ++i)
+	/*Inicializo la TS*/
+	for(i = 0; i < LONG_TS; ++i)
 	{
-		strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,"");
-		TS[i].tipo = SIN_ASIGNAR;	
+		TS[i].nombre[0] = '\0';
+		TS[i].tipo = SIN_ASIGNAR;
+		TS[i].valor[0] = '\0';
+		TS[i].longitud = 0;
 	}
 }
+
 
 int yylex()
 {
@@ -395,36 +257,87 @@ int determinarColumna(char caracter)
 
 void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 {
-	int i;
+	int i = 0;
+	int j;
+	int esPalabraReservada = FALSE;
 
 	yylval = -1;
 
-	/*Busco el token en la TS*/
-	for(i = 0; TS[i].tipo != SIN_ASIGNAR && strcmp(TS[i].token,tokenActual->token) != 0; ++i);
-
-	/*Si no se encontró el token*/
-	if(TS[i].tipo == SIN_ASIGNAR)
+	/*Compruebo si el token es una palabra reservada*/
+	while(i < CANT_PR && esPalabraReservada == FALSE)
 	{
-		/*Copio el token dentro de la TS*/
-		strcpy_s(TS[i].token,sizeof(char)*MAX_LONG_TOKEN,tokenActual->token);
+		if(strcmp(palabrasReservadas[i],tokenActual->token) == 0)
+		{
+			esPalabraReservada = TRUE;
+		}
 
-		/*Guardo el tipo de token en la TS*/
-		TS[i].tipo = tipoDeToken;
+		++i;
 	}
 
-	/*Si el token es de tipo de alguna constante o id*/
-	if(TS[i].tipo == ID || TS[i].tipo == CTE_STRING || TS[i].tipo == CTE_ENTERA || TS[i].tipo == CTE_REAL)
+	/*Si es una palabra reservada*/
+	if(esPalabraReservada == TRUE)
 	{
-		/*Devuelvo la posición en la TS en yylval*/
-		yylval = i;
+		tipoToken = PALABRA_RESERVADA;
+	}
+	else
+	{
+		/*Busco el token en la TS*/
+		for(i = 0; i < cantTokensEnTS && strcmp(TS[i].nombre,tokenActual->token) != 0; ++i);
+
+		/*Si no se encontró el token (i se igualó a cantTokensEnTS), lo inserto en la TS*/
+		if(i == cantTokensEnTS)
+		{
+			/*Si es alguna de las constantes necesita un tratamiento previo*/
+			if(tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
+			{
+				/*Preparo el nombre de token para el caso de constantes*/
+				TS[i].nombre[0] = '_';
+				TS[i].nombre[1] = '\0';
+
+				/*Guardo el tipo de token*/
+				TS[i].tipo = tipoDeToken;
+
+				/*Si es una constante string*/
+				if(tipoDeToken == CTE_STRING)
+				{
+					/*Guardo el valor del token sin las comillas*/
+					for(j = 1; tokenActual->token[j] != '"'; ++j)
+					{
+						TS[i].valor[j-1] = tokenActual->token[j];
+					}
+
+					TS[i].longitud = j-1;
+
+					TS[i].valor[TS[i].longitud] = '\0';
+				}
+				else /*Si es una constante numerica*/
+				{
+					/*Guardo el valor del token*/
+					strcpy_s(TS[i].valor,sizeof(char)*MAX_LONG_TOKEN,tokenActual->token);
+				}
+			}
+
+			/*Guardo el nombre del token*/
+			strcat_s(TS[i].nombre,sizeof(char)*(MAX_LONG_TOKEN+1),tokenActual->token);
+
+			/*Incremento la cantidad de tokens*/
+			++cantTokensEnTS;
+		}
+
+		/*Si el token es de tipo de alguna constante o id*/
+		if(tipoDeToken == ID || tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
+		{
+			/*Devuelvo la posición en la TS en yylval*/
+			yylval = i;
+		}
+
+		/*Asigno el tipo de token a la variable global tipoToken*/
+		tipoToken = tipoDeToken;
 	}
 
-	/*Asigno el tipo de token a la variable global tipoToken*/
-	tipoToken = TS[i].tipo;
-	
 	/*Guardo el token identificado, su tipo e yylval en el archivo de tokens*/
 	fprintf(archivoDeTokens,"TOKEN Nº%2d= %-50sTIPO_TOKEN= %-20sYYLVAL= %d\n",
-		contadorDeTokens++,TS[i].token,identificarTipoToken(TS[i].tipo),yylval);
+		++cantTokensIdentificados,tokenActual->token,identificarTipoToken(tipoToken),yylval);
 }
 
 void imprimirTS()
@@ -434,9 +347,11 @@ void imprimirTS()
 
 	fopen_s(&archivoDeTS,"Tabla_de_símbolos.txt","w");
 
-	for(i = 0; TS[i].tipo != SIN_ASIGNAR; ++i)
+	/*fprintf(archivoDeTS,"%-50s%-15s%-50s%-10s\n\n","NOMBRE","TIPO","VALOR","LONGITUD");*/
+
+	for(i = 0; i < cantTokensEnTS; ++i)
 	{
-		fprintf(archivoDeTS,"TOKEN= %-50sTIPO= %s\n",TS[i].token,identificarTipoToken(TS[i].tipo));
+		fprintf(archivoDeTS,"%-50s%-15s%-50s%-10d\n",TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
 	}
 
 	fclose(archivoDeTS);
@@ -495,6 +410,8 @@ char *identificarTipoToken(int tipo)
 		case OP_ASIGNACION:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"OP_ASIGNACION");
 								break;
 		case OP_CONCATENACION:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"OP_CONCATENACION");
+								break;
+		case SIN_ASIGNAR:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"-");
 								break;
 	}
 
