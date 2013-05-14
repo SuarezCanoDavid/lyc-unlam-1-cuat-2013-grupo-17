@@ -52,6 +52,9 @@
 /*Longitud de la tabla de símbolos*/
 #define LONG_TS			150
 
+/*Cantidad de palabras reservadas*/
+#define CANT_PR			18
+
 /*Estructura que describe al token que está siendo analizado*/
 struct tokenAAnalizar
 {
@@ -63,8 +66,10 @@ typedef struct tokenAAnalizar tokenAAnalizar;
 /*Estructura que describe a la Tabla de Símbolos o TS*/
 struct tablaDeSimbolos
 {
-	char token[MAX_LONG_TOKEN];
+	char nombre[MAX_LONG_TOKEN+1];
 	int tipo;
+	char valor[MAX_LONG_TOKEN];
+	int longitud;
 };
 typedef struct tablaDeSimbolos tablaDeSimbolos;
 
@@ -74,7 +79,6 @@ int yylval;
 /*Funciones*/
 void inicializarAL(FILE *fuente);
 void inicializarMatrices();
-void inicializarTS();
 int yylex();
 int determinarColumna(char caracter);
 void insertarCaracterEnToken(tokenAAnalizar *tokenActual, char caracter);

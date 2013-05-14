@@ -8,3 +8,5 @@ ctestring = "mi$ const@nte$"
 wprint(0)
 wprint(.999)
 wprint(99.99)
+
+-/comentario que si termino-/ ooole!!!///-
