@@ -13,7 +13,7 @@
 #define PUNTO_COMA			6
 #define DOS_PUNTOS			7
 #define GUION_BAJO			8
-#define PALABRA_RESERVADA	9
+#define PR_FI				9
 #define ID					10
 #define CTE_STRING			11
 #define CTE_ENTERA			12
@@ -31,12 +31,32 @@
 #define OP_ASIGNACION		24
 #define OP_CONCATENACION	25
 
+#define PR_IF				26
+#define PR_FOR				27
+#define PR_ROF				28
+#define PR_THEN				29
+#define PR_ELSE				30
+#define PR_WPRINT			31
+#define PR_FILTERC			32
+#define PR_DO				33
+#define PR_WHILE			34
+#define PR_AND				35
+#define PR_OR				36
+#define PR_NOT				37
+#define PR_VAR				38
+#define PR_ENDVAR			39
+#define PR_INT				40
+#define PR_FLOAT			41
+#define PR_STRING			42
+
+
+
 /*Constantes TRUE y FALSE*/
 #define TRUE	1
 #define FALSE	0
 
 /*Constante de longitud máxima de un token*/
-#define MAX_LONG_TOKEN	50
+#define MAX_LONG_TOKEN	5000
 
 #define LONG_TIPO_TOKEN 20
 
@@ -53,7 +73,7 @@
 #define LONG_TS			150
 
 /*Cantidad de palabras reservadas*/
-#define CANT_PR			18
+#define CANT_PR			36
 
 /*Estructura que describe al token que está siendo analizado*/
 struct tokenAAnalizar
