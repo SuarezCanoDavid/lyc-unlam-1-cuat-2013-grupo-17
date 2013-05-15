@@ -34,7 +34,17 @@ int cantTokensEnTS = 0;
 
 /*Vector de palabras reservadas*/
 char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "THEN", "ELSE", "FI", "WPRINT", "FILTERC", "DO", 
-										"WHILE", "AND", "OR", "NOT", "VAR", "ENDVAR", "INT", "FLOAT", "STRING" }; 
+										"WHILE", "AND", "OR", "NOT", "VAR", "ENDVAR", "INT", "FLOAT", "STRING" ,
+										 "for", "rof", "if", "then", "else", "fi", "wprint", "filterc", "do", 
+										"while", "and", "or", "not", "var", "endvar", "int", "float", "string" 
+
+										}; 
+// Vector para las palabras reservadas
+int vPalabrasReservadasBis[CANT_PR]={PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
+							PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING,PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
+	PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING
+
+};
 
 char tipoTokenSalida[LONG_TIPO_TOKEN];
 
@@ -277,7 +287,7 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 	/*Si es una palabra reservada*/
 	if(esPalabraReservada == TRUE)
 	{
-		tipoToken = PALABRA_RESERVADA;
+		tipoToken = vPalabrasReservadasBis[i-1];
 	}
 	else
 	{
@@ -285,7 +295,7 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 		for(i = 0; i < cantTokensEnTS && strcmp(TS[i].nombre,tokenActual->token) != 0; ++i);
 
 		/*Si no se encontró el token (i se igualó a cantTokensEnTS), lo inserto en la TS*/
-		if(i == cantTokensEnTS)
+		if(i == cantTokensEnTS &&( tipoDeToken == ID || tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL))
 		{
 			/*Si es alguna de las constantes necesita un tratamiento previo*/
 			if(tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
@@ -377,7 +387,7 @@ char *identificarTipoToken(int tipo)
 								break;
 		case GUION_BAJO:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"GUION_BAJO");
 								break;
-		case PALABRA_RESERVADA:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PALABRA_RESERVADA");
+		case PR_FI	:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FI");
 								break;
 		case ID:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"ID");
 								break;
@@ -412,6 +422,40 @@ char *identificarTipoToken(int tipo)
 		case OP_CONCATENACION:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"OP_CONCATENACION");
 								break;
 		case SIN_ASIGNAR:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"-");
+								break;
+		case PR_IF:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_IF");
+								break;
+		case PR_FOR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FOR");
+								break;
+		case PR_ROF:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ROF");
+								break;
+		case PR_THEN:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_THEN");
+								break;
+		case PR_ELSE:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ELSE");
+								break;
+		case PR_WPRINT:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_WPRINT");
+								break;
+		case PR_FILTERC:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FILTERC");
+								break;
+		case PR_DO:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_DO");
+								break;
+		case PR_WHILE:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_WHILE");
+								break;
+		case PR_AND:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_AND");
+								break;
+		case PR_OR:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_OR");
+								break;
+		case PR_NOT:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_NOT");
+								break;
+		case PR_VAR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_VAR");
+								break;
+		case PR_ENDVAR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ENDVAR");
+								break;
+		case PR_INT:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_INT");
+								break;
+		case PR_FLOAT:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FLOAT");
+								break;
+		case PR_STRING:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_STRING");
 								break;
 	}
 
