@@ -75,6 +75,13 @@
 /*Cantidad de palabras reservadas*/
 #define CANT_PR			36
 
+//Cantidad Maxima para Cadenas
+#define MAX_CADENA		50
+//Cantidad Maxima para Reales
+#define MAX_REAL		5
+//Cantidad Maxima para Enteros
+#define MAX_ENTERA		4
+
 /*Estructura que describe al token que está siendo analizado*/
 struct tokenAAnalizar
 {
