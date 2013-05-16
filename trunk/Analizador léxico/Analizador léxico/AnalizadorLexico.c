@@ -46,6 +46,11 @@ int vPalabrasReservadasBis[CANT_PR]={PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,P
 
 };
 
+//Maximo de cadena supoerado
+int cteStringSuperadoRango;
+int realSuperadoRango;
+int enteroSuperadoRango;
+
 char tipoTokenSalida[LONG_TIPO_TOKEN];
 
 void inicializarAL(FILE *fuente)
@@ -99,7 +104,7 @@ int yylex()
 		}
 		else
 		{
-            if(cteStringAbierta == TRUE || comentarioAbierto == TRUE)
+			if(cteStringAbierta == TRUE || comentarioAbierto == TRUE || cteStringSuperadoRango || enteroSuperadoRango==TRUE || realSuperadoRango==TRUE)
             {
                 syntaxError(&tokenActual,caracter);
             }
@@ -481,6 +486,7 @@ void finalizarId(tokenAAnalizar *tokenActual, char caracter)
 
 
 /*CTE_ENTERA o CTE_REAL*/ 
+
 void iniciarCteEnteraOReal(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
@@ -489,6 +495,8 @@ void iniciarCteEnteraOReal(tokenAAnalizar *tokenActual, char caracter)
 void continuarCteEnteraOReal(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
+	if(tokenActual->longitudToken>MAX_ENTERA)
+		enteroSuperadoRango=TRUE;
 }
 
 void finalizarCteEntera(tokenAAnalizar *tokenActual, char caracter)
@@ -504,6 +512,8 @@ void iniciarCteReal(tokenAAnalizar *tokenActual, char caracter)
 void continuarCteReal(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
+	if(tokenActual->longitudToken>MAX_REAL)
+		realSuperadoRango=TRUE;
 }
 
 void finalizarCteReal(tokenAAnalizar *tokenActual, char caracter)
@@ -523,6 +533,8 @@ void iniciarCteStr(tokenAAnalizar *tokenActual, char caracter)
 void continuarCteStr(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
+	if(tokenActual->longitudToken>MAX_CADENA)
+		cteStringSuperadoRango=TRUE;
 }
 
 void finalizarCteStr(tokenAAnalizar *tokenActual, char caracter)
@@ -809,6 +821,24 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 	{
 		fprintf(archivoDeTokens,"\nCOMENTARIO ABIERTO");
 	}
+	/*indico si se supero el rango de la constante string*/
+	if(cteStringSuperadoRango == TRUE)
+	{
+		fprintf(archivoDeTokens,"\nConstante String supero rango");
+	}
+
+	/*indico si se supero el rango de Real*/
+	if(realSuperadoRango == TRUE)
+	{
+		fprintf(archivoDeTokens,"\nNumero real supero rango");
+	}
+
+	/*indico si se supero el rango de entero*/
+	if(enteroSuperadoRango == TRUE)
+	{
+		fprintf(archivoDeTokens,"\nNumero entero supero rango");
+	}
+	
 
 	/*Cierro el archivo de tokens identificados*/
 	fclose(archivoDeTokens);
