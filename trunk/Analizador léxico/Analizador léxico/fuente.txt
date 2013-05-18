@@ -9,7 +9,8 @@ var1
 
 
 FI
-
-ctestring = "mi$ const@nte$"
+var2 = 123
+ != 
+ctestring = "mi$ const@nte$s"
 wprint(
 

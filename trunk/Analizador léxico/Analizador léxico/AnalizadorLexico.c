@@ -14,12 +14,6 @@ int nuevoEstado[ESTADO_FINAL][CANT_COLUMNAS];
 /*Matriz de proceso*/
 void (*proceso[ESTADO_FINAL][CANT_COLUMNAS])(tokenAAnalizar *, char);
 
-/*Bandera para indicar si queda una constante string sin cerrar*/
-int cteStringAbierta;
-
-/*bandera para indicar si queda un comentario sin cerrar*/
-int comentarioAbierto;
-
 /*Indica el tipo de token identificado*/
 int tipoToken;
 
@@ -36,20 +30,15 @@ int cantTokensEnTS = 0;
 char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "THEN", "ELSE", "FI", "WPRINT", "FILTERC", "DO", 
 										"WHILE", "AND", "OR", "NOT", "VAR", "ENDVAR", "INT", "FLOAT", "STRING" ,
 										 "for", "rof", "if", "then", "else", "fi", "wprint", "filterc", "do", 
-										"while", "and", "or", "not", "var", "endvar", "int", "float", "string" 
-
-										}; 
+										"while", "and", "or", "not", "var", "endvar", "int", "float", "string"}; 
 // Vector para las palabras reservadas
-int vPalabrasReservadasBis[CANT_PR]={PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
-							PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING,PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
-	PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING
+int vPalabrasReservadasBis[CANT_PR] = { PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
+										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING,
+										PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
+										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING};
 
-};
-
-//Maximo de cadena supoerado
-int cteStringSuperadoRango;
-int realSuperadoRango;
-int enteroSuperadoRango;
+/*Manejador de errores*/
+manejadorDeErrores error[CANT_ERRORES];
 
 char tipoTokenSalida[LONG_TIPO_TOKEN];
 
@@ -70,18 +59,39 @@ void inicializarAL(FILE *fuente)
 	for(i = 0; i < LONG_TS; ++i)
 	{
 		TS[i].nombre[0] = '\0';
-		TS[i].tipo = SIN_ASIGNAR;
+		TS[i].tipo = 0;
 		TS[i].valor[0] = '\0';
 		TS[i].longitud = 0;
 	}
-}
 
+	error[ERROR_CTE_STRING_ABIERTA].estado = FALSE;
+	strcpy_s(error[ERROR_CTE_STRING_ABIERTA].descripcion,LONG_DESC_ERROR,"CONSTANTE STRING ABIERTA");
+	
+	error[ERROR_COMENTARIO_ABIERTO].estado = FALSE;
+	strcpy_s(error[ERROR_COMENTARIO_ABIERTO].descripcion,LONG_DESC_ERROR,"COMENTARIO ABIERTO");
+
+	error[ERROR_CTE_STRING_SUPERA_30].estado = FALSE;
+	strcpy_s(error[ERROR_CTE_STRING_SUPERA_30].descripcion,LONG_DESC_ERROR,"CONSTANTE STRING SUPERA LOS 30 CARACTERES");
+	
+	error[ERROR_CTE_ENTERA_FUERA_DE_RANGO].estado = FALSE;
+	strcpy_s(error[ERROR_CTE_ENTERA_FUERA_DE_RANGO].descripcion,LONG_DESC_ERROR,"CONSTANTE ENTERA FUERA DE RANGO DE REPRESENTACION");
+
+	error[ERROR_CTE_REAL_FUERA_DE_RANGO].estado = FALSE;
+	strcpy_s(error[ERROR_CTE_REAL_FUERA_DE_RANGO].descripcion,LONG_DESC_ERROR,"CONSTANTE REAL FUERA DE RANGO DE REPRESENTACION");
+
+	error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = FALSE;
+	strcpy_s(error[ERROR_FORMATO_NUMERICO_INVALIDO].descripcion,LONG_DESC_ERROR,"FORMATO NUMERICO INVALIDO");
+
+	error[ERROR_OP_DISTINTO_NO_FINALIZADO].estado = FALSE;
+	strcpy_s(error[ERROR_OP_DISTINTO_NO_FINALIZADO].descripcion,LONG_DESC_ERROR,"OPERADOR DISTINTO NO FINALIZADO");
+}
 
 int yylex()
 {
 	int estado = 0;
 	int columna;
 	int input;
+	int i;
 	int retrocederLectura = TRUE;
 	char caracter;
 	tokenAAnalizar tokenActual;
@@ -104,10 +114,13 @@ int yylex()
 		}
 		else
 		{
-			if(cteStringAbierta == TRUE || comentarioAbierto == TRUE || cteStringSuperadoRango || enteroSuperadoRango==TRUE || realSuperadoRango==TRUE)
-            {
-                syntaxError(&tokenActual,caracter);
-            }
+			for(i = 0; i < CANT_ERRORES; ++i)
+			{
+				if(error[i].estado == TRUE)
+				{
+					syntaxError(&tokenActual,caracter);
+				}
+			}
 
             caracter = ' '; /*Fuezo la terminación del token actual*/
 
@@ -296,52 +309,52 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 	}
 	else
 	{
-		/*Busco el token en la TS*/
-		for(i = 0; i < cantTokensEnTS && strcmp(TS[i].nombre,tokenActual->token) != 0; ++i);
-
-		/*Si no se encontró el token (i se igualó a cantTokensEnTS), lo inserto en la TS*/
-		if(i == cantTokensEnTS &&( tipoDeToken == ID || tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL))
-		{
-			/*Si es alguna de las constantes necesita un tratamiento previo*/
-			if(tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
-			{
-				/*Preparo el nombre de token para el caso de constantes*/
-				TS[i].nombre[0] = '_';
-				TS[i].nombre[1] = '\0';
-
-				/*Guardo el tipo de token*/
-				TS[i].tipo = tipoDeToken;
-
-				/*Si es una constante string*/
-				if(tipoDeToken == CTE_STRING)
-				{
-					/*Guardo el valor del token sin las comillas*/
-					for(j = 1; tokenActual->token[j] != '"'; ++j)
-					{
-						TS[i].valor[j-1] = tokenActual->token[j];
-					}
-
-					TS[i].longitud = j-1;
-
-					TS[i].valor[TS[i].longitud] = '\0';
-				}
-				else /*Si es una constante numerica*/
-				{
-					/*Guardo el valor del token*/
-					strcpy_s(TS[i].valor,sizeof(char)*MAX_LONG_TOKEN,tokenActual->token);
-				}
-			}
-
-			/*Guardo el nombre del token*/
-			strcat_s(TS[i].nombre,sizeof(char)*(MAX_LONG_TOKEN+1),tokenActual->token);
-
-			/*Incremento la cantidad de tokens*/
-			++cantTokensEnTS;
-		}
-
-		/*Si el token es de tipo de alguna constante o id*/
+		/*En la TS solo figuran IDs y CTEs*/
 		if(tipoDeToken == ID || tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
 		{
+			/*Busco el token en la TS*/
+			for(i = 0; i < cantTokensEnTS && strcmp(TS[i].nombre,tokenActual->token) != 0; ++i);
+
+			/*Si no se encontró el token (i se igualó a cantTokensEnTS), lo inserto en la TS*/
+			if(i == cantTokensEnTS)
+			{
+				/*Si es alguna de las constantes necesita un tratamiento previo*/
+				if(tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
+				{
+					/*Preparo el nombre de token para el caso de constantes*/
+					TS[i].nombre[0] = '_';
+					TS[i].nombre[1] = '\0';
+
+					/*Guardo el tipo de token*/
+					TS[i].tipo = tipoDeToken;
+
+					/*Si es una constante string*/
+					if(tipoDeToken == CTE_STRING)
+					{
+						/*Guardo el valor del token sin las comillas*/
+						for(j = 1; tokenActual->token[j] != '"'; ++j)
+						{
+							TS[i].valor[j-1] = tokenActual->token[j];
+						}
+
+						TS[i].longitud = j-1;
+
+						TS[i].valor[TS[i].longitud] = '\0';
+					}
+					else /*Si es una constante numerica*/
+					{
+						/*Guardo el valor del token*/
+						strcpy_s(TS[i].valor,sizeof(char)*MAX_LONG_TOKEN,tokenActual->token);
+					}
+				}
+
+				/*Guardo el nombre del token*/
+				strcat_s(TS[i].nombre,sizeof(char)*(MAX_LONG_TOKEN+1),tokenActual->token);
+
+				/*Incremento la cantidad de tokens*/
+				++cantTokensEnTS;
+			}
+
 			/*Devuelvo la posición en la TS en yylval*/
 			yylval = i;
 		}
@@ -362,8 +375,6 @@ void imprimirTS()
 
 	fopen_s(&archivoDeTS,"Tabla_de_símbolos.txt","w");
 
-	/*fprintf(archivoDeTS,"%-50s%-15s%-50s%-10s\n\n","NOMBRE","TIPO","VALOR","LONGITUD");*/
-
 	for(i = 0; i < cantTokensEnTS; ++i)
 	{
 		fprintf(archivoDeTS,"%-50s%-15s%-50s%-10d\n",TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
@@ -376,13 +387,13 @@ char *identificarTipoToken(int tipo)
 {
 	switch(tipo)
 	{
-		case PARENTESIS_ABRE:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PARENTESIS_ABRE");
+		case PAR_ABRE:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PAR_ABRE");
 								break;
-		case PARENTESIS_CIERRA: strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PARENTESIS_CIERRA");
+		case PAR_CIERRA:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PAR_CIERRA");
 								break;
-		case CORCHETES_ABRE:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"CORCHETES_ABRE");
+		case COR_ABRE:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"COR_ABRE");
 								break;
-		case CORCHETES_CIERRA:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"CORCHETES_CIERRA");
+		case COR_CIERRA:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"COR_CIERRA");
 								break;
 		case COMA:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"COMA");
 								break;
@@ -391,8 +402,6 @@ char *identificarTipoToken(int tipo)
 		case DOS_PUNTOS:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"DOS_PUNTOS");
 								break;
 		case GUION_BAJO:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"GUION_BAJO");
-								break;
-		case PR_FI	:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FI");
 								break;
 		case ID:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"ID");
 								break;
@@ -426,9 +435,9 @@ char *identificarTipoToken(int tipo)
 								break;
 		case OP_CONCATENACION:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"OP_CONCATENACION");
 								break;
-		case SIN_ASIGNAR:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"-");
+		case PR_IF	:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_IF");
 								break;
-		case PR_IF:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_IF");
+		case PR_FI:				strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FI");
 								break;
 		case PR_FOR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FOR");
 								break;
@@ -462,6 +471,8 @@ char *identificarTipoToken(int tipo)
 								break;
 		case PR_STRING:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_STRING");
 								break;
+		case 0:					strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"-");
+								break;
 	}
 
 	return tipoTokenSalida;
@@ -486,21 +497,32 @@ void finalizarId(tokenAAnalizar *tokenActual, char caracter)
 
 
 /*CTE_ENTERA o CTE_REAL*/ 
-
 void iniciarCteEnteraOReal(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
+
+	if(caracter == '0')
+	{
+		error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = TRUE;
+	}
 }
 
 void continuarCteEnteraOReal(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
-	if(tokenActual->longitudToken>MAX_ENTERA)
-		enteroSuperadoRango=TRUE;
 }
 
 void finalizarCteEntera(tokenAAnalizar *tokenActual, char caracter)
 {
+	if(atof(tokenActual->token) > MAX_VALOR_CTE_ENTERA)
+	{
+		error[ERROR_CTE_ENTERA_FUERA_DE_RANGO].estado = TRUE;
+
+		syntaxError(tokenActual,caracter);
+	}
+
+	error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = FALSE;
+
 	insertarTokenEnTS(tokenActual,CTE_ENTERA);
 }
 
@@ -512,8 +534,15 @@ void iniciarCteReal(tokenAAnalizar *tokenActual, char caracter)
 void continuarCteReal(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
-	if(tokenActual->longitudToken>MAX_REAL)
-		realSuperadoRango=TRUE;
+
+	error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = FALSE;
+
+	if(tokenActual->longitudToken > MAX_LONG_CTE_REAL)
+	{
+		error[ERROR_CTE_REAL_FUERA_DE_RANGO].estado = TRUE;
+
+		syntaxError(tokenActual,caracter);
+	}
 }
 
 void finalizarCteReal(tokenAAnalizar *tokenActual, char caracter)
@@ -527,21 +556,28 @@ void iniciarCteStr(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
 
-	cteStringAbierta = TRUE;
+	error[ERROR_CTE_STRING_ABIERTA].estado = TRUE;
 }
 
 void continuarCteStr(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
-	if(tokenActual->longitudToken>MAX_CADENA)
-		cteStringSuperadoRango=TRUE;
+
+	if(tokenActual->longitudToken > MAX_LONG_CTE_STRING)
+	{
+		error[ERROR_CTE_STRING_SUPERA_30].estado = TRUE;
+
+		error[ERROR_CTE_STRING_ABIERTA].estado = FALSE; 
+
+		syntaxError(tokenActual,caracter);
+	}
 }
 
 void finalizarCteStr(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarTokenEnTS(tokenActual,CTE_STRING);
 
-	cteStringAbierta = FALSE; 
+	error[ERROR_CTE_STRING_ABIERTA].estado = FALSE; 
 }
 
 
@@ -580,13 +616,14 @@ void finalizarOpResta(tokenAAnalizar *tokenActual, char caracter)
 
 void continuarComentario(tokenAAnalizar *tokenActual, char caracter)
 {
-	comentarioAbierto = TRUE;
+	error[ERROR_COMENTARIO_ABIERTO].estado = TRUE;
 }
 
 void finalizarComentario(tokenAAnalizar *tokenActual, char caracter)
 {
 	tokenActual->longitudToken = 0;
-	comentarioAbierto = FALSE;
+
+	error[ERROR_COMENTARIO_ABIERTO].estado = FALSE;
 }
 
 
@@ -599,7 +636,6 @@ void iniciarOpMulti(tokenAAnalizar *tokenActual, char caracter)
 void finalizarOpMulti(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarTokenEnTS(tokenActual,OP_MULTIPLICACION); 
-
 }
 
 
@@ -623,7 +659,7 @@ void iniciarParAbre(tokenAAnalizar *tokenActual, char caracter)
 
 void finalizarParAbre(tokenAAnalizar *tokenActual, char caracter)
 {
-	insertarTokenEnTS(tokenActual,PARENTESIS_ABRE) ;
+	insertarTokenEnTS(tokenActual,PAR_ABRE) ;
 }
 
 
@@ -635,7 +671,7 @@ void iniciarParCierra(tokenAAnalizar *tokenActual, char caracter)
 
 void finalizarParCierra(tokenAAnalizar *tokenActual, char caracter)
 {
-	insertarTokenEnTS(tokenActual,PARENTESIS_CIERRA) ;
+	insertarTokenEnTS(tokenActual,PAR_CIERRA) ;
 }
 
 
@@ -647,7 +683,7 @@ void iniciarCorAbre(tokenAAnalizar *tokenActual, char caracter)
 
 void finalizarCorAbre(tokenAAnalizar *tokenActual, char caracter)
 {
-	insertarTokenEnTS(tokenActual,CORCHETES_ABRE);
+	insertarTokenEnTS(tokenActual,COR_ABRE);
 }
 
 
@@ -659,7 +695,7 @@ void iniciarCorCierra(tokenAAnalizar *tokenActual, char caracter)
 
 void finalizarCorCierra(tokenAAnalizar *tokenActual, char caracter)
 {
-	insertarTokenEnTS(tokenActual,CORCHETES_CIERRA);
+	insertarTokenEnTS(tokenActual,COR_CIERRA);
 }
 
 
@@ -781,11 +817,15 @@ void finalizarOpIgual(tokenAAnalizar *tokenActual, char caracter)
 void iniciarOpDistinto(tokenAAnalizar *tokenActual, char caracter)
 {
 	insertarCaracterEnToken(tokenActual,caracter);
+
+	error[ERROR_OP_DISTINTO_NO_FINALIZADO].estado = TRUE;
 }
 
 void continuarOpDistinto(tokenAAnalizar *tokenActual, char caracter)
 {
-	insertarCaracterEnToken(tokenActual,caracter); 
+	insertarCaracterEnToken(tokenActual,caracter);
+
+	error[ERROR_OP_DISTINTO_NO_FINALIZADO].estado = FALSE;
 }
 
 void finalizarOpDistinto(tokenAAnalizar *tokenActual, char caracter)
@@ -797,49 +837,30 @@ void finalizarOpDistinto(tokenAAnalizar *tokenActual, char caracter)
 /*Espacios vacíos (ENTER, TAB, ESPACIO)*/ 
 void ignorarEspacios(tokenAAnalizar *tokenActual, char caracter)
 {
-
 }
 
 
 /*Error de sintáxis*/ 
 void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 {
+	int i;
+
 	/*Cierro el arcivo fuente*/
 	fclose(archivoFuente);
 
 	/*Indico el error de sintáxis e imprimo el último token*/
-	fprintf(archivoDeTokens,"\nSYNTAX ERROR:\nTOKEN ACTUAL=%s",tokenActual->token);
+	fprintf(archivoDeTokens,"\nSYNTAX ERROR\nTOKEN ACTUAL: %s\nDESCRIPCION: ",tokenActual->token);
 
-	/*Indico si no se cerró una constante string*/
-	if(cteStringAbierta == TRUE)
+	/*Busco cual es el error*/
+	for(i = 0; i < CANT_ERRORES; ++i)
 	{
-		fprintf(archivoDeTokens,"\nCONSTANTE STRING ABIERTA");
-	}
-
-	/*indico si no se cerró un comentario*/
-	if(comentarioAbierto == TRUE)
-	{
-		fprintf(archivoDeTokens,"\nCOMENTARIO ABIERTO");
-	}
-	/*indico si se supero el rango de la constante string*/
-	if(cteStringSuperadoRango == TRUE)
-	{
-		fprintf(archivoDeTokens,"\nConstante String supero rango");
-	}
-
-	/*indico si se supero el rango de Real*/
-	if(realSuperadoRango == TRUE)
-	{
-		fprintf(archivoDeTokens,"\nNumero real supero rango");
-	}
-
-	/*indico si se supero el rango de entero*/
-	if(enteroSuperadoRango == TRUE)
-	{
-		fprintf(archivoDeTokens,"\nNumero entero supero rango");
+		if(error[i].estado == TRUE)
+		{
+			/*Escribo el error en el archivo de tokens identificados*/
+			fprintf(archivoDeTokens,"%s",error[i].descripcion);
+		}
 	}
 	
-
 	/*Cierro el archivo de tokens identificados*/
 	fclose(archivoDeTokens);
 
@@ -1629,7 +1650,7 @@ void inicializarMatrices()
     /* - */nuevoEstado[30][17] = ESTADO_FINAL;   proceso[30][17] = finalizarCteEntera;
     /* , */nuevoEstado[30][18] = ESTADO_FINAL;   proceso[30][18] = finalizarCteEntera;
     /* _ */nuevoEstado[30][19] = ESTADO_FINAL;   proceso[30][19] = finalizarCteEntera;
-    /* . */nuevoEstado[30][20] = ESTADO_FINAL;   proceso[30][20] = finalizarCteEntera;
+    /* . */nuevoEstado[30][20] = 22;			 proceso[30][20] = continuarCteReal;
     /*$#@*/nuevoEstado[30][21] = ESTADO_FINAL;   proceso[30][21] = finalizarCteEntera;
     /*esp*/nuevoEstado[30][22] = ESTADO_FINAL;   proceso[30][22] = finalizarCteEntera;
 }
