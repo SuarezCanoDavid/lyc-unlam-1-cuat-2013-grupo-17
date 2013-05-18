@@ -4,50 +4,52 @@
 #define ANALIZADORLEXICO_H
 
 /*Constantes tokens*/
-#define SIN_ASIGNAR			0
-#define PARENTESIS_ABRE		1
-#define PARENTESIS_CIERRA	2
-#define CORCHETES_ABRE		3
-#define CORCHETES_CIERRA	4
+#define PAR_ABRE			1
+#define PAR_CIERRA			2
+#define COR_ABRE			3
+#define COR_CIERRA			4
 #define COMA				5
 #define PUNTO_COMA			6
 #define DOS_PUNTOS			7
 #define GUION_BAJO			8
-#define PR_FI				9
-#define ID					10
-#define CTE_STRING			11
-#define CTE_ENTERA			12
-#define CTE_REAL			13
-#define OP_SUMA				14
-#define OP_RESTA			15
-#define OP_MULTIPLICACION	16
-#define OP_DIVISION			17
-#define OP_MAYOR			18
-#define OP_MAYOR_IGUAL		19
-#define OP_MENOR			20
-#define OP_MENOR_IGUAL		21
-#define OP_IGUAL			22
-#define OP_DISTINTO			23
-#define OP_ASIGNACION		24
-#define OP_CONCATENACION	25
 
-#define PR_IF				26
-#define PR_FOR				27
-#define PR_ROF				28
-#define PR_THEN				29
-#define PR_ELSE				30
-#define PR_WPRINT			31
-#define PR_FILTERC			32
-#define PR_DO				33
-#define PR_WHILE			34
-#define PR_AND				35
-#define PR_OR				36
-#define PR_NOT				37
-#define PR_VAR				38
-#define PR_ENDVAR			39
-#define PR_INT				40
-#define PR_FLOAT			41
-#define PR_STRING			42
+#define ID					100
+
+#define CTE_STRING			200
+#define CTE_ENTERA			201
+#define CTE_REAL			202
+
+#define OP_SUMA				300
+#define OP_RESTA			301
+#define OP_MULTIPLICACION	302
+#define OP_DIVISION			303
+#define OP_MAYOR			304
+#define OP_MAYOR_IGUAL		305
+#define OP_MENOR			306
+#define OP_MENOR_IGUAL		307
+#define OP_IGUAL			308
+#define OP_DISTINTO			309
+#define OP_ASIGNACION		310
+#define OP_CONCATENACION	311
+
+#define PR_IF				500
+#define PR_FI				501
+#define PR_FOR				502
+#define PR_ROF				503
+#define PR_THEN				504
+#define PR_ELSE				505
+#define PR_WPRINT			506
+#define PR_FILTERC			507
+#define PR_DO				508
+#define PR_WHILE			509
+#define PR_AND				510
+#define PR_OR				511
+#define PR_NOT				512
+#define PR_VAR				513
+#define PR_ENDVAR			514
+#define PR_INT				515
+#define PR_FLOAT			516
+#define PR_STRING			517
 
 
 
@@ -76,11 +78,26 @@
 #define CANT_PR			36
 
 //Cantidad Maxima para Cadenas
-#define MAX_CADENA		50
+#define MAX_LONG_CTE_STRING		30
 //Cantidad Maxima para Reales
-#define MAX_REAL		5
+#define MAX_LONG_CTE_REAL		38
 //Cantidad Maxima para Enteros
-#define MAX_ENTERA		4
+#define MAX_VALOR_CTE_ENTERA	65536
+
+/*Errores*/
+#define	ERROR_CTE_STRING_ABIERTA		0
+#define ERROR_COMENTARIO_ABIERTO		1
+#define	ERROR_CTE_STRING_SUPERA_30		2
+#define ERROR_CTE_ENTERA_FUERA_DE_RANGO	3
+#define	ERROR_CTE_REAL_FUERA_DE_RANGO	4
+#define ERROR_FORMATO_NUMERICO_INVALIDO	5
+#define ERROR_OP_DISTINTO_NO_FINALIZADO 6
+
+/*Cantidad de errores*/
+#define CANT_ERRORES	7
+
+/*Longitud de la descripcion de un error*/
+#define LONG_DESC_ERROR		50
 
 /*Estructura que describe al token que está siendo analizado*/
 struct tokenAAnalizar
@@ -99,6 +116,14 @@ struct tablaDeSimbolos
 	int longitud;
 };
 typedef struct tablaDeSimbolos tablaDeSimbolos;
+
+/*Estructura para manejar errores*/
+struct manejadorDeErrores
+{
+	int estado;
+	char descripcion[LONG_DESC_ERROR];
+};
+typedef struct manejadorDeErrores manejadorDeErrores;
 
 /*yylval*/
 int yylval;
