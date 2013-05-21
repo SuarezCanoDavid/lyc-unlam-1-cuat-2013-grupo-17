@@ -27,14 +27,14 @@ int cantTokensIdentificados = 0;
 int cantTokensEnTS = 0;
 
 /*Vector de palabras reservadas*/
-char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "THEN", "ELSE", "FI", "WPRINT", "FILTERC", "DO", 
+char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "ELSE", "FI", "WPRINT", "FILTERC", "DO", 
 										"WHILE", "AND", "OR", "NOT", "VAR", "ENDVAR", "INT", "FLOAT", "STRING" ,
-										 "for", "rof", "if", "then", "else", "fi", "wprint", "filterc", "do", 
+										 "for", "rof", "if", "else", "fi", "wprint", "filterc", "do", 
 										"while", "and", "or", "not", "var", "endvar", "int", "float", "string"}; 
 // Vector para las palabras reservadas
-int vPalabrasReservadasBis[CANT_PR] = { PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
+int vPalabrasReservadasBis[CANT_PR] = { PR_FOR,PR_ROF,PR_IF,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
 										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING,
-										PR_FOR,PR_ROF,PR_IF,PR_THEN,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
+										PR_FOR,PR_ROF,PR_IF,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
 										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING};
 
 /*Manejador de errores*/
@@ -288,6 +288,7 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 	int i = 0;
 	int j;
 	int esPalabraReservada = FALSE;
+	char nombreAux[MAX_LONG_TOKEN+1];
 
 	yylval = -1;
 
@@ -312,8 +313,18 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 		/*En la TS solo figuran IDs y CTEs*/
 		if(tipoDeToken == ID || tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
 		{
+			nombreAux[0] = '\0';
+
+			if(tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
+			{
+				nombreAux[0] = '_';
+				nombreAux[1] = '\0';
+			}
+
+			strcat_s(nombreAux,MAX_LONG_TOKEN+1,tokenActual->token);
+
 			/*Busco el token en la TS*/
-			for(i = 0; i < cantTokensEnTS && strcmp(TS[i].nombre,tokenActual->token) != 0; ++i);
+			for(i = 0; i < cantTokensEnTS && strcmp(TS[i].nombre,nombreAux) != 0; ++i);
 
 			/*Si no se encontró el token (i se igualó a cantTokensEnTS), lo inserto en la TS*/
 			if(i == cantTokensEnTS)
@@ -321,10 +332,6 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 				/*Si es alguna de las constantes necesita un tratamiento previo*/
 				if(tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
 				{
-					/*Preparo el nombre de token para el caso de constantes*/
-					TS[i].nombre[0] = '_';
-					TS[i].nombre[1] = '\0';
-
 					/*Guardo el tipo de token*/
 					TS[i].tipo = tipoDeToken;
 
@@ -344,12 +351,12 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 					else /*Si es una constante numerica*/
 					{
 						/*Guardo el valor del token*/
-						strcpy_s(TS[i].valor,sizeof(char)*MAX_LONG_TOKEN,tokenActual->token);
+						strcpy_s(TS[i].valor,MAX_LONG_TOKEN,tokenActual->token);
 					}
 				}
 
 				/*Guardo el nombre del token*/
-				strcat_s(TS[i].nombre,sizeof(char)*(MAX_LONG_TOKEN+1),tokenActual->token);
+				strcat_s(TS[i].nombre,MAX_LONG_TOKEN+1,nombreAux);
 
 				/*Incremento la cantidad de tokens*/
 				++cantTokensEnTS;
@@ -442,8 +449,6 @@ char *identificarTipoToken(int tipo)
 		case PR_FOR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FOR");
 								break;
 		case PR_ROF:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ROF");
-								break;
-		case PR_THEN:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_THEN");
 								break;
 		case PR_ELSE:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ELSE");
 								break;

@@ -36,20 +36,19 @@
 #define PR_FI				501
 #define PR_FOR				502
 #define PR_ROF				503
-#define PR_THEN				504
-#define PR_ELSE				505
-#define PR_WPRINT			506
-#define PR_FILTERC			507
-#define PR_DO				508
-#define PR_WHILE			509
-#define PR_AND				510
-#define PR_OR				511
-#define PR_NOT				512
-#define PR_VAR				513
-#define PR_ENDVAR			514
-#define PR_INT				515
-#define PR_FLOAT			516
-#define PR_STRING			517
+#define PR_ELSE				504
+#define PR_WPRINT			505
+#define PR_FILTERC			506
+#define PR_DO				507
+#define PR_WHILE			508
+#define PR_AND				509
+#define PR_OR				510
+#define PR_NOT				511
+#define PR_VAR				512
+#define PR_ENDVAR			513
+#define PR_INT				514
+#define PR_FLOAT			515
+#define PR_STRING			516
 
 
 
@@ -58,7 +57,7 @@
 #define FALSE	0
 
 /*Constante de longitud máxima de un token*/
-#define MAX_LONG_TOKEN	5000
+#define MAX_LONG_TOKEN	150
 
 #define LONG_TIPO_TOKEN 20
 
