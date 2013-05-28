@@ -57,7 +57,7 @@
 #define FALSE	0
 
 /*Constante de longitud máxima de un token*/
-#define MAX_LONG_TOKEN	150
+#define MAX_LONG_TOKEN	500
 
 #define LONG_TIPO_TOKEN 20
 
@@ -91,9 +91,10 @@
 #define	ERROR_CTE_REAL_FUERA_DE_RANGO	4
 #define ERROR_FORMATO_NUMERICO_INVALIDO	5
 #define ERROR_OP_DISTINTO_NO_FINALIZADO 6
+#define ERROR_CARACTER_NO_VALIDO 7
 
 /*Cantidad de errores*/
-#define CANT_ERRORES	7
+#define CANT_ERRORES	8
 
 /*Longitud de la descripcion de un error*/
 #define LONG_DESC_ERROR		50
