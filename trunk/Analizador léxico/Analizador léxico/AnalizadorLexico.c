@@ -84,6 +84,9 @@ void inicializarAL(FILE *fuente)
 
 	error[ERROR_OP_DISTINTO_NO_FINALIZADO].estado = FALSE;
 	strcpy_s(error[ERROR_OP_DISTINTO_NO_FINALIZADO].descripcion,LONG_DESC_ERROR,"OPERADOR DISTINTO NO FINALIZADO");
+
+	error[ERROR_CARACTER_NO_VALIDO].estado = FALSE;
+	strcpy_s(error[ERROR_CARACTER_NO_VALIDO].descripcion,LONG_DESC_ERROR,"CARACTER NO VALIDO");
 }
 
 int yylex()
@@ -95,7 +98,7 @@ int yylex()
 	int retrocederLectura = TRUE;
 	char caracter;
 	tokenAAnalizar tokenActual;
-
+	tokenActual.token[0]='\0';
     tokenActual.longitudToken = 0;
 
 	do
@@ -270,6 +273,8 @@ int determinarColumna(char caracter)
 		case '°':
 		case '¬':
 		case '½':
+		case 'ñ':
+		case 'Ñ':
 		case '\'':
 		case '^':
 		case '·': 	columna = 21;
@@ -865,6 +870,9 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 			fprintf(archivoDeTokens,"%s",error[i].descripcion);
 		}
 	}
+
+	if(determinarColumna(caracter)==21)
+		fprintf(archivoDeTokens,"CARACTER NO VALIDO");
 	
 	/*Cierro el archivo de tokens identificados*/
 	fclose(archivoDeTokens);
