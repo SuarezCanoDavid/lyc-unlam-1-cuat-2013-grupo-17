@@ -78,10 +78,8 @@
 
 //Cantidad Maxima para Cadenas
 #define MAX_LONG_CTE_STRING		30
-//Cantidad Maxima para Reales
-#define MAX_LONG_CTE_REAL		38
 //Cantidad Maxima para Enteros
-#define MAX_VALOR_CTE_ENTERA	65536
+#define MAX_VALOR_CTE_ENTERA	65535
 
 /*Errores*/
 #define	ERROR_CTE_STRING_ABIERTA		0
@@ -91,7 +89,7 @@
 #define	ERROR_CTE_REAL_FUERA_DE_RANGO	4
 #define ERROR_FORMATO_NUMERICO_INVALIDO	5
 #define ERROR_OP_DISTINTO_NO_FINALIZADO 6
-#define ERROR_CARACTER_NO_VALIDO 7
+#define ERROR_CARACTER_NO_VALIDO		7
 
 /*Cantidad de errores*/
 #define CANT_ERRORES	8

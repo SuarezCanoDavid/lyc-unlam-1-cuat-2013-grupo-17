@@ -1,6 +1,7 @@
 #include "AnalizadorLexico.h"
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /*Archivo de código fuente*/
 FILE *archivoFuente;
@@ -110,6 +111,11 @@ int yylex()
 			caracter = (char)input;
 			
 	        columna = determinarColumna(caracter);
+
+			if(estado == 0 && columna == 21)
+			{
+				error[ERROR_CARACTER_NO_VALIDO].estado = TRUE;
+			}
 
 	        (*proceso[estado][columna])(&tokenActual,caracter);
 
@@ -524,14 +530,14 @@ void continuarCteEnteraOReal(tokenAAnalizar *tokenActual, char caracter)
 
 void finalizarCteEntera(tokenAAnalizar *tokenActual, char caracter)
 {
+	error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = FALSE;
+
 	if(atof(tokenActual->token) > MAX_VALOR_CTE_ENTERA)
 	{
 		error[ERROR_CTE_ENTERA_FUERA_DE_RANGO].estado = TRUE;
 
 		syntaxError(tokenActual,caracter);
 	}
-
-	error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = FALSE;
 
 	insertarTokenEnTS(tokenActual,CTE_ENTERA);
 }
@@ -546,17 +552,17 @@ void continuarCteReal(tokenAAnalizar *tokenActual, char caracter)
 	insertarCaracterEnToken(tokenActual,caracter);
 
 	error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = FALSE;
+}
 
-	if(tokenActual->longitudToken > MAX_LONG_CTE_REAL)
+void finalizarCteReal(tokenAAnalizar *tokenActual, char caracter)
+{
+	if(atof(tokenActual->token) < pow(2,-127) || atof(tokenActual->token) > pow(2,129))
 	{
 		error[ERROR_CTE_REAL_FUERA_DE_RANGO].estado = TRUE;
 
 		syntaxError(tokenActual,caracter);
 	}
-}
 
-void finalizarCteReal(tokenAAnalizar *tokenActual, char caracter)
-{
 	insertarTokenEnTS(tokenActual,CTE_REAL);
 }
 
@@ -870,9 +876,6 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 			fprintf(archivoDeTokens,"%s",error[i].descripcion);
 		}
 	}
-
-	if(determinarColumna(caracter)==21)
-		fprintf(archivoDeTokens,"CARACTER NO VALIDO");
 	
 	/*Cierro el archivo de tokens identificados*/
 	fclose(archivoDeTokens);
