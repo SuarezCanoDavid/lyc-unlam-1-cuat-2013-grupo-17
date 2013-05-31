@@ -3,55 +3,6 @@
 #ifndef ANALIZADORLEXICO_H
 #define ANALIZADORLEXICO_H
 
-/*Constantes tokens*/
-#define PAR_ABRE			1
-#define PAR_CIERRA			2
-#define COR_ABRE			3
-#define COR_CIERRA			4
-#define COMA				5
-#define PUNTO_COMA			6
-#define DOS_PUNTOS			7
-#define GUION_BAJO			8
-
-#define ID					100
-
-#define CTE_STRING			200
-#define CTE_ENTERA			201
-#define CTE_REAL			202
-
-#define OP_SUMA				300
-#define OP_RESTA			301
-#define OP_MULTIPLICACION	302
-#define OP_DIVISION			303
-#define OP_MAYOR			304
-#define OP_MAYOR_IGUAL		305
-#define OP_MENOR			306
-#define OP_MENOR_IGUAL		307
-#define OP_IGUAL			308
-#define OP_DISTINTO			309
-#define OP_ASIGNACION		310
-#define OP_CONCATENACION	311
-
-#define PR_IF				500
-#define PR_FI				501
-#define PR_FOR				502
-#define PR_ROF				503
-#define PR_ELSE				504
-#define PR_WPRINT			505
-#define PR_FILTERC			506
-#define PR_DO				507
-#define PR_WHILE			508
-#define PR_AND				509
-#define PR_OR				510
-#define PR_NOT				511
-#define PR_VAR				512
-#define PR_ENDVAR			513
-#define PR_INT				514
-#define PR_FLOAT			515
-#define PR_STRING			516
-
-
-
 /*Constantes TRUE y FALSE*/
 #define TRUE	1
 #define FALSE	0
