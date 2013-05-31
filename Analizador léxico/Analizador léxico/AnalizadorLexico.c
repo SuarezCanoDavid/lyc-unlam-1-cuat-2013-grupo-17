@@ -1,4 +1,5 @@
 #include "AnalizadorLexico.h"
+#include "tokens.h"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -123,23 +124,30 @@ int yylex()
 		}
 		else
 		{
-			for(i = 0; i < CANT_ERRORES; ++i)
+			if(estado != 0)
 			{
-				if(error[i].estado == TRUE)
+				for(i = 0; i < CANT_ERRORES; ++i)
 				{
-					syntaxError(&tokenActual,caracter);
+					if(error[i].estado == TRUE)
+					{
+						syntaxError(&tokenActual,caracter);
+					}
 				}
+
+				caracter = ' '; /*Fuezo la terminación del token actual*/
+
+				columna = determinarColumna(caracter);
+
+				(*proceso[estado][columna])(&tokenActual,caracter);
 			}
+			else
+			{
+				tipoToken = EOF;
 
-            caracter = ' '; /*Fuezo la terminación del token actual*/
+				fclose(archivoDeTokens);
 
-	        columna = determinarColumna(caracter);
-
-	        (*proceso[estado][columna])(&tokenActual,caracter);
-
-			fclose(archivoDeTokens);
-
-			imprimirTS();
+				imprimirTS();
+			}
 
 			estado = ESTADO_FINAL;
 
