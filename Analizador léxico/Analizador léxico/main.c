@@ -1,9 +1,24 @@
 
-# line 2 "miCompi.y"
+# line 2 "main.y"
 #include "AnalizadorLexico.h"
 #include <stdio.h>
+#include <string.h>
 
 FILE *salidaAS;
+FILE *archivo;
+extern FILE *archivoDeTokens;
+
+extern tablaDeSimbolos TS[LONG_TS];
+extern int cantTokensIdentificados;
+
+int cantIDs = 0;
+int posicionIDEnTS[50];
+
+int cantTipos = 0;
+int tipoDeID[50];
+
+int declaracionTerminada = FALSE;
+
 #define PAR_ABRE 257
 #define PAR_CIERRA 258
 #define COR_ABRE 259
@@ -51,17 +66,22 @@ FILE *salidaAS;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 462 "miCompi.y"
+# line 511 "main.y"
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
-    FILE *archivo;
     int tipoToken;
+	
+	if(argc != 2)
+	{
+		printf("Formato invalido\nSe espera: Compilador <archivo_fuente>");
+		return 1;
+	}
 
-    fopen_s(&archivo,"fuente.txt","r");
-	fopen_s(&salidaAS,"reglas_aplidas.txt","w");
+    fopen_s(&archivo,argv[1],"r");
+	fopen_s(&salidaAS,"reglas_aplicadas.txt","w");
 	
     if(archivo == NULL || salidaAS == NULL)
     {
@@ -75,7 +95,7 @@ int main()
         {
             yyparse();
         }
-
+		
         fclose(archivo);
 		fclose(salidaAS);
     }
@@ -86,8 +106,49 @@ int main()
 int yyerror(char *mensaje)
 {
 	printf("%s\n",mensaje);
-
+	
+	fclose(archivo);
+	fclose(archivoDeTokens);
+	fclose(salidaAS);
+	
 	return 1;
+}
+
+void equilibrarDeclaracion()
+{
+	if(cantIDs > cantTipos)
+	{
+		for( ;cantIDs > cantTipos; --cantIDs);
+	}
+	
+	if(cantIDs < cantTipos)
+	{
+		for( ;cantIDs < cantTipos; --cantTipos);
+	}
+}
+
+/*void imprimirDeclaracion()
+{
+	int i;
+	
+	fprintf(salidaAS,"\n");
+	
+	for(i = 0; i < cantIDs; ++i)
+	{
+		fprintf(salidaAS,"%d  %d\n",posicionIDEnTS[i],tipoDeID[i]);
+	}
+}*/
+
+void asignarTipoDeDato()
+{
+	int i;
+	
+	for(i = 0; i < cantIDs; ++i)
+	{
+		TS[posicionIDEnTS[i]].descartada = FALSE;
+		
+		TS[posicionIDEnTS[i]].tipo = tipoDeID[i];
+	}
 }FILE *yytfilep;
 char *yytfilen;
 int yytflag = 0;
@@ -102,82 +163,85 @@ int yyexca[] = {
 };
 
 #define YYNPROD 77
-#define YYLAST 332
+#define YYLAST 345
 
 int yyact[] = {
-     134,     135,     136,      53,      19,      38,     121,     122,
-       6,      69,      70,      50,       6,      51,      52,       4,
-      19,      84,     109,      33,      18,     117,      23,      19,
-     118,      22,      19,      24,      33,      85,      80,      81,
-      18,      55,      23,      19,      90,      22,      46,      24,
-      63,      19,      18,      40,      23,     163,     108,      22,
-      41,      24,      42,      18,     151,      23,     109,      53,
-      22,      18,      24,      23,      53,     130,      22,      50,
-      24,      51,      52,      87,      60,      58,      51,      52,
-     105,      78,      79,      78,      79,      72,      73,      74,
-      75,      76,      77,      78,      79,      55,      61,      41,
-      89,      42,      55,     124,     125,     126,     127,     128,
-     129,     112,     113,     110,     111,     158,     159,     149,
-     150,      64,      65,     123,      43,      37,      31,      28,
-     120,      27,     138,     116,     161,     155,     154,     131,
-     119,      86,      68,      67,      66,      88,      83,      71,
-      35,      34,      32,      29,      47,      26,      44,       8,
-     133,      49,     152,      13,     106,      48,      54,       9,
-      14,       5,      59,      21,      25,      20,       3,      17,
-      30,      16,      15,      12,      11,      10,     132,      39,
-      36,       3,       7,       2,       1,       0,      57,       0,
-       0,       0,      14,       0,      68,      56,       9,      62,
-     107,       0,       0,       0,      30,       0,       0,       0,
-       0,       0,      82,       0,       0,       0,      53,       0,
-       0,       0,       0,       0,      35,       0,       0,       0,
-       0,       0,     130,       0,      91,      95,      96,      97,
-      98,      99,     100,       0,       0,       0,       0,      72,
-       0,       0,     103,     104,     101,     102,     114,     115,
-       0,       0,       0,     118,      73,      74,      75,      76,
-      77,     124,       0,      30,      45,       0,       0,       0,
-       0,      81,      49,      79,      48,       0,       0,       0,
-       0,      88,      44,       0,       0,       0,     137,       0,
-       0,     142,     143,     144,     145,     146,     147,       0,
-       0,       0,       0,       0,       0,       0,     148,     153,
-       0,     155,       0,     125,     126,     127,     128,     129,
-     138,      30,       0,     156,       0,       0,     159,     157,
-      13,       0,      26,     160,     162,       0,     133,      47,
-       8,       0,     139,     140,     141,       0,       0,       0,
-      30,       0,      92,      93,      94,       0,       0,       0,
-       0,       0,       0,       0,     122,     123,     107,       0,
-       0,       0,       0,       0,       0,       0,       0,       0,
-       0,      70,      71,      45,
+     139,     140,     141,      54,      39,      19,     112,       6,
+       6,     125,     126,      51,      86,      52,      53,       4,
+      71,      72,      33,      19,      19,      18,     121,      23,
+      93,     122,      22,      41,      24,      19,      33,      87,
+     112,      56,     111,      18,     119,      23,      47,      38,
+      22,      19,      24,      64,     108,      18,      92,      23,
+     169,      19,      22,     134,      24,      82,      83,      80,
+      81,      18,     157,      23,      80,      81,      22,      89,
+      24,      18,      54,      23,     115,     116,      22,      54,
+      24,      44,      61,      59,      52,      53,      42,      51,
+      43,      52,      53,     124,      80,      81,     113,     114,
+      74,      75,      76,      77,      78,      79,     164,     165,
+      56,      62,      42,      37,      43,      56,     128,     129,
+     130,     131,     132,     133,     162,     156,     155,     156,
+      91,      67,      66,      67,     143,      31,      28,     136,
+     120,      27,     167,     161,     160,     135,     123,      88,
+      70,      69,      68,     127,      90,      85,      73,      35,
+      34,      32,      29,      48,      45,      13,       8,     138,
+      50,      40,     158,     137,      14,       5,       9,     110,
+      25,     109,       3,      55,      60,      21,      20,      30,
+      17,      16,      15,      12,      11,      10,      26,      36,
+       3,       7,       2,       1,       0,      58,      14,      57,
+       0,      63,       0,      70,       0,       9,       0,       0,
+       0,      65,       0,      30,       0,       0,       0,       0,
+       0,       0,      84,       0,       0,       0,      54,      35,
+       0,       0,       0,       0,       0,     134,       0,       0,
+       0,       0,       0,      40,       0,      94,      98,      99,
+     100,     101,     102,     103,       0,       0,       0,       0,
+      74,       0,       0,     106,     107,      49,     117,     118,
+       0,       0,       0,       0,       0,     122,      75,      76,
+      77,      78,      79,     128,       0,      30,      46,       0,
+       0,       0,       0,      83,      50,       0,       0,       0,
+       0,       0,      90,      45,       0,       0,       0,       0,
+       0,     142,       0,       0,     147,     148,     149,     150,
+     151,     152,       0,       0,     153,     144,     145,     146,
+       0,       0,       0,     159,     154,     161,       0,     129,
+     130,     131,     132,     133,     143,      30,       0,      13,
+     126,     127,     110,     165,     163,       0,     137,       0,
+     166,     168,       0,     138,      48,       8,     104,     105,
+       0,       0,       0,       0,       0,      30,      95,      96,
+      97,       0,       0,       0,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,       0,      81,      49,
+       0,       0,       0,       0,       0,       0,      72,      73,
+      46,
 };
 
 int yypact[] = {
-    -278,   -1000,    -224,    -274,    -146,    -151,    -126,   -1000,
-    -224,    -152,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,
-   -1000,   -1000,    -127,    -260,   -1000,   -1000,    -128,    -129,
-    -224,    -153,    -289,    -222,   -1000,    -218,    -154,   -1000,
-    -254,    -197,    -179,    -242,    -249,   -1000,   -1000,    -155,
-   -1000,    -134,    -135,   -1000,    -136,    -281,    -130,    -196,
-    -241,   -1000,   -1000,   -1000,   -1000,    -202,   -1000,    -131,
-   -1000,    -194,    -263,   -1000,    -251,    -137,    -195,    -132,
-    -175,    -229,   -1000,   -1000,    -224,    -202,    -202,    -202,
-    -202,    -202,    -202,    -202,    -202,    -202,    -202,    -202,
-    -202,    -202,    -186,    -246,    -166,    -168,   -1000,    -254,
-    -254,    -144,   -1000,    -261,   -1000,   -1000,    -138,    -194,
-    -194,    -194,    -194,    -194,    -194,    -241,    -241,   -1000,
-   -1000,   -1000,    -149,    -284,    -150,    -182,   -1000,   -1000,
-   -1000,   -1000,    -201,    -139,    -295,   -1000,    -224,   -1000,
-    -145,    -210,    -210,    -210,    -202,    -202,    -202,    -202,
-    -202,    -202,    -242,   -1000,    -157,   -1000,   -1000,   -1000,
-   -1000,    -230,    -202,   -1000,   -1000,    -140,    -194,    -194,
-    -194,    -194,    -194,    -194,    -141,    -146,    -295,   -1000,
-    -159,    -194,   -1000,    -224,   -1000,   -1000,    -142,    -202,
-    -239,   -1000,    -194,   -1000,
+    -278,   -1000,    -216,    -279,    -138,    -144,    -119,   -1000,
+    -216,    -145,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,    -120,    -261,   -1000,   -1000,    -121,    -122,
+    -216,    -163,    -255,    -238,   -1000,    -188,    -189,   -1000,
+    -254,    -191,    -168,    -245,    -246,   -1000,   -1000,    -238,
+    -146,   -1000,    -128,    -129,   -1000,    -130,    -274,    -123,
+    -185,    -218,   -1000,   -1000,   -1000,   -1000,    -186,   -1000,
+    -124,   -1000,    -209,    -268,   -1000,    -249,    -131,    -199,
+    -125,    -148,    -217,    -241,   -1000,   -1000,    -216,    -186,
+    -186,    -186,    -186,    -186,    -186,    -186,    -186,    -186,
+    -186,    -186,    -186,    -186,    -214,    -258,    -179,    -197,
+   -1000,    -254,    -254,    -227,    -139,   -1000,    -260,   -1000,
+   -1000,    -132,    -209,    -209,    -209,    -209,    -209,    -209,
+    -218,    -218,   -1000,   -1000,   -1000,    -178,    -281,    -126,
+    -171,   -1000,   -1000,   -1000,   -1000,    -211,    -133,    -140,
+    -295,   -1000,    -216,   -1000,    -143,    -232,    -232,    -232,
+    -186,    -186,    -186,    -186,    -186,    -186,    -245,   -1000,
+    -295,    -150,   -1000,   -1000,   -1000,   -1000,    -224,    -186,
+   -1000,   -1000,    -134,    -209,    -209,    -209,    -209,    -209,
+    -209,    -135,    -152,   -1000,    -295,   -1000,    -166,    -209,
+   -1000,    -216,   -1000,   -1000,    -136,    -186,    -236,   -1000,
+    -209,   -1000,
 };
 
 int yypgo[] = {
-       0,     164,     163,     162,     161,     133,     159,     158,
-     136,     135,     143,     157,     156,     155,     139,     144,
-     154,     153,     151,     134,     149,     147,     132,     146,
-     236,     141,     137,     142,     140,     138,     176,
+       0,     171,     170,     169,     168,     166,     145,     147,
+     143,     142,     150,     165,     164,     163,     141,     148,
+     162,     161,     160,     140,     158,     157,     139,     156,
+     246,     229,     144,     155,     153,     146,     151,
 };
 
 int yyr1[] = {
@@ -211,23 +275,24 @@ int yychk[] = {
       -9,     -10,     -11,     -12,     -13,     -14,     -15,     -16,
      -17,     -18,     281,     265,     -20,     -21,     286,     283,
      288,     -15,      -5,     259,     262,     257,     -10,     262,
-     257,     279,     257,     257,      -9,     262,     294,      -6,
-     265,     266,     268,     262,     -19,     -24,     292,     -22,
-     -25,     -26,     265,     267,     268,     257,     -27,     287,
-     -14,     -22,     266,     -23,     265,     265,     -14,     289,
-     260,     261,     258,     258,     258,     290,     291,     257,
-     273,     274,     275,     276,     277,     278,     269,     270,
-     271,     272,     -22,     257,     280,     280,     258,     262,
-     257,     263,     265,      -9,     -24,     -24,     -24,     -22,
-     -22,     -22,     -22,     -22,     -22,     -25,     -25,     -26,
-     -26,     258,     -28,     -30,     292,     264,     265,     266,
-     265,     266,     -19,     -19,     259,     282,     285,     258,
-     261,     290,     291,     257,     273,     274,     275,     276,
-     277,     278,     262,     258,      -7,      -8,     295,     296,
-     297,      -9,     259,     -30,     -30,     -30,     -22,     -22,
-     -22,     -22,     -22,     -22,     -14,     260,     261,     282,
-     -29,     -22,     258,     258,      -5,      -8,     260,     261,
-      -9,     258,     -22,     284,
+     257,     279,     257,     257,      -9,     262,     294,     259,
+      -6,     265,     266,     268,     262,     -19,     -24,     292,
+     -22,     -25,     -26,     265,     267,     268,     257,     -27,
+     287,     -14,     -22,     266,     -23,     265,     265,     -14,
+     289,      -6,     260,     261,     258,     258,     258,     290,
+     291,     257,     273,     274,     275,     276,     277,     278,
+     269,     270,     271,     272,     -22,     257,     280,     280,
+     258,     262,     257,     260,     263,     265,      -9,     -24,
+     -24,     -24,     -22,     -22,     -22,     -22,     -22,     -22,
+     -25,     -25,     -26,     -26,     258,     -28,     -30,     292,
+     264,     265,     266,     265,     266,     -19,     -19,     263,
+     259,     282,     285,     258,     261,     290,     291,     257,
+     273,     274,     275,     276,     277,     278,     262,     258,
+     259,      -7,      -8,     295,     296,     297,      -9,     259,
+     -30,     -30,     -30,     -22,     -22,     -22,     -22,     -22,
+     -22,     -14,      -7,     260,     261,     282,     -29,     -22,
+     258,     258,     260,      -8,     260,     261,      -9,     258,
+     -22,     284,
 };
 
 int yydef[] = {
@@ -236,22 +301,23 @@ int yydef[] = {
       27,      28,       0,       0,      34,      35,       0,       0,
        0,       0,       0,       0,      21,       0,       0,      15,
        0,       0,       0,       0,       0,      20,       3,       0,
-       7,       0,       0,      14,       0,      43,       0,       0,
-      55,      58,      59,      60,      61,       0,      63,       0,
-      33,      36,      37,      38,      59,       0,       0,       0,
-       0,       0,      24,      25,       0,       0,       0,       0,
+       0,       7,       0,       0,      14,       0,      43,       0,
+       0,      55,      58,      59,      60,      61,       0,      63,
+       0,      33,      36,      37,      38,      59,       0,       0,
+       0,       0,       0,       0,      24,      25,       0,       0,
        0,       0,       0,       0,       0,       0,       0,       0,
-       0,       0,       0,       0,       0,       0,      26,       0,
-       0,       0,       6,       0,      44,      45,       0,      47,
-      48,      49,      50,      51,      52,      53,      54,      56,
-      57,      62,       0,      65,       0,       0,      41,      42,
-      39,      40,       0,       0,       0,      31,       0,      46,
        0,       0,       0,       0,       0,       0,       0,       0,
-       0,       0,       0,      30,       0,       9,      10,      11,
-      12,       0,       0,      66,      67,       0,      69,      70,
-      71,      72,      73,      74,       0,       5,       0,      32,
-       0,      76,      68,       0,       4,       8,       0,       0,
-       0,      64,      75,      29,
+      26,       0,       0,       0,       0,       6,       0,      44,
+      45,       0,      47,      48,      49,      50,      51,      52,
+      53,      54,      56,      57,      62,       0,      65,       0,
+       0,      41,      42,      39,      40,       0,       0,       0,
+       0,      31,       0,      46,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,       0,       0,      30,
+       0,       0,       9,      10,      11,      12,       0,       0,
+      66,      67,       0,      69,      70,      71,      72,      73,
+      74,       0,       0,       5,       0,      32,       0,      76,
+      68,       0,       4,       8,       0,       0,       0,      64,
+      75,      29,
 };
 
 int *yyxi;
@@ -443,384 +509,412 @@ yyparse()
     switch (m) { /* actions associated with grammar rules */
       
       case 1:
-# line 54 "miCompi.y"
+# line 75 "main.y"
       {
-      	fprintf(salidaAS,"programa: bloque_declaracion bloque_ejecucion\n");
+      	fprintf(salidaAS,"01 programa: bloque_declaracion bloque_ejecucion\n");
       } break;
       case 2:
-# line 60 "miCompi.y"
+# line 81 "main.y"
       {
-      	fprintf(salidaAS,salidaAS,"programa: lista_wprints_cte\n");
+      	fprintf(salidaAS,"02 programa: lista_wprints_cte\n");
       } break;
       case 3:
-# line 66 "miCompi.y"
+# line 87 "main.y"
       {
-      	fprintf(salidaAS,"bloque_declaracion: PR_VAR declaracion PR_ENDVAR\n");
+      	fprintf(salidaAS,"03 bloque_declaracion: PR_VAR declaracion PR_ENDVAR\n");
       } break;
       case 4:
-# line 72 "miCompi.y"
+# line 93 "main.y"
       {
-      	fprintf(salidaAS,"declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA declaracion\n");
+      	fprintf(salidaAS,"04 declaracion: declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
+      	
+      	equilibrarDeclaracion();
+      	
+      	asignarTipoDeDato();
+      	
+      	cantIDs = 0;
+      	cantTipos = 0;
       } break;
       case 5:
-# line 77 "miCompi.y"
+# line 105 "main.y"
       {
-      	fprintf(salidaAS,"declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
+      	fprintf(salidaAS,"05 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
+      	
+      	equilibrarDeclaracion();
+      	
+      	asignarTipoDeDato();
+      	
+      	cantIDs = 0;
+      	cantTipos = 0;
       } break;
       case 6:
-# line 83 "miCompi.y"
+# line 118 "main.y"
       {
-      	fprintf(salidaAS,"lista_variables: lista_variables COMA ID\n");
+      	fprintf(salidaAS,"06 lista_variables: lista_variables COMA ID\n");
+      	
+      	posicionIDEnTS[cantIDs++] = yypvt[-0];
       } break;
       case 7:
-# line 88 "miCompi.y"
+# line 125 "main.y"
       {
-      	fprintf(salidaAS,"lista_variables: ID\n");
+      	fprintf(salidaAS,"07 lista_variables: ID\n");
+      	
+      	posicionIDEnTS[cantIDs++] = yypvt[-0];
       } break;
       case 8:
-# line 94 "miCompi.y"
+# line 133 "main.y"
       {
-      	fprintf(salidaAS,"lista_tipos: lista_tipos COMA tipo\n");
+      	fprintf(salidaAS,"08 lista_tipos: lista_tipos COMA tipo\n");
+      	
+      	tipoDeID[cantTipos++] = yypvt[-0];
       } break;
       case 9:
-# line 99 "miCompi.y"
+# line 140 "main.y"
       {
-      	fprintf(salidaAS,"lista_tipos: tipo\n");
+      	fprintf(salidaAS,"09 lista_tipos: tipo\n");
+      	
+      	tipoDeID[cantTipos++] = yypvt[-0];
       } break;
       case 10:
-# line 105 "miCompi.y"
+# line 148 "main.y"
       {
-      	fprintf(salidaAS,"tipo: PR_INT\n");
+      	fprintf(salidaAS,"10 tipo: PR_INT\n");
+      	
+      	yyval = PR_INT;
       } break;
       case 11:
-# line 110 "miCompi.y"
+# line 155 "main.y"
       {
-      	fprintf(salidaAS,"tipo: PR_FLOAT\n");
+      	fprintf(salidaAS,"11 tipo: PR_FLOAT\n");
+      	
+      	yyval = PR_FLOAT;
       } break;
       case 12:
-# line 115 "miCompi.y"
+# line 162 "main.y"
       {
-      	fprintf(salidaAS,"tipo: PR_STRING\n");
+      	fprintf(salidaAS,"12 tipo: PR_STRING\n");
+      	
+      	yyval = PR_STRING;
       } break;
       case 13:
-# line 121 "miCompi.y"
+# line 170 "main.y"
       {
-      	fprintf(salidaAS,"bloque_ejecucion: lista_sentencias\n");
+      	fprintf(salidaAS,"13 bloque_ejecucion: lista_sentencias\n");
       } break;
       case 14:
-# line 127 "miCompi.y"
+# line 176 "main.y"
       {
-      	fprintf(salidaAS,"lista_sentencias: lista_sentencias sentencia PUNTO_COMA\n");
+      	fprintf(salidaAS,"14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA\n");
       } break;
       case 15:
-# line 132 "miCompi.y"
+# line 181 "main.y"
       {
-      	fprintf(salidaAS,"lista_sentencias: sentencia PUNTO_COMA\n");
+      	fprintf(salidaAS,"15 lista_sentencias: sentencia PUNTO_COMA\n");
       } break;
       case 16:
-# line 138 "miCompi.y"
+# line 187 "main.y"
       {
-      	fprintf(salidaAS,"sentencia: wprint\n");
+      	fprintf(salidaAS,"16 sentencia: wprint\n");
       } break;
       case 17:
-# line 143 "miCompi.y"
+# line 192 "main.y"
       {
-      	fprintf(salidaAS,"sentencia: iteracion\n");
+      	fprintf(salidaAS,"17 sentencia: iteracion\n");
       } break;
       case 18:
-# line 148 "miCompi.y"
+# line 197 "main.y"
       {
-      	fprintf(salidaAS,"sentencia: decision\n");
+      	fprintf(salidaAS,"18 sentencia: decision\n");
       } break;
       case 19:
-# line 153 "miCompi.y"
+# line 202 "main.y"
       {
-      	fprintf(salidaAS,"sentencia: asignacion\n");
+      	fprintf(salidaAS,"19 sentencia: asignacion\n");
       } break;
       case 20:
-# line 159 "miCompi.y"
+# line 208 "main.y"
       {
-      	fprintf(salidaAS,"lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA\n");
+      	fprintf(salidaAS,"20 lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA\n");
       } break;
       case 21:
-# line 164 "miCompi.y"
+# line 213 "main.y"
       {
-      	fprintf(salidaAS,"lista_wprints_cte: wprint_cte PUNTO_COMA\n");
+      	fprintf(salidaAS,"21 lista_wprints_cte: wprint_cte PUNTO_COMA\n");
       } break;
       case 22:
-# line 170 "miCompi.y"
+# line 219 "main.y"
       {
-      	fprintf(salidaAS,"wprint: wprint_cte\n");
+      	fprintf(salidaAS,"22 wprint: wprint_cte\n");
       } break;
       case 23:
-# line 175 "miCompi.y"
+# line 224 "main.y"
       {
-      	fprintf(salidaAS,"wprint: wprint_id\n");
+      	fprintf(salidaAS,"23 wprint: wprint_id\n");
       } break;
       case 24:
-# line 181 "miCompi.y"
+# line 230 "main.y"
       {
-      	fprintf(salidaAS,"wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA\n");
+      	fprintf(salidaAS,"24 wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA\n");
       } break;
       case 25:
-# line 186 "miCompi.y"
+# line 235 "main.y"
       {
-      	fprintf(salidaAS,"wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA\n");
+      	fprintf(salidaAS,"25 wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA\n");
       } break;
       case 26:
-# line 192 "miCompi.y"
+# line 241 "main.y"
       {
-      	fprintf(salidaAS,"wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA\n");
+      	fprintf(salidaAS,"26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA\n");
       } break;
       case 27:
-# line 198 "miCompi.y"
+# line 247 "main.y"
       {
-      	fprintf(salidaAS,"iteracion: iteracion_for\n");
+      	fprintf(salidaAS,"27 iteracion: iteracion_for\n");
       } break;
       case 28:
-# line 203 "miCompi.y"
+# line 252 "main.y"
       {
-      	fprintf(salidaAS,"iteracion: iteracion_dowhile\n");
+      	fprintf(salidaAS,"28 iteracion: iteracion_dowhile\n");
       } break;
       case 29:
-# line 209 "miCompi.y"
+# line 258 "main.y"
       {
-      	fprintf(salidaAS,"iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF\n");
+      	fprintf(salidaAS,"29 iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF\n");
       } break;
       case 30:
-# line 215 "miCompi.y"
+# line 264 "main.y"
       {
-      	fprintf(salidaAS,"iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA\n");
+      	fprintf(salidaAS,"30 iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA\n");
       } break;
       case 31:
-# line 221 "miCompi.y"
+# line 270 "main.y"
       {
-      	fprintf(salidaAS,"decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI\n");
+      	fprintf(salidaAS,"31 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI\n");
       } break;
       case 32:
-# line 226 "miCompi.y"
+# line 275 "main.y"
       {
-      	fprintf(salidaAS,"decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI\n");
+      	fprintf(salidaAS,"32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI\n");
       } break;
       case 33:
-# line 232 "miCompi.y"
+# line 281 "main.y"
       {
-      	fprintf(salidaAS,"asignacion: ID OP_ASIGNACION asignacion\n");
+      	fprintf(salidaAS,"33 asignacion: ID OP_ASIGNACION asignacion\n");
       } break;
       case 34:
-# line 237 "miCompi.y"
+# line 286 "main.y"
       {
-      	fprintf(salidaAS,"asignacion: asignacion_num_o_id\n");
+      	fprintf(salidaAS,"34 asignacion: asignacion_num_o_id\n");
       } break;
       case 35:
-# line 242 "miCompi.y"
+# line 291 "main.y"
       {
-      	fprintf(salidaAS,"asignacion: asignacion_string\n");
+      	fprintf(salidaAS,"35 asignacion: asignacion_string\n");
       } break;
       case 36:
-# line 248 "miCompi.y"
+# line 297 "main.y"
       {
-      	fprintf(salidaAS,"asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
+      	fprintf(salidaAS,"36 asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
       } break;
       case 37:
-# line 254 "miCompi.y"
+# line 303 "main.y"
       {
-      	fprintf(salidaAS,"\n");
+      	fprintf(salidaAS,"37 asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
       } break;
       case 38:
-# line 259 "miCompi.y"
+# line 308 "main.y"
       {
-      	fprintf(salidaAS,"asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
+      	fprintf(salidaAS,"38 asignacion_string: ID OP_ASIGNACION concatenacion\n");
       } break;
       case 39:
-# line 265 "miCompi.y"
+# line 314 "main.y"
       {
-      	fprintf(salidaAS,"concatenacion: ID OP_CONCATENACION ID\n");
+      	fprintf(salidaAS,"39 concatenacion: ID OP_CONCATENACION ID\n");
       } break;
       case 40:
-# line 270 "miCompi.y"
+# line 319 "main.y"
       {
-      	fprintf(salidaAS,"concatenacion: ID OP_CONCATENACION CTE_STRING\n");
+      	fprintf(salidaAS,"40 concatenacion: ID OP_CONCATENACION CTE_STRING\n");
       } break;
       case 41:
-# line 275 "miCompi.y"
+# line 324 "main.y"
       {
-      	fprintf(salidaAS,"concatenacion: CTE_STRING OP_CONCATENACION ID\n");
+      	fprintf(salidaAS,"41 concatenacion: CTE_STRING OP_CONCATENACION ID\n");
       } break;
       case 42:
-# line 280 "miCompi.y"
+# line 329 "main.y"
       {
-      	fprintf(salidaAS,"concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING\n");
+      	fprintf(salidaAS,"42 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING\n");
       } break;
       case 43:
-# line 286 "miCompi.y"
+# line 335 "main.y"
       {
-      	fprintf(salidaAS,"condicion: proposicion\n");
+      	fprintf(salidaAS,"43 condicion: proposicion\n");
       } break;
       case 44:
-# line 291 "miCompi.y"
+# line 340 "main.y"
       {
-      	fprintf(salidaAS,"condicion: proposicion PR_AND proposicion\n");
+      	fprintf(salidaAS,"44 condicion: proposicion PR_AND proposicion\n");
       } break;
       case 45:
-# line 296 "miCompi.y"
+# line 345 "main.y"
       {
-      	fprintf(salidaAS,"condicion: proposicion PR_OR proposicion\n");
+      	fprintf(salidaAS,"45 condicion: proposicion PR_OR proposicion\n");
       } break;
       case 46:
-# line 301 "miCompi.y"
+# line 350 "main.y"
       {
-      	fprintf(salidaAS,"condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA\n");
+      	fprintf(salidaAS,"46 condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA\n");
       } break;
       case 47:
-# line 307 "miCompi.y"
+# line 356 "main.y"
       {
-      	fprintf(salidaAS,"proposicion: expresion OP_MAYOR expresion\n");
+      	fprintf(salidaAS,"47 proposicion: expresion OP_MAYOR expresion\n");
       } break;
       case 48:
-# line 312 "miCompi.y"
+# line 361 "main.y"
       {
-      	fprintf(salidaAS,"proposicion: expresion OP_MAYOR_IGUAL expresion\n");
+      	fprintf(salidaAS,"48 proposicion: expresion OP_MAYOR_IGUAL expresion\n");
       } break;
       case 49:
-# line 317 "miCompi.y"
+# line 366 "main.y"
       {
-      	fprintf(salidaAS,"proposicion: expresion OP_MENOR expresion\n");
+      	fprintf(salidaAS,"49 proposicion: expresion OP_MENOR expresion\n");
       } break;
       case 50:
-# line 322 "miCompi.y"
+# line 371 "main.y"
       {
-      	fprintf(salidaAS,"proposicion: expresion OP_MENOR_IGUAL expresion\n");
+      	fprintf(salidaAS,"50 proposicion: expresion OP_MENOR_IGUAL expresion\n");
       } break;
       case 51:
-# line 327 "miCompi.y"
+# line 376 "main.y"
       {
-      	fprintf(salidaAS,"proposicion: expresion OP_IGUAL expresion\n");
+      	fprintf(salidaAS,"51 proposicion: expresion OP_IGUAL expresion\n");
       } break;
       case 52:
-# line 332 "miCompi.y"
+# line 381 "main.y"
       {
-      	fprintf(salidaAS,"proposicion: expresion OP_DISTINTO expresion\n");
+      	fprintf(salidaAS,"52 proposicion: expresion OP_DISTINTO expresion\n");
       } break;
       case 53:
-# line 338 "miCompi.y"
+# line 387 "main.y"
       {
-      	fprintf(salidaAS,"expresion: expresion OP_SUMA termino\n");
+      	fprintf(salidaAS,"53 expresion: expresion OP_SUMA termino\n");
       } break;
       case 54:
-# line 343 "miCompi.y"
+# line 392 "main.y"
       {
-      	fprintf(salidaAS,"expresion: expresion OP_RESTA termino\n");
+      	fprintf(salidaAS,"54 expresion: expresion OP_RESTA termino\n");
       } break;
       case 55:
-# line 348 "miCompi.y"
+# line 397 "main.y"
       {
-      	fprintf(salidaAS,"expresion: termino\n");
+      	fprintf(salidaAS,"55 expresion: termino\n");
       } break;
       case 56:
-# line 354 "miCompi.y"
+# line 403 "main.y"
       {
-      	fprintf(salidaAS,"termino: termino OP_MULTIPLICACION factor\n");
+      	fprintf(salidaAS,"56 termino: termino OP_MULTIPLICACION factor\n");
       } break;
       case 57:
-# line 359 "miCompi.y"
+# line 408 "main.y"
       {
-      	fprintf(salidaAS,"termino: termino OP_DIVISION factor\n");
+      	fprintf(salidaAS,"57 termino: termino OP_DIVISION factor\n");
       } break;
       case 58:
-# line 364 "miCompi.y"
+# line 413 "main.y"
       {
-      	fprintf(salidaAS,"termino: factor\n");
+      	fprintf(salidaAS,"58 termino: factor\n");
       } break;
       case 59:
-# line 370 "miCompi.y"
+# line 419 "main.y"
       {
-      	fprintf(salidaAS,"factor: ID\n");
+      	fprintf(salidaAS,"59 factor: ID\n");
       } break;
       case 60:
-# line 375 "miCompi.y"
+# line 424 "main.y"
       {
-      	fprintf(salidaAS,"factor: CTE_ENTERA\n");
+      	fprintf(salidaAS,"60 factor: CTE_ENTERA\n");
       } break;
       case 61:
-# line 380 "miCompi.y"
+# line 429 "main.y"
       {
-      	fprintf(salidaAS,"factor: CTE_REAL\n");
+      	fprintf(salidaAS,"61 factor: CTE_REAL\n");
       } break;
       case 62:
-# line 385 "miCompi.y"
+# line 434 "main.y"
       {
-      	fprintf(salidaAS,"factor: PAR_ABRE expresion PAR_CIERRA\n");
+      	fprintf(salidaAS,"62 factor: PAR_ABRE expresion PAR_CIERRA\n");
       } break;
       case 63:
-# line 390 "miCompi.y"
+# line 439 "main.y"
       {
-      	fprintf(salidaAS,"factor: filterc\n");
+      	fprintf(salidaAS,"63 factor: filterc\n");
       } break;
       case 64:
-# line 396 "miCompi.y"
+# line 445 "main.y"
       {
-      	fprintf(salidaAS,"filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA\n");
+      	fprintf(salidaAS,"64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA\n");
       } break;
       case 65:
-# line 402 "miCompi.y"
+# line 451 "main.y"
       {
-      	fprintf(salidaAS,"condicion_f: proposicion_f\n");
+      	fprintf(salidaAS,"65 condicion_f: proposicion_f\n");
       } break;
       case 66:
-# line 407 "miCompi.y"
+# line 456 "main.y"
       {
-      	fprintf(salidaAS,"condicion_f: proposicion_f PR_AND proposicion_f\n");
+      	fprintf(salidaAS,"66 condicion_f: proposicion_f PR_AND proposicion_f\n");
       } break;
       case 67:
-# line 412 "miCompi.y"
+# line 461 "main.y"
       {
-      	fprintf(salidaAS,"condicion_f: proposicion_f PR_OR proposicion_f\n");
+      	fprintf(salidaAS,"67 condicion_f: proposicion_f PR_OR proposicion_f\n");
       } break;
       case 68:
-# line 417 "miCompi.y"
+# line 466 "main.y"
       {
-      	fprintf(salidaAS,"condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA\n");
+      	fprintf(salidaAS,"68 condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA\n");
       } break;
       case 69:
-# line 423 "miCompi.y"
+# line 472 "main.y"
       {
-      	fprintf(salidaAS,"proposicion_f: GUION_BAJO OP_MAYOR expresion\n");
+      	fprintf(salidaAS,"69 proposicion_f: GUION_BAJO OP_MAYOR expresion\n");
       } break;
       case 70:
-# line 428 "miCompi.y"
+# line 477 "main.y"
       {
-      	fprintf(salidaAS,"proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion\n");
+      	fprintf(salidaAS,"70 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion\n");
       } break;
       case 71:
-# line 433 "miCompi.y"
+# line 482 "main.y"
       {
-      	fprintf(salidaAS,"proposicion_f: GUION_BAJO OP_MENOR expresion\n");
+      	fprintf(salidaAS,"71 proposicion_f: GUION_BAJO OP_MENOR expresion\n");
       } break;
       case 72:
-# line 438 "miCompi.y"
+# line 487 "main.y"
       {
-      	fprintf(salidaAS,"proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion\n");
+      	fprintf(salidaAS,"72 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion\n");
       } break;
       case 73:
-# line 443 "miCompi.y"
+# line 492 "main.y"
       {
-      	fprintf(salidaAS,"proposicion_f: GUION_BAJO OP_IGUAL expresion\n");
+      	fprintf(salidaAS,"73 proposicion_f: GUION_BAJO OP_IGUAL expresion\n");
       } break;
       case 74:
-# line 448 "miCompi.y"
+# line 497 "main.y"
       {
-      	fprintf(salidaAS,"proposicion_f: GUION_BAJO OP_DISTINTO expresion\n");
+      	fprintf(salidaAS,"74 proposicion_f: GUION_BAJO OP_DISTINTO expresion\n");
       } break;
       case 75:
-# line 454 "miCompi.y"
+# line 503 "main.y"
       {
-      	fprintf(salidaAS,"lista_expresiones: lista_expresiones COMA expresion\n");
+      	fprintf(salidaAS,"75 lista_expresiones: lista_expresiones COMA expresion\n");
       } break;
       case 76:
-# line 459 "miCompi.y"
+# line 508 "main.y"
       {
-      	fprintf(salidaAS,"lista_expresiones: expresion\n");
+      	fprintf(salidaAS,"76 lista_expresiones: expresion\n");
       } break;    }
     goto enstack;
 }

@@ -10,6 +10,9 @@ FILE *archivoFuente;
 /*Archivo de tokens identificados*/
 FILE *archivoDeTokens;
 
+/*Archivo de salida del analizador sintactico*/
+extern FILE *salidaAS;
+
 /*Matriz de Nuevo Estado*/
 int nuevoEstado[ESTADO_FINAL][CANT_COLUMNAS];
 
@@ -64,6 +67,7 @@ void inicializarAL(FILE *fuente)
 		TS[i].tipo = 0;
 		TS[i].valor[0] = '\0';
 		TS[i].longitud = 0;
+		TS[i].descartada = FALSE;
 	}
 
 	error[ERROR_CTE_STRING_ABIERTA].estado = FALSE;
@@ -373,6 +377,10 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 						strcpy_s(TS[i].valor,MAX_LONG_TOKEN,tokenActual->token);
 					}
 				}
+				else /*Si es ID la marco como descartada. Luego el AS cambiara esto*/
+				{
+					TS[i].descartada = TRUE;
+				}
 
 				/*Guardo el nombre del token*/
 				strcat_s(TS[i].nombre,MAX_LONG_TOKEN+1,nombreAux);
@@ -403,7 +411,11 @@ void imprimirTS()
 
 	for(i = 0; i < cantTokensEnTS; ++i)
 	{
-		fprintf(archivoDeTS,"%-50s%-15s%-50s%-10d\n",TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
+		if(TS[i].descartada == FALSE)
+		{
+			fprintf(archivoDeTS,"%-50s%-15s%-50s%-10d\n",
+				TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
+		}
 	}
 
 	fclose(archivoDeTS);
@@ -869,9 +881,6 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 {
 	int i;
 
-	/*Cierro el arcivo fuente*/
-	fclose(archivoFuente);
-
 	/*Indico el error de sintáxis e imprimo el último token*/
 	fprintf(archivoDeTokens,"\nSYNTAX ERROR\nTOKEN ACTUAL: %s\nDESCRIPCION: ",tokenActual->token);
 
@@ -884,9 +893,15 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 			fprintf(archivoDeTokens,"%s",error[i].descripcion);
 		}
 	}
+
+	/*Cierro el arcivo fuente*/
+	fclose(archivoFuente);
 	
 	/*Cierro el archivo de tokens identificados*/
 	fclose(archivoDeTokens);
+
+	/*Cierro el archivo de salida del analizador sintactico*/
+	fclose(salidaAS);
 
 	/*Termino el programa*/
 	exit(1);

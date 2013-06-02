@@ -1,0 +1,6 @@
+a                                                 PR_INT                                                           0         
+b                                                 PR_INT                                                           0         
+c                                                 PR_INT                                                           0         
+_1                                                CTE_ENTERA     1                                                 0         
+_2                                                CTE_ENTERA     2                                                 0         
+_3                                                CTE_ENTERA     3                                                 0         

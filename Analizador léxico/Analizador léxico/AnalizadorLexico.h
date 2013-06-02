@@ -63,6 +63,7 @@ struct tablaDeSimbolos
 	int tipo;
 	char valor[MAX_LONG_TOKEN];
 	int longitud;
+	int descartada;
 };
 typedef struct tablaDeSimbolos tablaDeSimbolos;
 

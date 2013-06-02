@@ -1,3 +1,6 @@
+#ifndef TOKENS_H
+#define TOKENS_H
+
 #define PAR_ABRE 257
 #define PAR_CIERRA 258
 #define COR_ABRE 259
@@ -39,3 +42,5 @@
 #define PR_INT 295
 #define PR_FLOAT 296
 #define PR_STRING 297
+
+#endif
