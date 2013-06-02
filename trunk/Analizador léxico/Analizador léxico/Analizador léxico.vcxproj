@@ -14,6 +14,7 @@
     <ProjectGuid>{A353403F-1081-4FA7-B1E9-202FA1104C82}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Analizadorléxico</RootNamespace>
+    <ProjectName>Compilador</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

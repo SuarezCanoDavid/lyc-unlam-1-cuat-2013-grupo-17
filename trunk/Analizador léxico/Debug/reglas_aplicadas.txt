@@ -1,0 +1,76 @@
+07 lista_variables: ID
+06 lista_variables: lista_variables COMA ID
+06 lista_variables: lista_variables COMA ID
+10 tipo: PR_INT
+09 lista_tipos: tipo
+10 tipo: PR_INT
+08 lista_tipos: lista_tipos COMA tipo
+10 tipo: PR_INT
+08 lista_tipos: lista_tipos COMA tipo
+05 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
+03 bloque_declaracion: PR_VAR declaracion PR_ENDVAR
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+47 proposicion: expresion OP_MAYOR expresion
+43 condicion: proposicion
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+47 proposicion: expresion OP_MAYOR expresion
+43 condicion: proposicion
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+60 factor: CTE_ENTERA
+58 termino: factor
+53 expresion: expresion OP_SUMA termino
+36 asignacion_num_o_id: ID OP_ASIGNACION expresion
+34 asignacion: asignacion_num_o_id
+19 sentencia: asignacion
+15 lista_sentencias: sentencia PUNTO_COMA
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+60 factor: CTE_ENTERA
+58 termino: factor
+53 expresion: expresion OP_SUMA termino
+36 asignacion_num_o_id: ID OP_ASIGNACION expresion
+34 asignacion: asignacion_num_o_id
+19 sentencia: asignacion
+15 lista_sentencias: sentencia PUNTO_COMA
+32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI
+18 sentencia: decision
+15 lista_sentencias: sentencia PUNTO_COMA
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+49 proposicion: expresion OP_MENOR expresion
+43 condicion: proposicion
+59 factor: ID
+58 termino: factor
+55 expresion: termino
+60 factor: CTE_ENTERA
+58 termino: factor
+53 expresion: expresion OP_SUMA termino
+36 asignacion_num_o_id: ID OP_ASIGNACION expresion
+34 asignacion: asignacion_num_o_id
+19 sentencia: asignacion
+15 lista_sentencias: sentencia PUNTO_COMA
+31 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI
+18 sentencia: decision
+15 lista_sentencias: sentencia PUNTO_COMA
+32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI
+18 sentencia: decision
+15 lista_sentencias: sentencia PUNTO_COMA
+13 bloque_ejecucion: lista_sentencias
+01 programa: bloque_declaracion bloque_ejecucion

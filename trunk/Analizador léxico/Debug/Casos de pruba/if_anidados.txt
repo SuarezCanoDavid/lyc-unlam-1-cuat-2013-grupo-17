@@ -1,0 +1,15 @@
+VAR
+	[a,b,c]:[int,int,int]
+ENDVAR
+
+if(a > b)
+	if(c > b)
+		a = a + 1;
+	else
+		b = b + 2;
+	fi;
+else
+	if(a < c)
+		c = c + 3;
+	fi;
+fi;

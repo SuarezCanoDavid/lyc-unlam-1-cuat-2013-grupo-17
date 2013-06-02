@@ -1,0 +1,61 @@
+TOKEN Nº 1= VAR                                               TIPO_TOKEN= PR_VAR              YYLVAL= -1
+TOKEN Nº 2= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1
+TOKEN Nº 3= a                                                 TIPO_TOKEN= ID                  YYLVAL= 0
+TOKEN Nº 4= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
+TOKEN Nº 5= b                                                 TIPO_TOKEN= ID                  YYLVAL= 1
+TOKEN Nº 6= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
+TOKEN Nº 7= c                                                 TIPO_TOKEN= ID                  YYLVAL= 2
+TOKEN Nº 8= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1
+TOKEN Nº 9= :                                                 TIPO_TOKEN= DOS_PUNTOS          YYLVAL= -1
+TOKEN Nº10= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1
+TOKEN Nº11= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1
+TOKEN Nº12= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
+TOKEN Nº13= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1
+TOKEN Nº14= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
+TOKEN Nº15= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1
+TOKEN Nº16= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1
+TOKEN Nº17= ENDVAR                                            TIPO_TOKEN= PR_ENDVAR           YYLVAL= -1
+TOKEN Nº18= if                                                TIPO_TOKEN= PR_IF               YYLVAL= -1
+TOKEN Nº19= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1
+TOKEN Nº20= a                                                 TIPO_TOKEN= ID                  YYLVAL= 0
+TOKEN Nº21= >                                                 TIPO_TOKEN= OP_MAYOR            YYLVAL= -1
+TOKEN Nº22= b                                                 TIPO_TOKEN= ID                  YYLVAL= 1
+TOKEN Nº23= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1
+TOKEN Nº24= if                                                TIPO_TOKEN= PR_IF               YYLVAL= -1
+TOKEN Nº25= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1
+TOKEN Nº26= c                                                 TIPO_TOKEN= ID                  YYLVAL= 2
+TOKEN Nº27= >                                                 TIPO_TOKEN= OP_MAYOR            YYLVAL= -1
+TOKEN Nº28= b                                                 TIPO_TOKEN= ID                  YYLVAL= 1
+TOKEN Nº29= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1
+TOKEN Nº30= a                                                 TIPO_TOKEN= ID                  YYLVAL= 0
+TOKEN Nº31= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1
+TOKEN Nº32= a                                                 TIPO_TOKEN= ID                  YYLVAL= 0
+TOKEN Nº33= +                                                 TIPO_TOKEN= OP_SUMA             YYLVAL= -1
+TOKEN Nº34= 1                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 3
+TOKEN Nº35= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1
+TOKEN Nº36= else                                              TIPO_TOKEN= PR_ELSE             YYLVAL= -1
+TOKEN Nº37= b                                                 TIPO_TOKEN= ID                  YYLVAL= 1
+TOKEN Nº38= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1
+TOKEN Nº39= b                                                 TIPO_TOKEN= ID                  YYLVAL= 1
+TOKEN Nº40= +                                                 TIPO_TOKEN= OP_SUMA             YYLVAL= -1
+TOKEN Nº41= 2                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 4
+TOKEN Nº42= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1
+TOKEN Nº43= fi                                                TIPO_TOKEN= PR_FI               YYLVAL= -1
+TOKEN Nº44= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1
+TOKEN Nº45= else                                              TIPO_TOKEN= PR_ELSE             YYLVAL= -1
+TOKEN Nº46= if                                                TIPO_TOKEN= PR_IF               YYLVAL= -1
+TOKEN Nº47= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1
+TOKEN Nº48= a                                                 TIPO_TOKEN= ID                  YYLVAL= 0
+TOKEN Nº49= <                                                 TIPO_TOKEN= OP_MENOR            YYLVAL= -1
+TOKEN Nº50= c                                                 TIPO_TOKEN= ID                  YYLVAL= 2
+TOKEN Nº51= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1
+TOKEN Nº52= c                                                 TIPO_TOKEN= ID                  YYLVAL= 2
+TOKEN Nº53= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1
+TOKEN Nº54= c                                                 TIPO_TOKEN= ID                  YYLVAL= 2
+TOKEN Nº55= +                                                 TIPO_TOKEN= OP_SUMA             YYLVAL= -1
+TOKEN Nº56= 3                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 5
+TOKEN Nº57= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1
+TOKEN Nº58= fi                                                TIPO_TOKEN= PR_FI               YYLVAL= -1
+TOKEN Nº59= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1
+TOKEN Nº60= fi                                                TIPO_TOKEN= PR_FI               YYLVAL= -1
+TOKEN Nº61= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1

@@ -1,5 +1,0 @@
-VAR
-	[contador]:[int]
-ENDVAR
-
-contador = contador + 1;

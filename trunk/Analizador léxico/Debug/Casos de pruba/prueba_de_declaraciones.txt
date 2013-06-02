@@ -1,0 +1,7 @@
+VAR
+	[contador1,mensaje1,pi1]:[int,string]
+	[contador2,mensaje2,pi2]:[int,string,float,int]
+	[contador3,mensaje3,pi3]:[int,string,float]
+ENDVAR
+
+WPRINT("Prueba de declaraciones");
