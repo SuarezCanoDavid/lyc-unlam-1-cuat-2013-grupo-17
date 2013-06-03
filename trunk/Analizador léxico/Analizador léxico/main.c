@@ -91,10 +91,7 @@ int main(int argc, char *argv[])
     {
         inicializarAL(archivo);
 
-        while(!feof(archivo))
-        {
-            yyparse();
-        }
+		yyparse();
 		
         fclose(archivo);
 		fclose(salidaAS);
@@ -127,18 +124,6 @@ void equilibrarDeclaracion()
 	}
 }
 
-/*void imprimirDeclaracion()
-{
-	int i;
-	
-	fprintf(salidaAS,"\n");
-	
-	for(i = 0; i < cantIDs; ++i)
-	{
-		fprintf(salidaAS,"%d  %d\n",posicionIDEnTS[i],tipoDeID[i]);
-	}
-}*/
-
 void asignarTipoDeDato()
 {
 	int i;
@@ -149,7 +134,9 @@ void asignarTipoDeDato()
 		
 		TS[posicionIDEnTS[i]].tipo = tipoDeID[i];
 	}
-}FILE *yytfilep;
+}
+
+FILE *yytfilep;
 char *yytfilen;
 int yytflag = 0;
 int svdprd[2];
