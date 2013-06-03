@@ -3,55 +3,25 @@
 06 lista_variables: lista_variables COMA ID
 10 tipo: PR_INT
 09 lista_tipos: tipo
-10 tipo: PR_INT
+12 tipo: PR_STRING
 08 lista_tipos: lista_tipos COMA tipo
 10 tipo: PR_INT
 08 lista_tipos: lista_tipos COMA tipo
 05 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
 03 bloque_declaracion: PR_VAR declaracion PR_ENDVAR
-59 factor: ID
+37 asignacion_string: ID OP_ASIGNACION CTE_STRING
+35 asignacion: asignacion_string
+19 sentencia: asignacion
+15 lista_sentencias: sentencia PUNTO_COMA
+60 factor: CTE_ENTERA
 58 termino: factor
 55 expresion: termino
-59 factor: ID
-58 termino: factor
-55 expresion: termino
-47 proposicion: expresion OP_MAYOR expresion
-43 condicion: proposicion
-59 factor: ID
-58 termino: factor
-55 expresion: termino
-59 factor: ID
-58 termino: factor
-55 expresion: termino
-47 proposicion: expresion OP_MAYOR expresion
-43 condicion: proposicion
+36 asignacion_num_o_id: ID OP_ASIGNACION expresion
+34 asignacion: asignacion_num_o_id
 59 factor: ID
 58 termino: factor
 55 expresion: termino
 60 factor: CTE_ENTERA
-58 termino: factor
-53 expresion: expresion OP_SUMA termino
-36 asignacion_num_o_id: ID OP_ASIGNACION expresion
-34 asignacion: asignacion_num_o_id
-19 sentencia: asignacion
-15 lista_sentencias: sentencia PUNTO_COMA
-59 factor: ID
-58 termino: factor
-55 expresion: termino
-60 factor: CTE_ENTERA
-58 termino: factor
-53 expresion: expresion OP_SUMA termino
-36 asignacion_num_o_id: ID OP_ASIGNACION expresion
-34 asignacion: asignacion_num_o_id
-19 sentencia: asignacion
-15 lista_sentencias: sentencia PUNTO_COMA
-32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI
-18 sentencia: decision
-15 lista_sentencias: sentencia PUNTO_COMA
-59 factor: ID
-58 termino: factor
-55 expresion: termino
-59 factor: ID
 58 termino: factor
 55 expresion: termino
 49 proposicion: expresion OP_MENOR expresion
@@ -64,13 +34,55 @@
 53 expresion: expresion OP_SUMA termino
 36 asignacion_num_o_id: ID OP_ASIGNACION expresion
 34 asignacion: asignacion_num_o_id
+26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA
+23 wprint: wprint_id
+16 sentencia: wprint
+15 lista_sentencias: sentencia PUNTO_COMA
+29 iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF
+27 iteracion: iteracion_for
+17 sentencia: iteracion
+14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA
+60 factor: CTE_ENTERA
+58 termino: factor
+55 expresion: termino
+69 proposicion_f: GUION_BAJO OP_MAYOR expresion
+60 factor: CTE_ENTERA
+58 termino: factor
+55 expresion: termino
+71 proposicion_f: GUION_BAJO OP_MENOR expresion
+66 condicion_f: proposicion_f PR_AND proposicion_f
+60 factor: CTE_ENTERA
+58 termino: factor
+55 expresion: termino
+76 lista_expresiones: expresion
+60 factor: CTE_ENTERA
+58 termino: factor
+55 expresion: termino
+60 factor: CTE_ENTERA
+58 termino: factor
+54 expresion: expresion OP_RESTA termino
+75 lista_expresiones: lista_expresiones COMA expresion
+60 factor: CTE_ENTERA
+58 termino: factor
+60 factor: CTE_ENTERA
+56 termino: termino OP_MULTIPLICACION factor
+55 expresion: termino
+75 lista_expresiones: lista_expresiones COMA expresion
+64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA
+63 factor: filterc
+58 termino: factor
+55 expresion: termino
+36 asignacion_num_o_id: ID OP_ASIGNACION expresion
+34 asignacion: asignacion_num_o_id
 19 sentencia: asignacion
-15 lista_sentencias: sentencia PUNTO_COMA
-31 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI
-18 sentencia: decision
-15 lista_sentencias: sentencia PUNTO_COMA
-32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI
-18 sentencia: decision
-15 lista_sentencias: sentencia PUNTO_COMA
+14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA
+26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA
+23 wprint: wprint_id
+16 sentencia: wprint
+14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA
+25 wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
+22 wprint: wprint_cte
+16 sentencia: wprint
+14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA
 13 bloque_ejecucion: lista_sentencias
 01 programa: bloque_declaracion bloque_ejecucion

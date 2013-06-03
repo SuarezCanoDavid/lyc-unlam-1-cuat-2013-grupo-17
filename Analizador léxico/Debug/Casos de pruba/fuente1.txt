@@ -2,7 +2,7 @@ VAR
 	[contador,mensaje,resultado]:[int,string,int]
 ENDVAR
 
-mensaje = "Una iteracion;
+mensaje = "Una iteracion";
 
 -/Se escribe 10 veces el siguiente mensaje/-
 FOR(contador = 0; contador < 10; contador = contador + 1)
