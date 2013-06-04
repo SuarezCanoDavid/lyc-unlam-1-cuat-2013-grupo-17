@@ -8,15 +8,16 @@ FILE *archivo;
 extern FILE *archivoDeTokens;
 
 extern tablaDeSimbolos TS[LONG_TS];
-extern int cantTokensIdentificados;
+extern int cantTokensEnTS;
+int cantIDsEnTS = 0;
 
-int cantIDs = 0;
+int cantIDsEnDeclaracion = 0;
 int posicionIDEnTS[50];
 
-int cantTipos = 0;
+int cantTiposEnDeclaracion = 0;
 int tipoDeID[50];
 
-int declaracionTerminada = FALSE;
+extern int lineaActual;
 
 %}
 
@@ -97,8 +98,9 @@ declaracion: declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE
 	
 	asignarTipoDeDato();
 	
-	cantIDs = 0;
-	cantTipos = 0;
+	cantIDsEnTS += cantIDsEnDeclaracion;
+	cantIDsEnDeclaracion = 0;
+	cantTiposEnDeclaracion = 0;
 };
 
 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
@@ -109,8 +111,9 @@ declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos
 	
 	asignarTipoDeDato();
 	
-	cantIDs = 0;
-	cantTipos = 0;
+	cantIDsEnTS += cantIDsEnDeclaracion;
+	cantIDsEnDeclaracion = 0;
+	cantTiposEnDeclaracion = 0;
 };
 
 
@@ -118,14 +121,14 @@ lista_variables: lista_variables COMA ID
 {
 	fprintf(salidaAS,"06 lista_variables: lista_variables COMA ID\n");
 	
-	posicionIDEnTS[cantIDs++] = $3;
+	posicionIDEnTS[cantIDsEnDeclaracion++] = $3;
 };
 
 lista_variables: ID
 {
 	fprintf(salidaAS,"07 lista_variables: ID\n");
 	
-	posicionIDEnTS[cantIDs++] = $1;
+	posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
 };
 
 
@@ -133,14 +136,14 @@ lista_tipos: lista_tipos COMA tipo
 {
 	fprintf(salidaAS,"08 lista_tipos: lista_tipos COMA tipo\n");
 	
-	tipoDeID[cantTipos++] = $3;
+	tipoDeID[cantTiposEnDeclaracion++] = $3;
 };
 
 lista_tipos: tipo
 {
 	fprintf(salidaAS,"09 lista_tipos: tipo\n");
 	
-	tipoDeID[cantTipos++] = $1;
+	tipoDeID[cantTiposEnDeclaracion++] = $1;
 };
 
 
@@ -240,6 +243,8 @@ wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA
 {
 	fprintf(salidaAS,"26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA\n");
+
+	verificarDeclaracion($3);
 };
 
 
@@ -280,6 +285,28 @@ decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sen
 asignacion: ID OP_ASIGNACION asignacion
 {
 	fprintf(salidaAS,"33 asignacion: ID OP_ASIGNACION asignacion\n");
+
+	verificarDeclaracion($1);
+
+	if(TS[$1].tipo == PR_INT && $3 == PR_STRING)
+	{
+		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
+	}
+
+	if(TS[$1].tipo == PR_FLOAT && $3 == PR_STRING)
+	{
+		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
+	}
+
+	if(TS[$1].tipo == PR_STRING && $3 == PR_INT)
+	{
+		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
+	}
+
+	if(TS[$1].tipo == PR_STRING && $3 == PR_FLOAT)
+	{
+		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
+	}
 };
 
 asignacion: asignacion_num_o_id
@@ -296,33 +323,92 @@ asignacion: asignacion_string
 asignacion_num_o_id: ID OP_ASIGNACION expresion
 {
 	fprintf(salidaAS,"36 asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
+
+	verificarDeclaracion($1);
+
+	if(TS[$1].tipo == PR_STRING)
+	{
+		lanzarError("No puede asignar una expresion a un tipo STRING");
+	}
+
+	$$ = TS[$1].tipo;
 };
 
 
 asignacion_string: ID OP_ASIGNACION CTE_STRING
 {
 	fprintf(salidaAS,"37 asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
+
+	verificarDeclaracion($1);
+
+	if(TS[$1].tipo == PR_INT)
+	{
+		lanzarError("No puede asignar un tipo STRING a un tipo INT");
+	}
+
+	if(TS[$1].tipo == PR_FLOAT)
+	{
+		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+	}
+
+	$$ = TS[$1].tipo;
 };
 
 asignacion_string: ID OP_ASIGNACION concatenacion
 {
 	fprintf(salidaAS,"38 asignacion_string: ID OP_ASIGNACION concatenacion\n");
+
+	verificarDeclaracion($1);
+
+	if(TS[$1].tipo == PR_INT)
+	{
+		lanzarError("No puede asignar un tipo STRING a un tipo INT");
+	}
+
+	if(TS[$1].tipo == PR_FLOAT)
+	{
+		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+	}
+
+	$$ = TS[$1].tipo;
 };
 
 
 concatenacion: ID OP_CONCATENACION ID
 {
 	fprintf(salidaAS,"39 concatenacion: ID OP_CONCATENACION ID\n");
+
+	verificarDeclaracion($1);
+	verificarDeclaracion($3);
+
+	if(TS[$1].tipo != PR_STRING || TS[$3].tipo != PR_STRING)
+	{
+		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+	}
 };
 
 concatenacion: ID OP_CONCATENACION CTE_STRING
 {
 	fprintf(salidaAS,"40 concatenacion: ID OP_CONCATENACION CTE_STRING\n");
+
+	verificarDeclaracion($1);
+
+	if(TS[$1].tipo != PR_STRING)
+	{
+		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+	}
 };
 
 concatenacion: CTE_STRING OP_CONCATENACION ID
 {
 	fprintf(salidaAS,"41 concatenacion: CTE_STRING OP_CONCATENACION ID\n");
+
+	verificarDeclaracion($3);
+
+	if(TS[$3].tipo != PR_STRING)
+	{
+		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+	}
 };
 
 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING
@@ -418,6 +504,13 @@ termino: factor
 factor: ID
 {
 	fprintf(salidaAS,"59 factor: ID\n");
+
+	verificarDeclaracion($1);
+
+	if(TS[$1].tipo == PR_STRING)
+	{
+		lanzarError("No puede usar tipos STRING en una expresion");
+	}
 };
 
 factor: CTE_ENTERA
@@ -513,8 +606,6 @@ lista_expresiones: expresion
 
 int main(int argc, char *argv[])
 {
-    int tipoToken;
-	
 	if(argc != 2)
 	{
 		printf("Formato invalido\nSe espera: Compilador <archivo_fuente>");
@@ -543,7 +634,7 @@ int main(int argc, char *argv[])
 
 int yyerror(char *mensaje)
 {
-	printf("%s\n",mensaje);
+	fprintf(salidaAS,"\nLinea %d: %s",lineaActual,mensaje);
 	
 	fclose(archivo);
 	fclose(archivoDeTokens);
@@ -554,14 +645,14 @@ int yyerror(char *mensaje)
 
 void equilibrarDeclaracion()
 {
-	if(cantIDs > cantTipos)
+	if(cantIDsEnDeclaracion > cantTiposEnDeclaracion)
 	{
-		for( ;cantIDs > cantTipos; --cantIDs);
+		for( ;cantIDsEnDeclaracion > cantTiposEnDeclaracion; --cantIDsEnDeclaracion, --cantTokensEnTS);
 	}
 	
-	if(cantIDs < cantTipos)
+	if(cantIDsEnDeclaracion < cantTiposEnDeclaracion)
 	{
-		for( ;cantIDs < cantTipos; --cantTipos);
+		for( ;cantIDsEnDeclaracion < cantTiposEnDeclaracion; --cantTiposEnDeclaracion);
 	}
 }
 
@@ -569,11 +660,36 @@ void asignarTipoDeDato()
 {
 	int i;
 	
-	for(i = 0; i < cantIDs; ++i)
+	for(i = 0; i < cantIDsEnDeclaracion; ++i)
 	{
-		TS[posicionIDEnTS[i]].descartada = FALSE;
-		
 		TS[posicionIDEnTS[i]].tipo = tipoDeID[i];
+	}
+}
+
+void lanzarError(char *mensaje)
+{
+	fprintf(salidaAS,"\nLinea %d: %s",lineaActual,mensaje);
+		
+	fclose(archivo);
+	fclose(archivoDeTokens);
+	fclose(salidaAS);
+
+	exit(1);
+}
+
+void verificarDeclaracion(int posicionEnTS)
+{
+	char mensaje[50]; 
+
+	if(posicionEnTS >= cantIDsEnTS)
+	{
+		strcpy_s(mensaje,50,"\"");
+
+		strcat_s(mensaje,50,TS[posicionEnTS].nombre);
+		
+		strcat_s(mensaje,50,"\" variable no declarada");
+		
+		lanzarError(mensaje); 	
 	}
 }
 

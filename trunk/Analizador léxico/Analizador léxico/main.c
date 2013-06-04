@@ -9,15 +9,16 @@ FILE *archivo;
 extern FILE *archivoDeTokens;
 
 extern tablaDeSimbolos TS[LONG_TS];
-extern int cantTokensIdentificados;
+extern int cantTokensEnTS;
+int cantIDsEnTS = 0;
 
-int cantIDs = 0;
+int cantIDsEnDeclaracion = 0;
 int posicionIDEnTS[50];
 
-int cantTipos = 0;
+int cantTiposEnDeclaracion = 0;
 int tipoDeID[50];
 
-int declaracionTerminada = FALSE;
+extern int lineaActual;
 
 #define PAR_ABRE 257
 #define PAR_CIERRA 258
@@ -66,14 +67,12 @@ int declaracionTerminada = FALSE;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 511 "main.y"
+# line 604 "main.y"
 
 
 
 int main(int argc, char *argv[])
 {
-    int tipoToken;
-	
 	if(argc != 2)
 	{
 		printf("Formato invalido\nSe espera: Compilador <archivo_fuente>");
@@ -102,7 +101,7 @@ int main(int argc, char *argv[])
 
 int yyerror(char *mensaje)
 {
-	printf("%s\n",mensaje);
+	fprintf(salidaAS,"\nLinea %d: %s",lineaActual,mensaje);
 	
 	fclose(archivo);
 	fclose(archivoDeTokens);
@@ -113,14 +112,14 @@ int yyerror(char *mensaje)
 
 void equilibrarDeclaracion()
 {
-	if(cantIDs > cantTipos)
+	if(cantIDsEnDeclaracion > cantTiposEnDeclaracion)
 	{
-		for( ;cantIDs > cantTipos; --cantIDs);
+		for( ;cantIDsEnDeclaracion > cantTiposEnDeclaracion; --cantIDsEnDeclaracion, --cantTokensEnTS);
 	}
 	
-	if(cantIDs < cantTipos)
+	if(cantIDsEnDeclaracion < cantTiposEnDeclaracion)
 	{
-		for( ;cantIDs < cantTipos; --cantTipos);
+		for( ;cantIDsEnDeclaracion < cantTiposEnDeclaracion; --cantTiposEnDeclaracion);
 	}
 }
 
@@ -128,11 +127,36 @@ void asignarTipoDeDato()
 {
 	int i;
 	
-	for(i = 0; i < cantIDs; ++i)
+	for(i = 0; i < cantIDsEnDeclaracion; ++i)
 	{
-		TS[posicionIDEnTS[i]].descartada = FALSE;
-		
 		TS[posicionIDEnTS[i]].tipo = tipoDeID[i];
+	}
+}
+
+void lanzarError(char *mensaje)
+{
+	fprintf(salidaAS,"\nLinea %d: %s",lineaActual,mensaje);
+		
+	fclose(archivo);
+	fclose(archivoDeTokens);
+	fclose(salidaAS);
+
+	exit(1);
+}
+
+void verificarDeclaracion(int posicionEnTS)
+{
+	char mensaje[50]; 
+
+	if(posicionEnTS >= cantIDsEnTS)
+	{
+		strcpy_s(mensaje,50,"\"");
+
+		strcat_s(mensaje,50,TS[posicionEnTS].nombre);
+		
+		strcat_s(mensaje,50,"\" variable no declarada");
+		
+		lanzarError(mensaje); 	
 	}
 }
 
@@ -496,22 +520,22 @@ yyparse()
     switch (m) { /* actions associated with grammar rules */
       
       case 1:
-# line 75 "main.y"
+# line 76 "main.y"
       {
       	fprintf(salidaAS,"01 programa: bloque_declaracion bloque_ejecucion\n");
       } break;
       case 2:
-# line 81 "main.y"
+# line 82 "main.y"
       {
       	fprintf(salidaAS,"02 programa: lista_wprints_cte\n");
       } break;
       case 3:
-# line 87 "main.y"
+# line 88 "main.y"
       {
       	fprintf(salidaAS,"03 bloque_declaracion: PR_VAR declaracion PR_ENDVAR\n");
       } break;
       case 4:
-# line 93 "main.y"
+# line 94 "main.y"
       {
       	fprintf(salidaAS,"04 declaracion: declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
       	
@@ -519,11 +543,12 @@ yyparse()
       	
       	asignarTipoDeDato();
       	
-      	cantIDs = 0;
-      	cantTipos = 0;
+      	cantIDsEnTS += cantIDsEnDeclaracion;
+      	cantIDsEnDeclaracion = 0;
+      	cantTiposEnDeclaracion = 0;
       } break;
       case 5:
-# line 105 "main.y"
+# line 107 "main.y"
       {
       	fprintf(salidaAS,"05 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
       	
@@ -531,375 +556,466 @@ yyparse()
       	
       	asignarTipoDeDato();
       	
-      	cantIDs = 0;
-      	cantTipos = 0;
+      	cantIDsEnTS += cantIDsEnDeclaracion;
+      	cantIDsEnDeclaracion = 0;
+      	cantTiposEnDeclaracion = 0;
       } break;
       case 6:
-# line 118 "main.y"
+# line 121 "main.y"
       {
       	fprintf(salidaAS,"06 lista_variables: lista_variables COMA ID\n");
       	
-      	posicionIDEnTS[cantIDs++] = yypvt[-0];
+      	posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
       } break;
       case 7:
-# line 125 "main.y"
+# line 128 "main.y"
       {
       	fprintf(salidaAS,"07 lista_variables: ID\n");
       	
-      	posicionIDEnTS[cantIDs++] = yypvt[-0];
+      	posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
       } break;
       case 8:
-# line 133 "main.y"
+# line 136 "main.y"
       {
       	fprintf(salidaAS,"08 lista_tipos: lista_tipos COMA tipo\n");
       	
-      	tipoDeID[cantTipos++] = yypvt[-0];
+      	tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       } break;
       case 9:
-# line 140 "main.y"
+# line 143 "main.y"
       {
       	fprintf(salidaAS,"09 lista_tipos: tipo\n");
       	
-      	tipoDeID[cantTipos++] = yypvt[-0];
+      	tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       } break;
       case 10:
-# line 148 "main.y"
+# line 151 "main.y"
       {
       	fprintf(salidaAS,"10 tipo: PR_INT\n");
       	
       	yyval = PR_INT;
       } break;
       case 11:
-# line 155 "main.y"
+# line 158 "main.y"
       {
       	fprintf(salidaAS,"11 tipo: PR_FLOAT\n");
       	
       	yyval = PR_FLOAT;
       } break;
       case 12:
-# line 162 "main.y"
+# line 165 "main.y"
       {
       	fprintf(salidaAS,"12 tipo: PR_STRING\n");
       	
       	yyval = PR_STRING;
       } break;
       case 13:
-# line 170 "main.y"
+# line 173 "main.y"
       {
       	fprintf(salidaAS,"13 bloque_ejecucion: lista_sentencias\n");
       } break;
       case 14:
-# line 176 "main.y"
+# line 179 "main.y"
       {
       	fprintf(salidaAS,"14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA\n");
       } break;
       case 15:
-# line 181 "main.y"
+# line 184 "main.y"
       {
       	fprintf(salidaAS,"15 lista_sentencias: sentencia PUNTO_COMA\n");
       } break;
       case 16:
-# line 187 "main.y"
+# line 190 "main.y"
       {
       	fprintf(salidaAS,"16 sentencia: wprint\n");
       } break;
       case 17:
-# line 192 "main.y"
+# line 195 "main.y"
       {
       	fprintf(salidaAS,"17 sentencia: iteracion\n");
       } break;
       case 18:
-# line 197 "main.y"
+# line 200 "main.y"
       {
       	fprintf(salidaAS,"18 sentencia: decision\n");
       } break;
       case 19:
-# line 202 "main.y"
+# line 205 "main.y"
       {
       	fprintf(salidaAS,"19 sentencia: asignacion\n");
       } break;
       case 20:
-# line 208 "main.y"
+# line 211 "main.y"
       {
       	fprintf(salidaAS,"20 lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA\n");
       } break;
       case 21:
-# line 213 "main.y"
+# line 216 "main.y"
       {
       	fprintf(salidaAS,"21 lista_wprints_cte: wprint_cte PUNTO_COMA\n");
       } break;
       case 22:
-# line 219 "main.y"
+# line 222 "main.y"
       {
       	fprintf(salidaAS,"22 wprint: wprint_cte\n");
       } break;
       case 23:
-# line 224 "main.y"
+# line 227 "main.y"
       {
       	fprintf(salidaAS,"23 wprint: wprint_id\n");
       } break;
       case 24:
-# line 230 "main.y"
+# line 233 "main.y"
       {
       	fprintf(salidaAS,"24 wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA\n");
       } break;
       case 25:
-# line 235 "main.y"
+# line 238 "main.y"
       {
       	fprintf(salidaAS,"25 wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA\n");
       } break;
       case 26:
-# line 241 "main.y"
+# line 244 "main.y"
       {
       	fprintf(salidaAS,"26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA\n");
+      
+	verificarDeclaracion(yypvt[-1]);
       } break;
       case 27:
-# line 247 "main.y"
+# line 252 "main.y"
       {
       	fprintf(salidaAS,"27 iteracion: iteracion_for\n");
       } break;
       case 28:
-# line 252 "main.y"
+# line 257 "main.y"
       {
       	fprintf(salidaAS,"28 iteracion: iteracion_dowhile\n");
       } break;
       case 29:
-# line 258 "main.y"
+# line 263 "main.y"
       {
       	fprintf(salidaAS,"29 iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF\n");
       } break;
       case 30:
-# line 264 "main.y"
+# line 269 "main.y"
       {
       	fprintf(salidaAS,"30 iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA\n");
       } break;
       case 31:
-# line 270 "main.y"
+# line 275 "main.y"
       {
       	fprintf(salidaAS,"31 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI\n");
       } break;
       case 32:
-# line 275 "main.y"
+# line 280 "main.y"
       {
       	fprintf(salidaAS,"32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI\n");
       } break;
       case 33:
-# line 281 "main.y"
+# line 286 "main.y"
       {
       	fprintf(salidaAS,"33 asignacion: ID OP_ASIGNACION asignacion\n");
+      
+	verificarDeclaracion(yypvt[-2]);
+      
+	if(TS[yypvt[-2]].tipo == PR_INT && yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_FLOAT && yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_INT)
+      	{
+      		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_FLOAT)
+      	{
+      		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
+      	}
       } break;
       case 34:
-# line 286 "main.y"
+# line 313 "main.y"
       {
       	fprintf(salidaAS,"34 asignacion: asignacion_num_o_id\n");
       } break;
       case 35:
-# line 291 "main.y"
+# line 318 "main.y"
       {
       	fprintf(salidaAS,"35 asignacion: asignacion_string\n");
       } break;
       case 36:
-# line 297 "main.y"
-      {
-      	fprintf(salidaAS,"36 asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
-      } break;
-      case 37:
-# line 303 "main.y"
-      {
-      	fprintf(salidaAS,"37 asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
-      } break;
-      case 38:
-# line 308 "main.y"
-      {
-      	fprintf(salidaAS,"38 asignacion_string: ID OP_ASIGNACION concatenacion\n");
-      } break;
-      case 39:
-# line 314 "main.y"
-      {
-      	fprintf(salidaAS,"39 concatenacion: ID OP_CONCATENACION ID\n");
-      } break;
-      case 40:
-# line 319 "main.y"
-      {
-      	fprintf(salidaAS,"40 concatenacion: ID OP_CONCATENACION CTE_STRING\n");
-      } break;
-      case 41:
 # line 324 "main.y"
       {
+      	fprintf(salidaAS,"36 asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
+      
+	verificarDeclaracion(yypvt[-2]);
+      
+	if(TS[yypvt[-2]].tipo == PR_STRING)
+      	{
+      		lanzarError("No puede asignar una expresion a un tipo STRING");
+      	}
+      
+	yyval = TS[yypvt[-2]].tipo;
+      } break;
+      case 37:
+# line 339 "main.y"
+      {
+      	fprintf(salidaAS,"37 asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
+      
+	verificarDeclaracion(yypvt[-2]);
+      
+	if(TS[yypvt[-2]].tipo == PR_INT)
+      	{
+      		lanzarError("No puede asignar un tipo STRING a un tipo INT");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_FLOAT)
+      	{
+      		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+      	}
+      
+	yyval = TS[yypvt[-2]].tipo;
+      } break;
+      case 38:
+# line 358 "main.y"
+      {
+      	fprintf(salidaAS,"38 asignacion_string: ID OP_ASIGNACION concatenacion\n");
+      
+	verificarDeclaracion(yypvt[-2]);
+      
+	if(TS[yypvt[-2]].tipo == PR_INT)
+      	{
+      		lanzarError("No puede asignar un tipo STRING a un tipo INT");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_FLOAT)
+      	{
+      		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+      	}
+      
+	yyval = TS[yypvt[-2]].tipo;
+      } break;
+      case 39:
+# line 378 "main.y"
+      {
+      	fprintf(salidaAS,"39 concatenacion: ID OP_CONCATENACION ID\n");
+      
+	verificarDeclaracion(yypvt[-2]);
+      	verificarDeclaracion(yypvt[-0]);
+      
+	if(TS[yypvt[-2]].tipo != PR_STRING || TS[yypvt[-0]].tipo != PR_STRING)
+      	{
+      		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+      	}
+      } break;
+      case 40:
+# line 391 "main.y"
+      {
+      	fprintf(salidaAS,"40 concatenacion: ID OP_CONCATENACION CTE_STRING\n");
+      
+	verificarDeclaracion(yypvt[-2]);
+      
+	if(TS[yypvt[-2]].tipo != PR_STRING)
+      	{
+      		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+      	}
+      } break;
+      case 41:
+# line 403 "main.y"
+      {
       	fprintf(salidaAS,"41 concatenacion: CTE_STRING OP_CONCATENACION ID\n");
+      
+	verificarDeclaracion(yypvt[-0]);
+      
+	if(TS[yypvt[-0]].tipo != PR_STRING)
+      	{
+      		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+      	}
       } break;
       case 42:
-# line 329 "main.y"
+# line 415 "main.y"
       {
       	fprintf(salidaAS,"42 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING\n");
       } break;
       case 43:
-# line 335 "main.y"
+# line 421 "main.y"
       {
       	fprintf(salidaAS,"43 condicion: proposicion\n");
       } break;
       case 44:
-# line 340 "main.y"
+# line 426 "main.y"
       {
       	fprintf(salidaAS,"44 condicion: proposicion PR_AND proposicion\n");
       } break;
       case 45:
-# line 345 "main.y"
+# line 431 "main.y"
       {
       	fprintf(salidaAS,"45 condicion: proposicion PR_OR proposicion\n");
       } break;
       case 46:
-# line 350 "main.y"
+# line 436 "main.y"
       {
       	fprintf(salidaAS,"46 condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA\n");
       } break;
       case 47:
-# line 356 "main.y"
+# line 442 "main.y"
       {
       	fprintf(salidaAS,"47 proposicion: expresion OP_MAYOR expresion\n");
       } break;
       case 48:
-# line 361 "main.y"
+# line 447 "main.y"
       {
       	fprintf(salidaAS,"48 proposicion: expresion OP_MAYOR_IGUAL expresion\n");
       } break;
       case 49:
-# line 366 "main.y"
+# line 452 "main.y"
       {
       	fprintf(salidaAS,"49 proposicion: expresion OP_MENOR expresion\n");
       } break;
       case 50:
-# line 371 "main.y"
+# line 457 "main.y"
       {
       	fprintf(salidaAS,"50 proposicion: expresion OP_MENOR_IGUAL expresion\n");
       } break;
       case 51:
-# line 376 "main.y"
+# line 462 "main.y"
       {
       	fprintf(salidaAS,"51 proposicion: expresion OP_IGUAL expresion\n");
       } break;
       case 52:
-# line 381 "main.y"
+# line 467 "main.y"
       {
       	fprintf(salidaAS,"52 proposicion: expresion OP_DISTINTO expresion\n");
       } break;
       case 53:
-# line 387 "main.y"
+# line 473 "main.y"
       {
       	fprintf(salidaAS,"53 expresion: expresion OP_SUMA termino\n");
       } break;
       case 54:
-# line 392 "main.y"
+# line 478 "main.y"
       {
       	fprintf(salidaAS,"54 expresion: expresion OP_RESTA termino\n");
       } break;
       case 55:
-# line 397 "main.y"
+# line 483 "main.y"
       {
       	fprintf(salidaAS,"55 expresion: termino\n");
       } break;
       case 56:
-# line 403 "main.y"
+# line 489 "main.y"
       {
       	fprintf(salidaAS,"56 termino: termino OP_MULTIPLICACION factor\n");
       } break;
       case 57:
-# line 408 "main.y"
+# line 494 "main.y"
       {
       	fprintf(salidaAS,"57 termino: termino OP_DIVISION factor\n");
       } break;
       case 58:
-# line 413 "main.y"
+# line 499 "main.y"
       {
       	fprintf(salidaAS,"58 termino: factor\n");
       } break;
       case 59:
-# line 419 "main.y"
+# line 505 "main.y"
       {
       	fprintf(salidaAS,"59 factor: ID\n");
+      
+	verificarDeclaracion(yypvt[-0]);
+      
+	if(TS[yypvt[-0]].tipo == PR_STRING)
+      	{
+      		lanzarError("No puede usar tipos STRING en una expresion");
+      	}
       } break;
       case 60:
-# line 424 "main.y"
+# line 517 "main.y"
       {
       	fprintf(salidaAS,"60 factor: CTE_ENTERA\n");
       } break;
       case 61:
-# line 429 "main.y"
+# line 522 "main.y"
       {
       	fprintf(salidaAS,"61 factor: CTE_REAL\n");
       } break;
       case 62:
-# line 434 "main.y"
+# line 527 "main.y"
       {
       	fprintf(salidaAS,"62 factor: PAR_ABRE expresion PAR_CIERRA\n");
       } break;
       case 63:
-# line 439 "main.y"
+# line 532 "main.y"
       {
       	fprintf(salidaAS,"63 factor: filterc\n");
       } break;
       case 64:
-# line 445 "main.y"
+# line 538 "main.y"
       {
       	fprintf(salidaAS,"64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA\n");
       } break;
       case 65:
-# line 451 "main.y"
+# line 544 "main.y"
       {
       	fprintf(salidaAS,"65 condicion_f: proposicion_f\n");
       } break;
       case 66:
-# line 456 "main.y"
+# line 549 "main.y"
       {
       	fprintf(salidaAS,"66 condicion_f: proposicion_f PR_AND proposicion_f\n");
       } break;
       case 67:
-# line 461 "main.y"
+# line 554 "main.y"
       {
       	fprintf(salidaAS,"67 condicion_f: proposicion_f PR_OR proposicion_f\n");
       } break;
       case 68:
-# line 466 "main.y"
+# line 559 "main.y"
       {
       	fprintf(salidaAS,"68 condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA\n");
       } break;
       case 69:
-# line 472 "main.y"
+# line 565 "main.y"
       {
       	fprintf(salidaAS,"69 proposicion_f: GUION_BAJO OP_MAYOR expresion\n");
       } break;
       case 70:
-# line 477 "main.y"
+# line 570 "main.y"
       {
       	fprintf(salidaAS,"70 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion\n");
       } break;
       case 71:
-# line 482 "main.y"
+# line 575 "main.y"
       {
       	fprintf(salidaAS,"71 proposicion_f: GUION_BAJO OP_MENOR expresion\n");
       } break;
       case 72:
-# line 487 "main.y"
+# line 580 "main.y"
       {
       	fprintf(salidaAS,"72 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion\n");
       } break;
       case 73:
-# line 492 "main.y"
+# line 585 "main.y"
       {
       	fprintf(salidaAS,"73 proposicion_f: GUION_BAJO OP_IGUAL expresion\n");
       } break;
       case 74:
-# line 497 "main.y"
+# line 590 "main.y"
       {
       	fprintf(salidaAS,"74 proposicion_f: GUION_BAJO OP_DISTINTO expresion\n");
       } break;
       case 75:
-# line 503 "main.y"
+# line 596 "main.y"
       {
       	fprintf(salidaAS,"75 lista_expresiones: lista_expresiones COMA expresion\n");
       } break;
       case 76:
-# line 508 "main.y"
+# line 601 "main.y"
       {
       	fprintf(salidaAS,"76 lista_expresiones: expresion\n");
       } break;    }

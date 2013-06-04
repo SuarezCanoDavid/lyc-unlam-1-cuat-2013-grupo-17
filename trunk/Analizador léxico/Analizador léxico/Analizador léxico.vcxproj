@@ -82,6 +82,23 @@
     <ClInclude Include="AnalizadorLexico.h" />
     <ClInclude Include="tokens.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Debug\Casos de pruba\fuente1.txt" />
+    <None Include="..\Debug\Casos de pruba\fuente11.txt" />
+    <None Include="..\Debug\Casos de pruba\fuente2.txt" />
+    <None Include="..\Debug\Casos de pruba\fuente3.txt" />
+    <None Include="..\Debug\Casos de pruba\fuente4.txt" />
+    <None Include="..\Debug\Casos de pruba\fuente5.txt" />
+    <None Include="..\Debug\Casos de pruba\if_anidados.txt" />
+    <None Include="..\Debug\Casos de pruba\programa_complejo.txt" />
+    <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt" />
+    <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt" />
+    <None Include="..\Debug\reglas_aplicadas.txt" />
+    <None Include="..\Debug\Tabla_de_símbolos.txt" />
+    <None Include="..\Debug\tokens_identificados.txt" />
+    <None Include="Lista de reglas.txt" />
+    <None Include="main.y" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
