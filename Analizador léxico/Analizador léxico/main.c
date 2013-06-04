@@ -67,7 +67,7 @@ extern int lineaActual;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 604 "main.y"
+# line 730 "main.y"
 
 
 
@@ -742,28 +742,47 @@ yyparse()
 # line 313 "main.y"
       {
       	fprintf(salidaAS,"34 asignacion: asignacion_num_o_id\n");
+      
+	yyval = yypvt[-0];
       } break;
       case 35:
-# line 318 "main.y"
+# line 320 "main.y"
       {
       	fprintf(salidaAS,"35 asignacion: asignacion_string\n");
+      
+	yyval = yypvt[-0];
       } break;
       case 36:
-# line 324 "main.y"
+# line 328 "main.y"
       {
       	fprintf(salidaAS,"36 asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
       
 	verificarDeclaracion(yypvt[-2]);
       
-	if(TS[yypvt[-2]].tipo == PR_STRING)
+	if(TS[yypvt[-2]].tipo == PR_INT && yypvt[-0] == PR_STRING)
       	{
-      		lanzarError("No puede asignar una expresion a un tipo STRING");
+      		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_FLOAT && yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_INT)
+      	{
+      		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
+      	}
+      
+	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_FLOAT)
+      	{
+      		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
       	}
       
 	yyval = TS[yypvt[-2]].tipo;
       } break;
       case 37:
-# line 339 "main.y"
+# line 358 "main.y"
       {
       	fprintf(salidaAS,"37 asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
       
@@ -782,7 +801,7 @@ yyparse()
 	yyval = TS[yypvt[-2]].tipo;
       } break;
       case 38:
-# line 358 "main.y"
+# line 377 "main.y"
       {
       	fprintf(salidaAS,"38 asignacion_string: ID OP_ASIGNACION concatenacion\n");
       
@@ -801,7 +820,7 @@ yyparse()
 	yyval = TS[yypvt[-2]].tipo;
       } break;
       case 39:
-# line 378 "main.y"
+# line 397 "main.y"
       {
       	fprintf(salidaAS,"39 concatenacion: ID OP_CONCATENACION ID\n");
       
@@ -812,9 +831,11 @@ yyparse()
       	{
       		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
       	}
+      
+	yyval = PR_STRING;
       } break;
       case 40:
-# line 391 "main.y"
+# line 412 "main.y"
       {
       	fprintf(salidaAS,"40 concatenacion: ID OP_CONCATENACION CTE_STRING\n");
       
@@ -824,9 +845,11 @@ yyparse()
       	{
       		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
       	}
+      
+	yyval = PR_STRING;
       } break;
       case 41:
-# line 403 "main.y"
+# line 426 "main.y"
       {
       	fprintf(salidaAS,"41 concatenacion: CTE_STRING OP_CONCATENACION ID\n");
       
@@ -836,186 +859,289 @@ yyparse()
       	{
       		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
       	}
+      
+	yyval = PR_STRING;
       } break;
       case 42:
-# line 415 "main.y"
+# line 440 "main.y"
       {
       	fprintf(salidaAS,"42 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING\n");
+      
+	yyval = PR_STRING;
       } break;
       case 43:
-# line 421 "main.y"
+# line 448 "main.y"
       {
       	fprintf(salidaAS,"43 condicion: proposicion\n");
       } break;
       case 44:
-# line 426 "main.y"
+# line 453 "main.y"
       {
       	fprintf(salidaAS,"44 condicion: proposicion PR_AND proposicion\n");
       } break;
       case 45:
-# line 431 "main.y"
+# line 458 "main.y"
       {
       	fprintf(salidaAS,"45 condicion: proposicion PR_OR proposicion\n");
       } break;
       case 46:
-# line 436 "main.y"
+# line 463 "main.y"
       {
       	fprintf(salidaAS,"46 condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA\n");
       } break;
       case 47:
-# line 442 "main.y"
+# line 469 "main.y"
       {
       	fprintf(salidaAS,"47 proposicion: expresion OP_MAYOR expresion\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 48:
-# line 447 "main.y"
+# line 479 "main.y"
       {
       	fprintf(salidaAS,"48 proposicion: expresion OP_MAYOR_IGUAL expresion\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 49:
-# line 452 "main.y"
-      {
-      	fprintf(salidaAS,"49 proposicion: expresion OP_MENOR expresion\n");
-      } break;
-      case 50:
-# line 457 "main.y"
-      {
-      	fprintf(salidaAS,"50 proposicion: expresion OP_MENOR_IGUAL expresion\n");
-      } break;
-      case 51:
-# line 462 "main.y"
-      {
-      	fprintf(salidaAS,"51 proposicion: expresion OP_IGUAL expresion\n");
-      } break;
-      case 52:
-# line 467 "main.y"
-      {
-      	fprintf(salidaAS,"52 proposicion: expresion OP_DISTINTO expresion\n");
-      } break;
-      case 53:
-# line 473 "main.y"
-      {
-      	fprintf(salidaAS,"53 expresion: expresion OP_SUMA termino\n");
-      } break;
-      case 54:
-# line 478 "main.y"
-      {
-      	fprintf(salidaAS,"54 expresion: expresion OP_RESTA termino\n");
-      } break;
-      case 55:
-# line 483 "main.y"
-      {
-      	fprintf(salidaAS,"55 expresion: termino\n");
-      } break;
-      case 56:
 # line 489 "main.y"
       {
-      	fprintf(salidaAS,"56 termino: termino OP_MULTIPLICACION factor\n");
+      	fprintf(salidaAS,"49 proposicion: expresion OP_MENOR expresion\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
-      case 57:
-# line 494 "main.y"
-      {
-      	fprintf(salidaAS,"57 termino: termino OP_DIVISION factor\n");
-      } break;
-      case 58:
+      case 50:
 # line 499 "main.y"
       {
+      	fprintf(salidaAS,"50 proposicion: expresion OP_MENOR_IGUAL expresion\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
+      } break;
+      case 51:
+# line 509 "main.y"
+      {
+      	fprintf(salidaAS,"51 proposicion: expresion OP_IGUAL expresion\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
+      } break;
+      case 52:
+# line 519 "main.y"
+      {
+      	fprintf(salidaAS,"52 proposicion: expresion OP_DISTINTO expresion\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
+      } break;
+      case 53:
+# line 530 "main.y"
+      {
+      	fprintf(salidaAS,"53 expresion: expresion OP_SUMA termino\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una expresion");
+      	}
+      
+	yyval = yypvt[-2];
+      } break;
+      case 54:
+# line 542 "main.y"
+      {
+      	fprintf(salidaAS,"54 expresion: expresion OP_RESTA termino\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una expresion");
+      	}
+      
+	yyval = yypvt[-2];
+      } break;
+      case 55:
+# line 554 "main.y"
+      {
+      	fprintf(salidaAS,"55 expresion: termino\n");
+      
+	yyval = yypvt[-0];
+      } break;
+      case 56:
+# line 562 "main.y"
+      {
+      	fprintf(salidaAS,"56 termino: termino OP_MULTIPLICACION factor\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una expresion");
+      	}
+      
+	yyval = yypvt[-2];
+      } break;
+      case 57:
+# line 574 "main.y"
+      {
+      	fprintf(salidaAS,"57 termino: termino OP_DIVISION factor\n");
+      
+	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una expresion");
+      	}
+      
+	yyval = yypvt[-2];
+      } break;
+      case 58:
+# line 586 "main.y"
+      {
       	fprintf(salidaAS,"58 termino: factor\n");
+      
+	yyval = yypvt[-0];
       } break;
       case 59:
-# line 505 "main.y"
+# line 594 "main.y"
       {
       	fprintf(salidaAS,"59 factor: ID\n");
       
 	verificarDeclaracion(yypvt[-0]);
       
-	if(TS[yypvt[-0]].tipo == PR_STRING)
-      	{
-      		lanzarError("No puede usar tipos STRING en una expresion");
-      	}
+	yyval = TS[yypvt[-0]].tipo;
       } break;
       case 60:
-# line 517 "main.y"
+# line 603 "main.y"
       {
       	fprintf(salidaAS,"60 factor: CTE_ENTERA\n");
+      
+	yyval = PR_INT;
       } break;
       case 61:
-# line 522 "main.y"
+# line 610 "main.y"
       {
       	fprintf(salidaAS,"61 factor: CTE_REAL\n");
+      
+	yyval = PR_FLOAT;
       } break;
       case 62:
-# line 527 "main.y"
+# line 617 "main.y"
       {
       	fprintf(salidaAS,"62 factor: PAR_ABRE expresion PAR_CIERRA\n");
+      
+	yyval = yypvt[-1];
       } break;
       case 63:
-# line 532 "main.y"
+# line 624 "main.y"
       {
       	fprintf(salidaAS,"63 factor: filterc\n");
+      
+	yyval = yypvt[-0];
       } break;
       case 64:
-# line 538 "main.y"
+# line 632 "main.y"
       {
       	fprintf(salidaAS,"64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA\n");
+      
+	yyval = PR_INT;
       } break;
       case 65:
-# line 544 "main.y"
+# line 640 "main.y"
       {
       	fprintf(salidaAS,"65 condicion_f: proposicion_f\n");
       } break;
       case 66:
-# line 549 "main.y"
+# line 645 "main.y"
       {
       	fprintf(salidaAS,"66 condicion_f: proposicion_f PR_AND proposicion_f\n");
       } break;
       case 67:
-# line 554 "main.y"
+# line 650 "main.y"
       {
       	fprintf(salidaAS,"67 condicion_f: proposicion_f PR_OR proposicion_f\n");
       } break;
       case 68:
-# line 559 "main.y"
+# line 655 "main.y"
       {
       	fprintf(salidaAS,"68 condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA\n");
       } break;
       case 69:
-# line 565 "main.y"
+# line 661 "main.y"
       {
       	fprintf(salidaAS,"69 proposicion_f: GUION_BAJO OP_MAYOR expresion\n");
+      
+	if(yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 70:
-# line 570 "main.y"
+# line 671 "main.y"
       {
       	fprintf(salidaAS,"70 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion\n");
+      
+	if(yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 71:
-# line 575 "main.y"
+# line 681 "main.y"
       {
       	fprintf(salidaAS,"71 proposicion_f: GUION_BAJO OP_MENOR expresion\n");
+      
+	if(yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 72:
-# line 580 "main.y"
+# line 691 "main.y"
       {
       	fprintf(salidaAS,"72 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion\n");
+      
+	if(yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 73:
-# line 585 "main.y"
+# line 701 "main.y"
       {
       	fprintf(salidaAS,"73 proposicion_f: GUION_BAJO OP_IGUAL expresion\n");
+      
+	if(yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 74:
-# line 590 "main.y"
+# line 711 "main.y"
       {
       	fprintf(salidaAS,"74 proposicion_f: GUION_BAJO OP_DISTINTO expresion\n");
+      
+	if(yypvt[-0] == PR_STRING)
+      	{
+      		lanzarError("No se puede usar un tipo STRING en una comparacion");
+      	}
       } break;
       case 75:
-# line 596 "main.y"
+# line 722 "main.y"
       {
       	fprintf(salidaAS,"75 lista_expresiones: lista_expresiones COMA expresion\n");
       } break;
       case 76:
-# line 601 "main.y"
+# line 727 "main.y"
       {
       	fprintf(salidaAS,"76 lista_expresiones: expresion\n");
       } break;    }
