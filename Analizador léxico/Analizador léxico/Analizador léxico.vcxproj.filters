@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de recursos\Casos de prueba">
+      <UniqueIdentifier>{d10bc2c2-b11f-42e8-8c05-a133cc63e556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Archivos de salida">
+      <UniqueIdentifier>{cd6ede5d-7aec-4ebe-8c47-71f88ad3a205}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnalizadorLexico.c">
@@ -29,5 +35,52 @@
     <ClInclude Include="tokens.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="main.y">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente1.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente11.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente2.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente3.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente4.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente5.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\if_anidados.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\programa_complejo.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\reglas_aplicadas.txt">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="..\Debug\Tabla_de_símbolos.txt">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="..\Debug\tokens_identificados.txt">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="Lista de reglas.txt">
+      <Filter>Archivos de recursos</Filter>
+    </None>
   </ItemGroup>
 </Project>

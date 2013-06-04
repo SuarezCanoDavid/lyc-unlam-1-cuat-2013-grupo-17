@@ -47,6 +47,9 @@ manejadorDeErrores error[CANT_ERRORES];
 
 char tipoTokenSalida[LONG_TIPO_TOKEN];
 
+/*Numero de linea actual*/
+int lineaActual = 1;
+
 void inicializarAL(FILE *fuente)
 {
 	int i;
@@ -67,7 +70,6 @@ void inicializarAL(FILE *fuente)
 		TS[i].tipo = 0;
 		TS[i].valor[0] = '\0';
 		TS[i].longitud = 0;
-		TS[i].descartada = FALSE;
 	}
 
 	error[ERROR_CTE_STRING_ABIERTA].estado = FALSE;
@@ -375,12 +377,16 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 					{
 						/*Guardo el valor del token*/
 						strcpy_s(TS[i].valor,MAX_LONG_TOKEN,tokenActual->token);
+
+						if(tipoDeToken == CTE_ENTERA)
+						{
+							strcat_s(TS[i].valor,MAX_LONG_TOKEN,".0");
+						}
 					}
 				}
-				else /*Si es ID la marco como descartada. Luego el AS cambiara esto*/
-				{
-					TS[i].descartada = TRUE;
-				}
+
+				/*Vuelvo a limpiar el nombre en la TS*/
+				TS[i].nombre[0] = '\0';
 
 				/*Guardo el nombre del token*/
 				strcat_s(TS[i].nombre,MAX_LONG_TOKEN+1,nombreAux);
@@ -411,11 +417,8 @@ void imprimirTS()
 
 	for(i = 0; i < cantTokensEnTS; ++i)
 	{
-		if(TS[i].descartada == FALSE)
-		{
-			fprintf(archivoDeTS,"%-50s%-15s%-50s%-10d\n",
-				TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
-		}
+		fprintf(archivoDeTS,"%-50s%-15s%-50s%-10d\n",
+			TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
 	}
 
 	fclose(archivoDeTS);
@@ -873,6 +876,10 @@ void finalizarOpDistinto(tokenAAnalizar *tokenActual, char caracter)
 /*Espacios vacíos (ENTER, TAB, ESPACIO)*/ 
 void ignorarEspacios(tokenAAnalizar *tokenActual, char caracter)
 {
+	if(caracter == '\n')
+	{
+		++lineaActual;
+	}
 }
 
 

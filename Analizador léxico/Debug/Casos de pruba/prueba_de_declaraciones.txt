@@ -4,4 +4,11 @@ VAR
 	[contador3,mensaje3,pi3]:[int,string,float]
 ENDVAR
 
-WPRINT("Prueba de declaraciones");
+mensaje1 = "hola";
+mensaje2 = " mundo";
+
+mensaje3 = mensaje1 ++ mensaje2;
+
+wprint(mensaje3);
+
+pi1 = contador2;

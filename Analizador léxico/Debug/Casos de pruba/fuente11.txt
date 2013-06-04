@@ -1,20 +1,7 @@
-Ñ 
 VAR
-	[contador,mensaje,resultado]:[int,string,int]
+	[a,b,c]:[int,int]
+	[d,e,f]:[int,string,float,string]
+	[h,i]:[float,int]
 ENDVAR
 
-mensaje = "Una iteracion Ñ ";
-
--/Se escribe 10 veces el siguiente mensaje/-
-FOR(contador = 0; contador < 10; contador = contador + 1)
-	WPRINT(mensaje);
-ROF;
-
--/Se prueba el filterc/-
-resultado = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]);
-
-wprint(resultado);
-
-WPRINT(153.91);
-
--/FIN DEL PROGRAMA/-
+wprint(a);
