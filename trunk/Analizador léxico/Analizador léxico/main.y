@@ -312,11 +312,15 @@ asignacion: ID OP_ASIGNACION asignacion
 asignacion: asignacion_num_o_id
 {
 	fprintf(salidaAS,"34 asignacion: asignacion_num_o_id\n");
+
+	$$ = $1;
 };
 
 asignacion: asignacion_string
 {
 	fprintf(salidaAS,"35 asignacion: asignacion_string\n");
+
+	$$ = $1;
 };
 
 
@@ -326,9 +330,24 @@ asignacion_num_o_id: ID OP_ASIGNACION expresion
 
 	verificarDeclaracion($1);
 
-	if(TS[$1].tipo == PR_STRING)
+	if(TS[$1].tipo == PR_INT && $3 == PR_STRING)
 	{
-		lanzarError("No puede asignar una expresion a un tipo STRING");
+		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
+	}
+
+	if(TS[$1].tipo == PR_FLOAT && $3 == PR_STRING)
+	{
+		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
+	}
+
+	if(TS[$1].tipo == PR_STRING && $3 == PR_INT)
+	{
+		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
+	}
+
+	if(TS[$1].tipo == PR_STRING && $3 == PR_FLOAT)
+	{
+		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
 	}
 
 	$$ = TS[$1].tipo;
@@ -385,6 +404,8 @@ concatenacion: ID OP_CONCATENACION ID
 	{
 		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
 	}
+
+	$$ = PR_STRING;
 };
 
 concatenacion: ID OP_CONCATENACION CTE_STRING
@@ -397,6 +418,8 @@ concatenacion: ID OP_CONCATENACION CTE_STRING
 	{
 		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
 	}
+
+	$$ = PR_STRING;
 };
 
 concatenacion: CTE_STRING OP_CONCATENACION ID
@@ -409,11 +432,15 @@ concatenacion: CTE_STRING OP_CONCATENACION ID
 	{
 		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
 	}
+
+	$$ = PR_STRING;
 };
 
 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING
 {
 	fprintf(salidaAS,"42 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING\n");
+
+	$$ = PR_STRING;
 };
 
 
@@ -441,63 +468,125 @@ condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA
 proposicion: expresion OP_MAYOR expresion
 {
 	fprintf(salidaAS,"47 proposicion: expresion OP_MAYOR expresion\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion: expresion OP_MAYOR_IGUAL expresion
 {
 	fprintf(salidaAS,"48 proposicion: expresion OP_MAYOR_IGUAL expresion\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion: expresion OP_MENOR expresion
 {
 	fprintf(salidaAS,"49 proposicion: expresion OP_MENOR expresion\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion: expresion OP_MENOR_IGUAL expresion
 {
 	fprintf(salidaAS,"50 proposicion: expresion OP_MENOR_IGUAL expresion\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion: expresion OP_IGUAL expresion
 {
 	fprintf(salidaAS,"51 proposicion: expresion OP_IGUAL expresion\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion: expresion OP_DISTINTO expresion
 {
 	fprintf(salidaAS,"52 proposicion: expresion OP_DISTINTO expresion\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 
 expresion: expresion OP_SUMA termino
 {
 	fprintf(salidaAS,"53 expresion: expresion OP_SUMA termino\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una expresion");
+	}
+
+	$$ = $1;
 };
 
 expresion: expresion OP_RESTA termino
 {
 	fprintf(salidaAS,"54 expresion: expresion OP_RESTA termino\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una expresion");
+	}
+
+	$$ = $1;
 };
 
 expresion: termino
 {
 	fprintf(salidaAS,"55 expresion: termino\n");
+
+	$$ = $1;
 };
 
 
 termino: termino OP_MULTIPLICACION factor
 {
 	fprintf(salidaAS,"56 termino: termino OP_MULTIPLICACION factor\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una expresion");
+	}
+
+	$$ = $1;
 };
 
 termino: termino OP_DIVISION factor
 {
 	fprintf(salidaAS,"57 termino: termino OP_DIVISION factor\n");
+
+	if($1 == PR_STRING || $3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una expresion");
+	}
+
+	$$ = $1;
 };
 
 termino: factor
 {
 	fprintf(salidaAS,"58 termino: factor\n");
+
+	$$ = $1;
 };
 
 
@@ -507,36 +596,43 @@ factor: ID
 
 	verificarDeclaracion($1);
 
-	if(TS[$1].tipo == PR_STRING)
-	{
-		lanzarError("No puede usar tipos STRING en una expresion");
-	}
+	$$ = TS[$1].tipo;
 };
 
 factor: CTE_ENTERA
 {
 	fprintf(salidaAS,"60 factor: CTE_ENTERA\n");
+
+	$$ = PR_INT;
 };
 
 factor: CTE_REAL
 {
 	fprintf(salidaAS,"61 factor: CTE_REAL\n");
+
+	$$ = PR_FLOAT;
 };
 
 factor: PAR_ABRE expresion PAR_CIERRA
 {
 	fprintf(salidaAS,"62 factor: PAR_ABRE expresion PAR_CIERRA\n");
+
+	$$ = $2;
 };
 
 factor: filterc
 {
 	fprintf(salidaAS,"63 factor: filterc\n");
+
+	$$ = $1;
 };
 
 
 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA
 {
 	fprintf(salidaAS,"64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA\n");
+
+	$$ = PR_INT;
 };
 
 
@@ -564,31 +660,61 @@ condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA
 proposicion_f: GUION_BAJO OP_MAYOR expresion
 {
 	fprintf(salidaAS,"69 proposicion_f: GUION_BAJO OP_MAYOR expresion\n");
+
+	if($3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion
 {
 	fprintf(salidaAS,"70 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion\n");
+
+	if($3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion_f: GUION_BAJO OP_MENOR expresion
 {
 	fprintf(salidaAS,"71 proposicion_f: GUION_BAJO OP_MENOR expresion\n");
+
+	if($3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion
 {
 	fprintf(salidaAS,"72 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion\n");
+
+	if($3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion_f: GUION_BAJO OP_IGUAL expresion
 {
 	fprintf(salidaAS,"73 proposicion_f: GUION_BAJO OP_IGUAL expresion\n");
+
+	if($3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 proposicion_f: GUION_BAJO OP_DISTINTO expresion
 {
 	fprintf(salidaAS,"74 proposicion_f: GUION_BAJO OP_DISTINTO expresion\n");
+
+	if($3 == PR_STRING)
+	{
+		lanzarError("No se puede usar un tipo STRING en una comparacion");
+	}
 };
 
 

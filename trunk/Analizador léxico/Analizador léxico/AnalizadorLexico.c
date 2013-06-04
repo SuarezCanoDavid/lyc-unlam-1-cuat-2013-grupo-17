@@ -404,7 +404,7 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 	}
 
 	/*Guardo el token identificado, su tipo e yylval en el archivo de tokens*/
-	fprintf(archivoDeTokens,"TOKEN Nº%2d= %-50sTIPO_TOKEN= %-20sYYLVAL= %d\n",
+	fprintf(archivoDeTokens,"TOKEN Nº%4d= %-50sTIPO_TOKEN= %-20sYYLVAL= %d\n",
 		++cantTokensIdentificados,tokenActual->token,identificarTipoToken(tipoToken),yylval);
 }
 
@@ -656,6 +656,11 @@ void finalizarOpResta(tokenAAnalizar *tokenActual, char caracter)
 void continuarComentario(tokenAAnalizar *tokenActual, char caracter)
 {
 	error[ERROR_COMENTARIO_ABIERTO].estado = TRUE;
+
+	if(caracter == '\n')
+	{
+		++lineaActual;
+	}
 }
 
 void finalizarComentario(tokenAAnalizar *tokenActual, char caracter)

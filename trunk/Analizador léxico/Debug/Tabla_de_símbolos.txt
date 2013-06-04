@@ -1,6 +1,26 @@
-a                                                 PR_INT                                                           0         
-b                                                 PR_INT                                                           0         
-c                                                 PR_INT                                                           0         
-_1                                                CTE_ENTERA     1.0                                               0         
+contador1                                         PR_INT                                                           0         
+mensaje1                                          PR_STRING                                                        0         
+contador2                                         PR_INT                                                           0         
+mensaje2                                          PR_STRING                                                        0         
+pi2                                               PR_FLOAT                                                         0         
+contador3                                         PR_INT                                                           0         
+mensaje3                                          PR_STRING                                                        0         
+pi3                                               PR_FLOAT                                                         0         
+_"hola "                                          CTE_STRING     hola                                              5         
+_"mundo"                                          CTE_STRING     mundo                                             5         
+_"hola"                                           CTE_STRING     hola                                              4         
+_0                                                CTE_ENTERA     0.0                                               0         
+_10                                               CTE_ENTERA     10.0                                              0         
+_11                                               CTE_ENTERA     11.0                                              0         
+_3.14                                             CTE_REAL       3.14                                              0         
+_5                                                CTE_ENTERA     5.0                                               0         
+_4                                                CTE_ENTERA     4.0                                               0         
+_2.64                                             CTE_REAL       2.64                                              0         
 _2                                                CTE_ENTERA     2.0                                               0         
+_1                                                CTE_ENTERA     1.0                                               0         
+_100                                              CTE_ENTERA     100.0                                             0         
+_15                                               CTE_ENTERA     15.0                                              0         
+_6                                                CTE_ENTERA     6.0                                               0         
 _3                                                CTE_ENTERA     3.0                                               0         
+_999999.99999                                     CTE_REAL       999999.99999                                      0         
+_0.314                                            CTE_REAL       0.314                                             0         
