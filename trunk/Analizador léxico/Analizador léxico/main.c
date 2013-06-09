@@ -67,7 +67,7 @@ extern int lineaActual;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 730 "main.y"
+# line 825 "main.y"
 
 
 
@@ -170,165 +170,243 @@ int yyexca[] = {
   -1, 1,
   0, -1,
   -2, 0,
+  -1, 40,
+  280, 75,
+  -2, 70,
+  -1, 42,
+  279, 67,
+  280, 74,
+  -2, 106,
+  -1, 96,
+  261, 15,
+  -2, 18,
+  -1, 119,
+  274, 129,
+  275, 132,
+  276, 135,
+  277, 138,
+  278, 141,
+  -2, 126,
+  -1, 218,
+  261, 19,
+  -2, 22,
   0,
 };
 
-#define YYNPROD 77
-#define YYLAST 345
+#define YYNPROD 147
+#define YYLAST 402
 
 int yyact[] = {
-     139,     140,     141,      54,      39,      19,     112,       6,
-       6,     125,     126,      51,      86,      52,      53,       4,
-      71,      72,      33,      19,      19,      18,     121,      23,
-      93,     122,      22,      41,      24,      19,      33,      87,
-     112,      56,     111,      18,     119,      23,      47,      38,
-      22,      19,      24,      64,     108,      18,      92,      23,
-     169,      19,      22,     134,      24,      82,      83,      80,
-      81,      18,     157,      23,      80,      81,      22,      89,
-      24,      18,      54,      23,     115,     116,      22,      54,
-      24,      44,      61,      59,      52,      53,      42,      51,
-      43,      52,      53,     124,      80,      81,     113,     114,
-      74,      75,      76,      77,      78,      79,     164,     165,
-      56,      62,      42,      37,      43,      56,     128,     129,
-     130,     131,     132,     133,     162,     156,     155,     156,
-      91,      67,      66,      67,     143,      31,      28,     136,
-     120,      27,     167,     161,     160,     135,     123,      88,
-      70,      69,      68,     127,      90,      85,      73,      35,
-      34,      32,      29,      48,      45,      13,       8,     138,
-      50,      40,     158,     137,      14,       5,       9,     110,
-      25,     109,       3,      55,      60,      21,      20,      30,
-      17,      16,      15,      12,      11,      10,      26,      36,
-       3,       7,       2,       1,       0,      58,      14,      57,
-       0,      63,       0,      70,       0,       9,       0,       0,
-       0,      65,       0,      30,       0,       0,       0,       0,
-       0,       0,      84,       0,       0,       0,      54,      35,
-       0,       0,       0,       0,       0,     134,       0,       0,
-       0,       0,       0,      40,       0,      94,      98,      99,
-     100,     101,     102,     103,       0,       0,       0,       0,
-      74,       0,       0,     106,     107,      49,     117,     118,
-       0,       0,       0,       0,       0,     122,      75,      76,
-      77,      78,      79,     128,       0,      30,      46,       0,
-       0,       0,       0,      83,      50,       0,       0,       0,
-       0,       0,      90,      45,       0,       0,       0,       0,
-       0,     142,       0,       0,     147,     148,     149,     150,
-     151,     152,       0,       0,     153,     144,     145,     146,
-       0,       0,       0,     159,     154,     161,       0,     129,
-     130,     131,     132,     133,     143,      30,       0,      13,
-     126,     127,     110,     165,     163,       0,     137,       0,
-     166,     168,       0,     138,      48,       8,     104,     105,
-       0,       0,       0,       0,       0,      30,      95,      96,
-      97,       0,       0,       0,       0,       0,       0,       0,
-       0,       0,       0,       0,       0,       0,      81,      49,
-       0,       0,       0,       0,       0,       0,      72,      73,
-      46,
+     219,     220,     221,      48,      77,      25,     119,       7,
+       7,     136,     137,      88,      68,      46,      47,       4,
+     123,     124,      75,      35,     168,      24,      36,      22,
+      25,     169,       7,     167,      23,      92,     166,     165,
+      25,      50,     118,     164,      25,      25,     111,      76,
+      24,      96,      22,     237,      29,       7,      30,      23,
+      24,      97,      22,     119,      24,       7,      22,      23,
+      48,       7,     182,      23,      48,      66,      67,     158,
+      42,      40,      46,      47,      88,     195,      46,      47,
+     105,      64,      65,      64,      65,     126,     127,     128,
+     129,     130,     131,      64,      65,     232,      50,     120,
+      51,      29,      50,      30,     103,     104,     222,     223,
+     163,      62,      56,      33,      28,     135,     134,     231,
+     226,     132,     114,     210,     199,     185,      58,     233,
+     224,     214,     209,     196,     122,      90,      80,      79,
+     150,     121,      89,      74,      72,      61,     112,      10,
+     217,      95,      14,      45,      44,     229,     194,     117,
+     144,      32,       9,      21,       6,     109,      43,       6,
+      15,       5,      21,      39,      26,     193,       3,      37,
+     143,     192,     142,     191,     141,     190,     140,     189,
+      10,     139,     188,     138,     162,     161,      69,     228,
+      91,     212,     200,      15,     160,     116,     106,      70,
+      49,      69,      85,      84,      83,      82,     156,     155,
+     154,     153,     152,     151,     175,     125,     149,     148,
+      73,      86,      41,      55,      87,      38,      20,      63,
+     147,      32,      81,     110,      93,      54,      34,      19,
+     146,      32,     108,      53,      63,     230,     151,     208,
+     100,     101,     145,     102,     147,      91,     107,      52,
+     113,      98,      99,      18,      17,      31,      71,      60,
+      85,      45,      59,      44,      16,      13,     208,      12,
+      11,      83,      43,     159,     236,     227,     218,     159,
+     115,     211,     183,     133,      78,     216,     198,     157,
+      94,      57,      27,       3,       8,       2,       1,       0,
+       0,       0,       0,       0,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,       0,     176,     177,
+     178,     179,     180,     181,       0,       0,     172,     170,
+     171,     184,       0,       0,       0,       0,       0,       0,
+       0,     186,     187,       0,      32,       0,       0,     152,
+     153,     154,     155,     156,     189,       0,       0,     230,
+     146,     109,      95,       0,     202,     203,     204,     205,
+     206,     207,     162,     188,     201,       0,       0,     213,
+       0,     190,     191,     192,     193,     194,     200,       0,
+       0,     117,       0,     215,     229,       0,       0,       0,
+       0,     225,      14,       0,       0,       0,       0,       0,
+     173,     174,     236,       0,     234,       0,       0,       0,
+       0,     112,       0,      32,       0,     238,       0,     217,
+       0,     235,       0,       0,       0,       0,       9,       0,
+       0,     149,     175,     197,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,       0,       0,       0,
+       0,     110,
 };
 
 int yypact[] = {
-    -278,   -1000,    -216,    -279,    -138,    -144,    -119,   -1000,
-    -216,    -145,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,
-   -1000,   -1000,    -120,    -261,   -1000,   -1000,    -121,    -122,
-    -216,    -163,    -255,    -238,   -1000,    -188,    -189,   -1000,
-    -254,    -191,    -168,    -245,    -246,   -1000,   -1000,    -238,
-    -146,   -1000,    -128,    -129,   -1000,    -130,    -274,    -123,
-    -185,    -218,   -1000,   -1000,   -1000,   -1000,    -186,   -1000,
-    -124,   -1000,    -209,    -268,   -1000,    -249,    -131,    -199,
-    -125,    -148,    -217,    -241,   -1000,   -1000,    -216,    -186,
-    -186,    -186,    -186,    -186,    -186,    -186,    -186,    -186,
-    -186,    -186,    -186,    -186,    -214,    -258,    -179,    -197,
-   -1000,    -254,    -254,    -227,    -139,   -1000,    -260,   -1000,
-   -1000,    -132,    -209,    -209,    -209,    -209,    -209,    -209,
-    -218,    -218,   -1000,   -1000,   -1000,    -178,    -281,    -126,
-    -171,   -1000,   -1000,   -1000,   -1000,    -211,    -133,    -140,
-    -295,   -1000,    -216,   -1000,    -143,    -232,    -232,    -232,
-    -186,    -186,    -186,    -186,    -186,    -186,    -245,   -1000,
-    -295,    -150,   -1000,   -1000,   -1000,   -1000,    -224,    -186,
-   -1000,   -1000,    -134,    -209,    -209,    -209,    -209,    -209,
-    -209,    -135,    -152,   -1000,    -295,   -1000,    -166,    -209,
-   -1000,    -216,   -1000,   -1000,    -136,    -186,    -236,   -1000,
-    -209,   -1000,
+    -278,   -1000,    -229,    -279,   -1000,    -162,    -222,   -1000,
+   -1000,    -229,    -163,   -1000,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,   -1000,    -263,    -201,    -177,   -1000,   -1000,
+   -1000,   -1000,    -164,    -149,   -1000,   -1000,   -1000,    -132,
+    -165,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,    -194,
+   -1000,   -1000,   -1000,    -210,    -268,   -1000,   -1000,   -1000,
+   -1000,   -1000,   -1000,   -1000,    -133,    -229,    -134,    -261,
+   -1000,    -255,   -1000,    -139,    -140,   -1000,   -1000,    -229,
+   -1000,   -1000,   -1000,   -1000,   -1000,    -197,    -135,    -141,
+   -1000,    -260,   -1000,   -1000,   -1000,   -1000,    -224,   -1000,
+   -1000,    -233,    -197,    -197,    -197,    -197,    -173,    -186,
+   -1000,   -1000,   -1000,    -228,   -1000,    -254,    -224,    -154,
+   -1000,   -1000,    -210,    -210,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,    -258,    -175,    -136,    -142,    -274,   -1000,
+    -196,    -155,   -1000,    -159,    -160,    -281,   -1000,   -1000,
+   -1000,   -1000,   -1000,   -1000,   -1000,    -137,   -1000,   -1000,
+   -1000,   -1000,   -1000,   -1000,   -1000,    -200,   -1000,   -1000,
+   -1000,   -1000,    -161,    -238,    -243,    -245,    -249,    -257,
+    -253,    -254,    -254,    -229,    -197,    -197,   -1000,    -197,
+    -197,    -197,    -197,    -197,    -197,    -205,   -1000,    -224,
+    -150,    -213,    -213,   -1000,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,    -193,    -143,    -229,   -1000,   -1000,    -197,
+    -194,    -194,    -194,    -194,    -194,    -194,   -1000,    -151,
+   -1000,   -1000,   -1000,   -1000,    -213,    -197,    -197,    -197,
+    -197,    -197,    -197,   -1000,   -1000,    -144,    -152,   -1000,
+    -197,    -145,    -194,    -194,    -194,    -194,    -194,    -194,
+    -228,   -1000,   -1000,    -295,    -166,    -194,   -1000,    -146,
+    -295,    -156,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,
+   -1000,    -157,   -1000,    -176,    -147,    -197,    -229,   -1000,
+   -1000,   -1000,    -194,    -241,    -295,   -1000,   -1000,
 };
 
 int yypgo[] = {
-       0,     171,     170,     169,     168,     166,     145,     147,
-     143,     142,     150,     165,     164,     163,     141,     148,
-     162,     161,     160,     140,     158,     157,     139,     156,
-     246,     229,     144,     155,     153,     146,     151,
+       0,     262,     261,     260,     259,     258,     257,     256,
+     129,     255,     254,     253,     128,     252,     251,     250,
+     249,     248,     247,     246,     245,     244,     138,     127,
+     240,     239,     237,     130,     144,     236,     139,     234,
+     231,     230,     229,     228,     227,     223,     221,     218,
+     141,     215,     213,     211,     210,     208,     207,     206,
+     205,     204,     200,     199,     198,     197,     195,     126,
+     194,     132,     193,     203,     191,     190,     189,     188,
+     187,     186,     185,     184,     183,     182,     181,     142,
+     180,     179,     131,     178,     177,     176,     175,     174,
+     173,     172,     170,     169,     167,     135,     165,     164,
+     163,     162,     161,     159,     158,     157,     156,     155,
+     154,     153,     152,     149,     136,     134,     133,
 };
 
 int yyr1[] = {
-       0,       1,       1,       2,       5,       5,       6,       6,
-       7,       7,       8,       8,       8,       3,       9,       9,
-      10,      10,      10,      10,       4,       4,      11,      11,
-      15,      15,      16,      12,      12,      17,      18,      13,
-      13,      14,      14,      14,      20,      21,      21,      23,
-      23,      23,      23,      19,      19,      19,      19,      24,
-      24,      24,      24,      24,      24,      22,      22,      22,
-      25,      25,      25,      26,      26,      26,      26,      26,
-      27,      28,      28,      28,      28,      30,      30,      30,
-      30,      30,      30,      29,      29,
+       0,       1,       1,       5,       2,       7,       9,      10,
+      11,       6,      13,      14,      15,      16,       6,      17,
+      18,       8,       8,      20,      21,      12,      12,      19,
+      19,      19,       3,      22,      22,      23,      23,      23,
+      23,       4,       4,      24,      24,      31,      28,      32,
+      28,      33,      29,      34,      30,      25,      25,      37,
+      38,      39,      41,      42,      35,      43,      44,      45,
+      36,      26,      48,      49,      50,      46,      47,      51,
+      47,      27,      27,      54,      52,      53,      53,      53,
+      58,      56,      57,      57,      40,      60,      40,      61,
+      40,      62,      63,      40,      64,      59,      65,      59,
+      66,      59,      67,      59,      68,      59,      69,      59,
+      70,      55,      72,      55,      55,      73,      71,      75,
+      71,      71,      74,      74,      74,      76,      74,      74,
+      78,      79,      81,      82,      84,      77,      80,      86,
+      80,      87,      80,      88,      89,      80,      90,      91,
+      85,      92,      93,      85,      94,      95,      85,      96,
+      97,      85,      98,      99,      85,     100,     101,      85,
+     102,      83,      83,
 };
 
 int yyr2[] = {
-       2,       2,       1,       3,       8,       7,       3,       1,
-       3,       1,       1,       1,       1,       1,       3,       2,
-       1,       1,       1,       1,       3,       2,       1,       1,
-       4,       4,       4,       1,       1,      10,       6,       6,
-       8,       3,       1,       1,       3,       3,       3,       3,
-       3,       3,       3,       1,       3,       3,       4,       3,
-       3,       3,       3,       3,       3,       3,       3,       1,
-       3,       3,       1,       1,       1,       1,       3,       1,
-       8,       1,       3,       3,       4,       3,       3,       3,
-       3,       3,       3,       3,       1,
+       2,       2,       1,       0,       4,       0,       0,       0,
+       0,      12,       0,       0,       0,       0,      11,       0,
+       0,       5,       1,       0,       0,       5,       1,       1,
+       1,       1,       1,       3,       2,       1,       1,       1,
+       1,       3,       2,       1,       1,       0,       4,       0,
+       4,       0,       4,       0,       3,       1,       1,       0,
+       0,       0,       0,       0,      15,       0,       0,       0,
+       9,       2,       0,       0,       0,       8,       1,       0,
+       4,       2,       2,       0,       3,       1,       1,       1,
+       0,       4,       1,       1,       1,       0,       4,       0,
+       4,       0,       0,       6,       0,       4,       0,       4,
+       0,       4,       0,       4,       0,       4,       0,       4,
+       0,       4,       0,       4,       1,       0,       4,       0,
+       4,       1,       1,       1,       1,       0,       4,       1,
+       0,       0,       0,       0,       0,      13,       1,       0,
+       4,       0,       4,       0,       0,       6,       0,       0,
+       5,       0,       0,       5,       0,       0,       5,       0,
+       0,       5,       0,       0,       5,       0,       0,       5,
+       0,       4,       1,
 };
 
 int yychk[] = {
-   -1000,      -1,      -2,      -4,     293,     -15,     286,      -3,
-      -9,     -10,     -11,     -12,     -13,     -14,     -15,     -16,
-     -17,     -18,     281,     265,     -20,     -21,     286,     283,
-     288,     -15,      -5,     259,     262,     257,     -10,     262,
-     257,     279,     257,     257,      -9,     262,     294,     259,
-      -6,     265,     266,     268,     262,     -19,     -24,     292,
-     -22,     -25,     -26,     265,     267,     268,     257,     -27,
-     287,     -14,     -22,     266,     -23,     265,     265,     -14,
-     289,      -6,     260,     261,     258,     258,     258,     290,
-     291,     257,     273,     274,     275,     276,     277,     278,
-     269,     270,     271,     272,     -22,     257,     280,     280,
-     258,     262,     257,     260,     263,     265,      -9,     -24,
-     -24,     -24,     -22,     -22,     -22,     -22,     -22,     -22,
-     -25,     -25,     -26,     -26,     258,     -28,     -30,     292,
-     264,     265,     266,     265,     266,     -19,     -19,     263,
-     259,     282,     285,     258,     261,     290,     291,     257,
-     273,     274,     275,     276,     277,     278,     262,     258,
-     259,      -7,      -8,     295,     296,     297,      -9,     259,
-     -30,     -30,     -30,     -22,     -22,     -22,     -22,     -22,
-     -22,     -14,      -7,     260,     261,     282,     -29,     -22,
-     258,     258,     260,      -8,     260,     261,      -9,     258,
-     -22,     284,
+   -1000,      -1,      -2,      -4,     293,     -28,     -30,     286,
+      -3,     -22,     -23,     -24,     -25,     -26,     -27,     -28,
+     -29,     -35,     -36,     -46,     -52,     -30,     283,     288,
+     281,     265,     -28,      -5,     262,     266,     268,     -34,
+     -23,     262,     -47,     282,     285,     -27,     -53,     -55,
+     266,     -56,     265,     -71,     -57,     -74,     267,     268,
+     257,     -77,     287,     265,     -37,     -43,     -48,     -54,
+     262,      -6,     259,     -31,     -32,     257,     262,     -51,
+     269,     270,     271,     272,     280,     -76,     -78,     -33,
+     257,     -22,     257,     279,     294,     259,     -13,     258,
+     258,     -22,     -70,     -72,     -73,     -75,     -58,     -55,
+     265,     257,     258,     -38,     289,     -49,      -7,      -8,
+     265,     282,     -71,     -71,     -74,     -74,     -57,     265,
+     266,     258,     -79,     -27,     -44,     -40,     -59,     292,
+     -55,      -8,     260,     -17,     -80,     -85,     292,     264,
+     262,     257,     258,     290,     291,     -62,     273,     274,
+     275,     276,     277,     278,     260,     -14,     261,     261,
+     290,     291,     -88,     -90,     -92,     -94,     -96,     -98,
+    -100,     -39,     -45,     -50,     -60,     -61,     257,     -64,
+     -65,     -66,     -67,     -68,     -69,      -9,     263,     -18,
+     -81,     -86,     -87,     257,     273,     274,     275,     276,
+     277,     278,     -40,     -40,     -22,     -59,     -59,     -63,
+     -55,     -55,     -55,     -55,     -55,     -55,     263,     -15,
+      -8,     259,     -85,     -85,     -89,     -91,     -93,     -95,
+     -97,     -99,    -101,     262,     258,     -59,     -10,     259,
+     -82,     -85,     -55,     -55,     -55,     -55,     -55,     -55,
+     -41,     258,     259,     -16,     -83,     -55,     258,     -27,
+     -11,     -12,     -19,     295,     296,     297,     260,     261,
+     258,     -12,     260,     -20,     -84,    -102,     -42,     260,
+     261,     258,     -55,     -22,     -21,     284,     -12,
 };
 
 int yydef[] = {
-       0,      -2,       0,       2,       0,       0,       0,       1,
-      13,       0,      16,      17,      18,      19,      22,      23,
-      27,      28,       0,       0,      34,      35,       0,       0,
-       0,       0,       0,       0,      21,       0,       0,      15,
-       0,       0,       0,       0,       0,      20,       3,       0,
-       0,       7,       0,       0,      14,       0,      43,       0,
-       0,      55,      58,      59,      60,      61,       0,      63,
-       0,      33,      36,      37,      38,      59,       0,       0,
-       0,       0,       0,       0,      24,      25,       0,       0,
-       0,       0,       0,       0,       0,       0,       0,       0,
-       0,       0,       0,       0,       0,       0,       0,       0,
-      26,       0,       0,       0,       0,       6,       0,      44,
-      45,       0,      47,      48,      49,      50,      51,      52,
-      53,      54,      56,      57,      62,       0,      65,       0,
-       0,      41,      42,      39,      40,       0,       0,       0,
-       0,      31,       0,      46,       0,       0,       0,       0,
-       0,       0,       0,       0,       0,       0,       0,      30,
-       0,       0,       9,      10,      11,      12,       0,       0,
-      66,      67,       0,      69,      70,      71,      72,      73,
-      74,       0,       0,       5,       0,      32,       0,      76,
-      68,       0,       4,       8,       0,       0,       0,      64,
-      75,      29,
+       0,      -2,       0,       2,       3,       0,       0,      43,
+       1,      26,       0,      29,      30,      31,      32,      35,
+      36,      45,      46,       0,       0,       0,      47,      53,
+      58,      67,       0,       0,      34,      37,      39,       0,
+       0,      28,      57,      62,      63,      65,      66,      69,
+      -2,      71,      -2,     100,       0,     105,     107,     108,
+     109,     111,     112,      41,       0,       0,       0,       0,
+      33,       0,      10,       0,       0,      44,      27,       0,
+      96,      98,     101,     103,      72,       0,       0,       0,
+      48,       0,      59,      68,       4,       5,       0,      38,
+      40,       0,       0,       0,       0,       0,       0,       0,
+     106,     113,      42,       0,      54,       0,       0,       0,
+      -2,      64,      97,      99,     102,     104,      73,      74,
+      75,     110,       0,       0,       0,       0,      76,      81,
+       0,       0,      11,       0,       0,     118,     123,      -2,
+      49,      55,      60,      77,      79,       0,      84,      86,
+      88,      90,      92,      94,       6,       0,      16,     114,
+     119,     121,       0,       0,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,       0,      82,       0,
+       0,       0,       0,       0,       0,       0,      12,       0,
+       0,       0,       0,     124,     127,     130,     133,     136,
+     139,     142,       0,       0,      61,      78,      80,       0,
+      85,      87,      89,      91,      93,      95,       7,       0,
+      17,     115,     120,     122,       0,       0,       0,       0,
+       0,       0,       0,      50,      56,       0,       0,      13,
+       0,       0,     128,     131,     134,     137,     140,     143,
+       0,      83,       8,       0,       0,     146,     125,       0,
+       0,       0,      -2,      23,      24,      25,     116,     144,
+      51,       0,      14,       0,       0,       0,       0,       9,
+      20,     117,     145,       0,       0,      52,      21,
 };
 
 int *yyxi;
@@ -519,631 +597,559 @@ yyparse()
     if (j>=YYLAST || yychk[ tmpstate = yyact[j] ] != -n) tmpstate = yyact[yypgo[n]];
     switch (m) { /* actions associated with grammar rules */
       
-      case 1:
-# line 76 "main.y"
-      {
-      	fprintf(salidaAS,"01 programa: bloque_declaracion bloque_ejecucion\n");
-      } break;
-      case 2:
-# line 82 "main.y"
-      {
-      	fprintf(salidaAS,"02 programa: lista_wprints_cte\n");
-      } break;
       case 3:
+# line 81 "main.y"
+      {
+      						fprintf(salidaAS,"VAR\n");
+      					} break;
+      case 4:
 # line 88 "main.y"
       {
-      	fprintf(salidaAS,"03 bloque_declaracion: PR_VAR declaracion PR_ENDVAR\n");
-      } break;
-      case 4:
-# line 94 "main.y"
-      {
-      	fprintf(salidaAS,"04 declaracion: declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
-      	
-      	equilibrarDeclaracion();
-      	
-      	asignarTipoDeDato();
-      	
-      	cantIDsEnTS += cantIDsEnDeclaracion;
-      	cantIDsEnDeclaracion = 0;
-      	cantTiposEnDeclaracion = 0;
-      } break;
+      						fprintf(salidaAS,"ENDVAR\n");
+      					} break;
       case 5:
-# line 107 "main.y"
+# line 96 "main.y"
       {
-      	fprintf(salidaAS,"05 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
-      	
-      	equilibrarDeclaracion();
-      	
-      	asignarTipoDeDato();
-      	
-      	cantIDsEnTS += cantIDsEnDeclaracion;
-      	cantIDsEnDeclaracion = 0;
-      	cantTiposEnDeclaracion = 0;
-      } break;
+      					fprintf(salidaAS,"[");
+      				} break;
       case 6:
-# line 121 "main.y"
+# line 103 "main.y"
       {
-      	fprintf(salidaAS,"06 lista_variables: lista_variables COMA ID\n");
-      	
-      	posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
-      } break;
+      					fprintf(salidaAS,"]");
+      				} break;
       case 7:
-# line 128 "main.y"
+# line 108 "main.y"
       {
-      	fprintf(salidaAS,"07 lista_variables: ID\n");
-      	
-      	posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
-      } break;
+      					fprintf(salidaAS,":");
+      				} break;
       case 8:
-# line 136 "main.y"
+# line 113 "main.y"
       {
-      	fprintf(salidaAS,"08 lista_tipos: lista_tipos COMA tipo\n");
-      	
-      	tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
-      } break;
+      					fprintf(salidaAS,"[");
+      				} break;
       case 9:
-# line 143 "main.y"
+# line 120 "main.y"
       {
-      	fprintf(salidaAS,"09 lista_tipos: tipo\n");
+      					fprintf(salidaAS,"]\n");
       	
-      	tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
-      } break;
+      					equilibrarDeclaracion();
+      	
+      					asignarTipoDeDato();
+      	
+      					cantIDsEnTS += cantIDsEnDeclaracion;
+      					cantIDsEnDeclaracion = 0;
+      					cantTiposEnDeclaracion = 0;
+      				} break;
       case 10:
-# line 151 "main.y"
+# line 133 "main.y"
       {
-      	fprintf(salidaAS,"10 tipo: PR_INT\n");
-      	
-      	yyval = PR_INT;
-      } break;
+      					fprintf(salidaAS,"[");
+      				} break;
       case 11:
-# line 158 "main.y"
+# line 140 "main.y"
       {
-      	fprintf(salidaAS,"11 tipo: PR_FLOAT\n");
-      	
-      	yyval = PR_FLOAT;
-      } break;
+      					fprintf(salidaAS,"]");
+      				} break;
       case 12:
-# line 165 "main.y"
+# line 145 "main.y"
       {
-      	fprintf(salidaAS,"12 tipo: PR_STRING\n");
-      	
-      	yyval = PR_STRING;
-      } break;
+      					fprintf(salidaAS,":");
+      				} break;
       case 13:
-# line 173 "main.y"
+# line 150 "main.y"
       {
-      	fprintf(salidaAS,"13 bloque_ejecucion: lista_sentencias\n");
-      } break;
+      					fprintf(salidaAS,"[");
+      				} break;
       case 14:
-# line 179 "main.y"
+# line 157 "main.y"
       {
-      	fprintf(salidaAS,"14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA\n");
-      } break;
+      					fprintf(salidaAS,"]\n");
+      	
+      					equilibrarDeclaracion();
+      	
+      					asignarTipoDeDato();
+      	
+      					cantIDsEnTS += cantIDsEnDeclaracion;
+      					cantIDsEnDeclaracion = 0;
+      					cantTiposEnDeclaracion = 0;
+      				} break;
       case 15:
-# line 184 "main.y"
+# line 171 "main.y"
       {
-      	fprintf(salidaAS,"15 lista_sentencias: sentencia PUNTO_COMA\n");
-      } break;
+      						fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
+      	
+      						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
+      					} break;
       case 16:
-# line 190 "main.y"
+# line 178 "main.y"
       {
-      	fprintf(salidaAS,"16 sentencia: wprint\n");
-      } break;
-      case 17:
-# line 195 "main.y"
-      {
-      	fprintf(salidaAS,"17 sentencia: iteracion\n");
-      } break;
+      						fprintf(salidaAS,",");
+      					} break;
       case 18:
-# line 200 "main.y"
+# line 185 "main.y"
       {
-      	fprintf(salidaAS,"18 sentencia: decision\n");
-      } break;
+      						fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
+      	
+      						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
+      					} break;
       case 19:
+# line 193 "main.y"
+      {
+      					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
+      				} break;
+      case 20:
+# line 198 "main.y"
+      {
+      					fprintf(salidaAS,",");
+      				} break;
+      case 22:
 # line 205 "main.y"
       {
-      	fprintf(salidaAS,"19 sentencia: asignacion\n");
-      } break;
-      case 20:
+      					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
+      				} break;
+      case 23:
 # line 211 "main.y"
       {
-      	fprintf(salidaAS,"20 lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA\n");
-      } break;
-      case 21:
-# line 216 "main.y"
-      {
-      	fprintf(salidaAS,"21 lista_wprints_cte: wprint_cte PUNTO_COMA\n");
-      } break;
-      case 22:
-# line 222 "main.y"
-      {
-      	fprintf(salidaAS,"22 wprint: wprint_cte\n");
-      } break;
-      case 23:
-# line 227 "main.y"
-      {
-      	fprintf(salidaAS,"23 wprint: wprint_id\n");
-      } break;
+      			fprintf(salidaAS,"int");
+      	
+      			yyval = PR_INT;
+      		} break;
       case 24:
-# line 233 "main.y"
+# line 218 "main.y"
       {
-      	fprintf(salidaAS,"24 wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA\n");
-      } break;
+      			fprintf(salidaAS,"float");
+      	
+      			yyval = PR_FLOAT;
+      		} break;
       case 25:
-# line 238 "main.y"
+# line 225 "main.y"
       {
-      	fprintf(salidaAS,"25 wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA\n");
-      } break;
-      case 26:
-# line 244 "main.y"
-      {
-      	fprintf(salidaAS,"26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA\n");
-      
-	verificarDeclaracion(yypvt[-1]);
-      } break;
+      			fprintf(salidaAS,"string");
+      	
+      			yyval = PR_STRING;
+      		} break;
       case 27:
-# line 252 "main.y"
+# line 240 "main.y"
       {
-      	fprintf(salidaAS,"27 iteracion: iteracion_for\n");
-      } break;
+      						fprintf(salidaAS,";\n");
+      					} break;
       case 28:
-# line 257 "main.y"
+# line 247 "main.y"
       {
-      	fprintf(salidaAS,"28 iteracion: iteracion_dowhile\n");
-      } break;
-      case 29:
-# line 263 "main.y"
-      {
-      	fprintf(salidaAS,"29 iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF\n");
-      } break;
-      case 30:
-# line 269 "main.y"
-      {
-      	fprintf(salidaAS,"30 iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA\n");
-      } break;
-      case 31:
-# line 275 "main.y"
-      {
-      	fprintf(salidaAS,"31 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI\n");
-      } break;
-      case 32:
-# line 280 "main.y"
-      {
-      	fprintf(salidaAS,"32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI\n");
-      } break;
+      						fprintf(salidaAS,";\n");
+      					} break;
       case 33:
+# line 266 "main.y"
+      {
+      						fprintf(salidaAS,";\n");
+      					} break;
+      case 34:
+# line 273 "main.y"
+      {
+      						fprintf(salidaAS,";\n");
+      					} break;
+      case 37:
 # line 286 "main.y"
       {
-      	fprintf(salidaAS,"33 asignacion: ID OP_ASIGNACION asignacion\n");
-      
-	verificarDeclaracion(yypvt[-2]);
-      
-	if(TS[yypvt[-2]].tipo == PR_INT && yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_FLOAT && yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_INT)
-      	{
-      		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_FLOAT)
-      	{
-      		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
-      	}
-      } break;
-      case 34:
-# line 313 "main.y"
-      {
-      	fprintf(salidaAS,"34 asignacion: asignacion_num_o_id\n");
-      
-	yyval = yypvt[-0];
-      } break;
-      case 35:
-# line 320 "main.y"
-      {
-      	fprintf(salidaAS,"35 asignacion: asignacion_string\n");
-      
-	yyval = yypvt[-0];
-      } break;
-      case 36:
-# line 328 "main.y"
-      {
-      	fprintf(salidaAS,"36 asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
-      
-	verificarDeclaracion(yypvt[-2]);
-      
-	if(TS[yypvt[-2]].tipo == PR_INT && yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_FLOAT && yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_INT)
-      	{
-      		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_STRING && yypvt[-0] == PR_FLOAT)
-      	{
-      		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
-      	}
-      
-	yyval = TS[yypvt[-2]].tipo;
-      } break;
-      case 37:
-# line 358 "main.y"
-      {
-      	fprintf(salidaAS,"37 asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
-      
-	verificarDeclaracion(yypvt[-2]);
-      
-	if(TS[yypvt[-2]].tipo == PR_INT)
-      	{
-      		lanzarError("No puede asignar un tipo STRING a un tipo INT");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_FLOAT)
-      	{
-      		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
-      	}
-      
-	yyval = TS[yypvt[-2]].tipo;
-      } break;
+      				fprintf(salidaAS,"\"%s\"",TS[yypvt[-0]].valor);
+      			} break;
       case 38:
-# line 377 "main.y"
+# line 291 "main.y"
       {
-      	fprintf(salidaAS,"38 asignacion_string: ID OP_ASIGNACION concatenacion\n");
-      
-	verificarDeclaracion(yypvt[-2]);
-      
-	if(TS[yypvt[-2]].tipo == PR_INT)
-      	{
-      		lanzarError("No puede asignar un tipo STRING a un tipo INT");
-      	}
-      
-	if(TS[yypvt[-2]].tipo == PR_FLOAT)
-      	{
-      		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
-      	}
-      
-	yyval = TS[yypvt[-2]].tipo;
-      } break;
+      				fprintf(salidaAS,")");
+      			} break;
       case 39:
-# line 397 "main.y"
+# line 298 "main.y"
       {
-      	fprintf(salidaAS,"39 concatenacion: ID OP_CONCATENACION ID\n");
-      
-	verificarDeclaracion(yypvt[-2]);
-      	verificarDeclaracion(yypvt[-0]);
-      
-	if(TS[yypvt[-2]].tipo != PR_STRING || TS[yypvt[-0]].tipo != PR_STRING)
-      	{
-      		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
-      	}
-      
-	yyval = PR_STRING;
-      } break;
+      				fprintf(salidaAS,"%s",TS[yypvt[-0]].valor);
+      			} break;
       case 40:
-# line 412 "main.y"
+# line 303 "main.y"
       {
-      	fprintf(salidaAS,"40 concatenacion: ID OP_CONCATENACION CTE_STRING\n");
-      
-	verificarDeclaracion(yypvt[-2]);
-      
-	if(TS[yypvt[-2]].tipo != PR_STRING)
-      	{
-      		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
-      	}
-      
-	yyval = PR_STRING;
-      } break;
+      				fprintf(salidaAS,")");
+      			} break;
       case 41:
-# line 426 "main.y"
+# line 311 "main.y"
       {
-      	fprintf(salidaAS,"41 concatenacion: CTE_STRING OP_CONCATENACION ID\n");
-      
-	verificarDeclaracion(yypvt[-0]);
-      
-	if(TS[yypvt[-0]].tipo != PR_STRING)
-      	{
-      		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
-      	}
-      
-	yyval = PR_STRING;
-      } break;
+      				fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
+      			} break;
       case 42:
-# line 440 "main.y"
+# line 316 "main.y"
       {
-      	fprintf(salidaAS,"42 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING\n");
-      
-	yyval = PR_STRING;
-      } break;
+      				fprintf(salidaAS,")");
+      			} break;
       case 43:
+# line 321 "main.y"
+      {
+      					fprintf(salidaAS,"WPRINT");
+      				} break;
+      case 44:
+# line 326 "main.y"
+      {
+      					fprintf(salidaAS,"(");
+      				} break;
+      case 47:
+# line 337 "main.y"
+      {
+      					fprintf(salidaAS,"FOR");
+      				} break;
+      case 48:
+# line 342 "main.y"
+      {
+      					fprintf(salidaAS,"(");
+      				} break;
+      case 49:
+# line 349 "main.y"
+      {
+      					fprintf(salidaAS,";");
+      				} break;
+      case 50:
+# line 356 "main.y"
+      {
+      					fprintf(salidaAS,";");
+      				} break;
+      case 51:
+# line 363 "main.y"
+      {
+      					fprintf(salidaAS,")\n");
+      				} break;
+      case 52:
+# line 370 "main.y"
+      {
+      					fprintf(salidaAS,"ROF");
+      				} break;
+      case 53:
+# line 376 "main.y"
+      {
+      						fprintf(salidaAS,"DO\n");
+      					} break;
+      case 54:
+# line 383 "main.y"
+      {
+      						fprintf(salidaAS,"WHILE");
+      					} break;
+      case 55:
+# line 388 "main.y"
+      {
+      						fprintf(salidaAS,"(");
+      					} break;
+      case 56:
+# line 395 "main.y"
+      {
+      						fprintf(salidaAS,")");
+      					} break;
+      case 58:
+# line 403 "main.y"
+      {
+      						fprintf(salidaAS,"IF");
+      					} break;
+      case 59:
+# line 408 "main.y"
+      {
+      						fprintf(salidaAS,"(");
+      					} break;
+      case 60:
+# line 415 "main.y"
+      {
+      						fprintf(salidaAS,")\n");
+      					} break;
+      case 62:
+# line 422 "main.y"
+      {
+      						fprintf(salidaAS,"FI");
+      					} break;
+      case 63:
+# line 427 "main.y"
+      {
+      						fprintf(salidaAS,"ELSE\n");
+      					} break;
+      case 64:
+# line 434 "main.y"
+      {
+      						fprintf(salidaAS,"FI");
+      					} break;
+      case 67:
+# line 443 "main.y"
+      {
+      						fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
+      					} break;
+      case 68:
 # line 448 "main.y"
       {
-      	fprintf(salidaAS,"43 condicion: proposicion\n");
-      } break;
-      case 44:
+      						fprintf(salidaAS," = ");
+      					} break;
+      case 69:
 # line 453 "main.y"
       {
-      	fprintf(salidaAS,"44 condicion: proposicion PR_AND proposicion\n");
-      } break;
-      case 45:
+      						fprintf(salidaAS,"(=%d)",yypvt[-0]);
+      					} break;
+      case 70:
 # line 458 "main.y"
       {
-      	fprintf(salidaAS,"45 condicion: proposicion PR_OR proposicion\n");
-      } break;
-      case 46:
-# line 463 "main.y"
+      						fprintf(salidaAS,"\"%s\"",TS[yypvt[-0]].valor);
+      					} break;
+      case 72:
+# line 468 "main.y"
       {
-      	fprintf(salidaAS,"46 condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA\n");
-      } break;
-      case 47:
-# line 469 "main.y"
+      					fprintf(salidaAS," ++ "); 
+      				} break;
+      case 74:
+# line 475 "main.y"
       {
-      	fprintf(salidaAS,"47 proposicion: expresion OP_MAYOR expresion\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 48:
-# line 479 "main.y"
+      									fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
+      								} break;
+      case 75:
+# line 480 "main.y"
       {
-      	fprintf(salidaAS,"48 proposicion: expresion OP_MAYOR_IGUAL expresion\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 49:
-# line 489 "main.y"
+      									fprintf(salidaAS,"\"%s\"",TS[yypvt[-0]].valor);
+      								} break;
+      case 77:
+# line 490 "main.y"
       {
-      	fprintf(salidaAS,"49 proposicion: expresion OP_MENOR expresion\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 50:
+      				fprintf(salidaAS," AND ");
+      			} break;
+      case 79:
 # line 499 "main.y"
       {
-      	fprintf(salidaAS,"50 proposicion: expresion OP_MENOR_IGUAL expresion\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 51:
-# line 509 "main.y"
+      				fprintf(salidaAS," OR ");
+      			} break;
+      case 81:
+# line 506 "main.y"
       {
-      	fprintf(salidaAS,"51 proposicion: expresion OP_IGUAL expresion\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 52:
-# line 519 "main.y"
+      				fprintf(salidaAS," NOT ");
+      			} break;
+      case 82:
+# line 511 "main.y"
       {
-      	fprintf(salidaAS,"52 proposicion: expresion OP_DISTINTO expresion\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 53:
-# line 530 "main.y"
+      				fprintf(salidaAS,"(");
+      			} break;
+      case 83:
+# line 518 "main.y"
       {
-      	fprintf(salidaAS,"53 expresion: expresion OP_SUMA termino\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una expresion");
-      	}
-      
-	yyval = yypvt[-2];
-      } break;
-      case 54:
-# line 542 "main.y"
+      				fprintf(salidaAS,")");
+      			} break;
+      case 84:
+# line 526 "main.y"
       {
-      	fprintf(salidaAS,"54 expresion: expresion OP_RESTA termino\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una expresion");
-      	}
-      
-	yyval = yypvt[-2];
-      } break;
-      case 55:
-# line 554 "main.y"
+      					fprintf(salidaAS," > ");
+      				} break;
+      case 86:
+# line 535 "main.y"
       {
-      	fprintf(salidaAS,"55 expresion: termino\n");
-      
-	yyval = yypvt[-0];
-      } break;
-      case 56:
+      					fprintf(salidaAS," >= ");
+      				} break;
+      case 88:
+# line 544 "main.y"
+      {
+      					fprintf(salidaAS," < ");
+      				} break;
+      case 90:
+# line 553 "main.y"
+      {
+      					fprintf(salidaAS," <= ");
+      				} break;
+      case 92:
 # line 562 "main.y"
       {
-      	fprintf(salidaAS,"56 termino: termino OP_MULTIPLICACION factor\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una expresion");
-      	}
-      
-	yyval = yypvt[-2];
-      } break;
-      case 57:
-# line 574 "main.y"
+      					fprintf(salidaAS," == ");
+      				} break;
+      case 94:
+# line 571 "main.y"
       {
-      	fprintf(salidaAS,"57 termino: termino OP_DIVISION factor\n");
-      
-	if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una expresion");
-      	}
-      
-	yyval = yypvt[-2];
-      } break;
-      case 58:
+      					fprintf(salidaAS," != ");
+      				} break;
+      case 96:
+# line 581 "main.y"
+      {
+      				fprintf(salidaAS," + ");
+      			} break;
+      case 97:
 # line 586 "main.y"
       {
-      	fprintf(salidaAS,"58 termino: factor\n");
-      
-	yyval = yypvt[-0];
-      } break;
-      case 59:
-# line 594 "main.y"
+      				yyval = yypvt[-3] + yypvt[-0];
+      			} break;
+      case 98:
+# line 593 "main.y"
       {
-      	fprintf(salidaAS,"59 factor: ID\n");
-      
-	verificarDeclaracion(yypvt[-0]);
-      
-	yyval = TS[yypvt[-0]].tipo;
-      } break;
-      case 60:
-# line 603 "main.y"
+      				fprintf(salidaAS," - ");
+      			} break;
+      case 99:
+# line 598 "main.y"
       {
-      	fprintf(salidaAS,"60 factor: CTE_ENTERA\n");
-      
-	yyval = PR_INT;
-      } break;
-      case 61:
-# line 610 "main.y"
+      				yyval = yypvt[-3] - yypvt[-0];
+      			} break;
+      case 101:
+# line 608 "main.y"
       {
-      	fprintf(salidaAS,"61 factor: CTE_REAL\n");
-      
-	yyval = PR_FLOAT;
-      } break;
-      case 62:
-# line 617 "main.y"
+      				fprintf(salidaAS," * ");
+      			} break;
+      case 102:
+# line 613 "main.y"
       {
-      	fprintf(salidaAS,"62 factor: PAR_ABRE expresion PAR_CIERRA\n");
-      
-	yyval = yypvt[-1];
-      } break;
-      case 63:
-# line 624 "main.y"
+      				yyval = yypvt[-3] * yypvt[-0];
+      			} break;
+      case 103:
+# line 620 "main.y"
       {
-      	fprintf(salidaAS,"63 factor: filterc\n");
-      
-	yyval = yypvt[-0];
-      } break;
-      case 64:
-# line 632 "main.y"
+      				fprintf(salidaAS," / ");
+      			} break;
+      case 104:
+# line 625 "main.y"
       {
-      	fprintf(salidaAS,"64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA\n");
-      
-	yyval = PR_INT;
-      } break;
-      case 65:
-# line 640 "main.y"
+      				yyval = yypvt[-3] / yypvt[-0];
+      			} break;
+      case 105:
+# line 630 "main.y"
       {
-      	fprintf(salidaAS,"65 condicion_f: proposicion_f\n");
-      } break;
-      case 66:
-# line 645 "main.y"
+      				yyval = yypvt[-0];
+      			} break;
+      case 106:
+# line 636 "main.y"
       {
-      	fprintf(salidaAS,"66 condicion_f: proposicion_f PR_AND proposicion_f\n");
-      } break;
-      case 67:
-# line 650 "main.y"
+      			fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
+      		} break;
+      case 107:
+# line 641 "main.y"
       {
-      	fprintf(salidaAS,"67 condicion_f: proposicion_f PR_OR proposicion_f\n");
-      } break;
-      case 68:
-# line 655 "main.y"
+      			fprintf(salidaAS,"%s",TS[yypvt[-0]].valor);
+      			yyval = atoi(TS[yypvt[-0]].valor);
+      		} break;
+      case 108:
+# line 647 "main.y"
+      {	
+      			fprintf(salidaAS,"%s",TS[yypvt[-0]].valor);
+      			yyval = atoi(TS[yypvt[-0]].valor);
+      		} break;
+      case 109:
+# line 653 "main.y"
       {
-      	fprintf(salidaAS,"68 condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA\n");
-      } break;
-      case 69:
-# line 661 "main.y"
+      			fprintf(salidaAS,"(");
+      		} break;
+      case 110:
+# line 660 "main.y"
       {
-      	fprintf(salidaAS,"69 proposicion_f: GUION_BAJO OP_MAYOR expresion\n");
-      
-	if(yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 70:
-# line 671 "main.y"
+      			fprintf(salidaAS,")");
+      			yyval = yypvt[-1];
+      		} break;
+      case 112:
+# line 669 "main.y"
       {
-      	fprintf(salidaAS,"70 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion\n");
-      
-	if(yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 71:
+      				fprintf(salidaAS,"FILTERC");
+      			} break;
+      case 113:
+# line 674 "main.y"
+      {
+      				fprintf(salidaAS,"(");
+      			} break;
+      case 114:
 # line 681 "main.y"
       {
-      	fprintf(salidaAS,"71 proposicion_f: GUION_BAJO OP_MENOR expresion\n");
-      
-	if(yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 72:
-# line 691 "main.y"
+      				fprintf(salidaAS,",");
+      			} break;
+      case 115:
+# line 686 "main.y"
       {
-      	fprintf(salidaAS,"72 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion\n");
-      
-	if(yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 73:
-# line 701 "main.y"
+      				fprintf(salidaAS,"[");
+      			} break;
+      case 116:
+# line 693 "main.y"
       {
-      	fprintf(salidaAS,"73 proposicion_f: GUION_BAJO OP_IGUAL expresion\n");
-      
-	if(yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 74:
-# line 711 "main.y"
+      				fprintf(salidaAS,"]");
+      			} break;
+      case 117:
+# line 698 "main.y"
       {
-      	fprintf(salidaAS,"74 proposicion_f: GUION_BAJO OP_DISTINTO expresion\n");
-      
-	if(yypvt[-0] == PR_STRING)
-      	{
-      		lanzarError("No se puede usar un tipo STRING en una comparacion");
-      	}
-      } break;
-      case 75:
-# line 722 "main.y"
+      				fprintf(salidaAS,")");
+      			} break;
+      case 119:
+# line 708 "main.y"
       {
-      	fprintf(salidaAS,"75 lista_expresiones: lista_expresiones COMA expresion\n");
-      } break;
-      case 76:
-# line 727 "main.y"
+      					fprintf(salidaAS," AND ");
+      				} break;
+      case 121:
+# line 717 "main.y"
       {
-      	fprintf(salidaAS,"76 lista_expresiones: expresion\n");
-      } break;    }
+      					fprintf(salidaAS," OR ");
+      				} break;
+      case 123:
+# line 724 "main.y"
+      {
+      					fprintf(salidaAS,"NOT");
+      				} break;
+      case 124:
+# line 729 "main.y"
+      {
+      					fprintf(salidaAS,"(");
+      				} break;
+      case 125:
+# line 736 "main.y"
+      {
+      					fprintf(salidaAS,")");
+      				} break;
+      case 126:
+# line 742 "main.y"
+      {
+      					fprintf(salidaAS,"_");
+      				} break;
+      case 127:
+# line 747 "main.y"
+      {
+      					fprintf(salidaAS," > ");
+      				} break;
+      case 129:
+# line 754 "main.y"
+      {
+      					fprintf(salidaAS,"_");
+      				} break;
+      case 130:
+# line 759 "main.y"
+      {
+      					fprintf(salidaAS," >= ");
+      				} break;
+      case 132:
+# line 766 "main.y"
+      {
+      					fprintf(salidaAS,"_");
+      				} break;
+      case 133:
+# line 771 "main.y"
+      {
+      					fprintf(salidaAS," < ");
+      				} break;
+      case 135:
+# line 778 "main.y"
+      {
+      					fprintf(salidaAS,"_");
+      				} break;
+      case 136:
+# line 783 "main.y"
+      {
+      					fprintf(salidaAS," <= ");
+      				} break;
+      case 138:
+# line 790 "main.y"
+      {
+      					fprintf(salidaAS,"_");
+      				} break;
+      case 139:
+# line 795 "main.y"
+      {
+      					fprintf(salidaAS," == ");
+      				} break;
+      case 141:
+# line 802 "main.y"
+      {
+      					fprintf(salidaAS,"_");
+      				} break;
+      case 142:
+# line 807 "main.y"
+      {
+      					fprintf(salidaAS," != ");
+      				} break;
+      case 144:
+# line 817 "main.y"
+      {
+      						fprintf(salidaAS,",");
+      					} break;    }
     goto enstack;
 }

@@ -72,661 +72,756 @@ extern int lineaActual;
 %start programa
 
 %%
-programa: bloque_declaracion bloque_ejecucion
-{
-	fprintf(salidaAS,"01 programa: bloque_declaracion bloque_ejecucion\n");
-};
+programa: bloque_declaracion bloque_ejecucion;
+
+programa: lista_wprints_cte;
 
 
-programa: lista_wprints_cte
-{
-	fprintf(salidaAS,"02 programa: lista_wprints_cte\n");
-};
+bloque_declaracion: PR_VAR
+					{
+						fprintf(salidaAS,"VAR\n");
+					}
+						
+					declaracion
+
+					PR_ENDVAR
+					{
+						fprintf(salidaAS,"ENDVAR\n");
+					};
 
 
-bloque_declaracion: PR_VAR declaracion PR_ENDVAR
-{
-	fprintf(salidaAS,"03 bloque_declaracion: PR_VAR declaracion PR_ENDVAR\n");
-};
+declaracion:	declaracion
 
+				COR_ABRE
+				{
+					fprintf(salidaAS,"[");
+				} 
 
-declaracion: declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA 
-{
-	fprintf(salidaAS,"04 declaracion: declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
+				lista_variables 
+
+				COR_CIERRA
+				{
+					fprintf(salidaAS,"]");
+				}
+
+				DOS_PUNTOS
+				{
+					fprintf(salidaAS,":");
+				}
+
+				COR_ABRE
+				{
+					fprintf(salidaAS,"[");
+				}
+				
+				lista_tipos
+				
+				COR_CIERRA
+				{
+					fprintf(salidaAS,"]\n");
 	
-	equilibrarDeclaracion();
+					equilibrarDeclaracion();
 	
-	asignarTipoDeDato();
+					asignarTipoDeDato();
 	
-	cantIDsEnTS += cantIDsEnDeclaracion;
-	cantIDsEnDeclaracion = 0;
-	cantTiposEnDeclaracion = 0;
-};
+					cantIDsEnTS += cantIDsEnDeclaracion;
+					cantIDsEnDeclaracion = 0;
+					cantTiposEnDeclaracion = 0;
+				};
 
-declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
-{
-	fprintf(salidaAS,"05 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA\n");
+declaracion:	COR_ABRE
+				{
+					fprintf(salidaAS,"[");
+				} 
+
+				lista_variables 
+
+				COR_CIERRA
+				{
+					fprintf(salidaAS,"]");
+				}
+
+				DOS_PUNTOS
+				{
+					fprintf(salidaAS,":");
+				}
+
+				COR_ABRE
+				{
+					fprintf(salidaAS,"[");
+				}
+				
+				lista_tipos
+				
+				COR_CIERRA
+				{
+					fprintf(salidaAS,"]\n");
 	
-	equilibrarDeclaracion();
+					equilibrarDeclaracion();
 	
-	asignarTipoDeDato();
+					asignarTipoDeDato();
 	
-	cantIDsEnTS += cantIDsEnDeclaracion;
-	cantIDsEnDeclaracion = 0;
-	cantTiposEnDeclaracion = 0;
-};
+					cantIDsEnTS += cantIDsEnDeclaracion;
+					cantIDsEnDeclaracion = 0;
+					cantTiposEnDeclaracion = 0;
+				};
 
 
-lista_variables: lista_variables COMA ID
-{
-	fprintf(salidaAS,"06 lista_variables: lista_variables COMA ID\n");
+lista_variables:	ID
+					{
+						fprintf(salidaAS,"%s",TS[$1].nombre);
 	
-	posicionIDEnTS[cantIDsEnDeclaracion++] = $3;
-};
+						posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
+					}
 
-lista_variables: ID
-{
-	fprintf(salidaAS,"07 lista_variables: ID\n");
+					COMA
+					{
+						fprintf(salidaAS,",");
+					}
+					
+					lista_variables;
+
+lista_variables:	ID
+					{
+						fprintf(salidaAS,"%s",TS[$1].nombre);
 	
-	posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
-};
+						posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
+					};
 
 
-lista_tipos: lista_tipos COMA tipo
-{
-	fprintf(salidaAS,"08 lista_tipos: lista_tipos COMA tipo\n");
+lista_tipos:	tipo
+				{
+					tipoDeID[cantTiposEnDeclaracion++] = $1;
+				}
+
+				COMA
+				{
+					fprintf(salidaAS,",");
+				}
+
+				lista_tipos;
+
+lista_tipos:	tipo
+				{
+					tipoDeID[cantTiposEnDeclaracion++] = $1;
+				};
+
+
+tipo:	PR_INT
+		{
+			fprintf(salidaAS,"int");
 	
-	tipoDeID[cantTiposEnDeclaracion++] = $3;
-};
+			$$ = PR_INT;
+		};
 
-lista_tipos: tipo
-{
-	fprintf(salidaAS,"09 lista_tipos: tipo\n");
+tipo:	PR_FLOAT
+		{
+			fprintf(salidaAS,"float");
 	
-	tipoDeID[cantTiposEnDeclaracion++] = $1;
-};
+			$$ = PR_FLOAT;
+		};
 
-
-tipo: PR_INT
-{
-	fprintf(salidaAS,"10 tipo: PR_INT\n");
+tipo:	PR_STRING
+		{
+			fprintf(salidaAS,"string");
 	
-	$$ = PR_INT;
-};
+			$$ = PR_STRING;
+		};
 
-tipo: PR_FLOAT
-{
-	fprintf(salidaAS,"11 tipo: PR_FLOAT\n");
+
+bloque_ejecucion: lista_sentencias;
+
+
+lista_sentencias:	lista_sentencias
+
+					sentencia 
+					
+					PUNTO_COMA
+					{
+						fprintf(salidaAS,";\n");
+					};
+
+lista_sentencias:	sentencia 
+					
+					PUNTO_COMA
+					{
+						fprintf(salidaAS,";\n");
+					};
+
+
+sentencia: wprint;
+
+sentencia: iteracion;
+
+sentencia: decision;
+
+sentencia: asignacion;
+
+
+lista_wprints_cte:	lista_wprints_cte 
+
+					wprint_cte
+					
+					PUNTO_COMA
+					{
+						fprintf(salidaAS,";\n");
+					};
+
+lista_wprints_cte:	wprint_cte 
+
+					PUNTO_COMA
+					{
+						fprintf(salidaAS,";\n");
+					};
+
+
+wprint: wprint_cte;
+
+wprint: wprint_id;
+
+
+wprint_cte:	wprint_parte_A
+			
+			CTE_STRING
+			{
+				fprintf(salidaAS,"\"%s\"",TS[$2].valor);
+			}
+			
+			PAR_CIERRA
+			{
+				fprintf(salidaAS,")");
+			};
+
+wprint_cte: wprint_parte_A 
+			
+			CTE_REAL
+			{
+				fprintf(salidaAS,"%s",TS[$2].valor);
+			} 
+			
+			PAR_CIERRA
+			{
+				fprintf(salidaAS,")");
+			};
+
+
+wprint_id:	wprint_parte_A
+			
+			ID
+			{
+				fprintf(salidaAS,"%s",TS[$2].nombre);
+			}
+			
+			PAR_CIERRA
+			{
+				fprintf(salidaAS,")");
+			};
+
+wprint_parte_A:	PR_WPRINT
+				{
+					fprintf(salidaAS,"WPRINT");
+				}
+
+				PAR_ABRE
+				{
+					fprintf(salidaAS,"(");
+				};
+
+
+iteracion: iteracion_for;
+
+iteracion: iteracion_dowhile;
+
+
+iteracion_for:	PR_FOR
+				{
+					fprintf(salidaAS,"FOR");
+				}
+
+				PAR_ABRE
+				{
+					fprintf(salidaAS,"(");
+				}
+
+				asignacion
+				
+				PUNTO_COMA
+				{
+					fprintf(salidaAS,";");
+				}
+
+				condicion
+				
+				PUNTO_COMA
+				{
+					fprintf(salidaAS,";");
+				}
+
+				asignacion
+				
+				PAR_CIERRA
+				{
+					fprintf(salidaAS,")\n");
+				}
+
+				lista_sentencias
+				
+				PR_ROF
+				{
+					fprintf(salidaAS,"ROF");
+				};
+
+
+iteracion_dowhile:	PR_DO
+					{
+						fprintf(salidaAS,"DO\n");
+					}
+
+					lista_sentencias
+					
+					PR_WHILE
+					{
+						fprintf(salidaAS,"WHILE");
+					}
+
+					PAR_ABRE
+					{
+						fprintf(salidaAS,"(");
+					}
+
+					condicion
+					
+					PAR_CIERRA
+					{
+						fprintf(salidaAS,")");
+					};
+
+
+decision: decision_parte_A decision_parte_B;
+
+decision_parte_A:	PR_IF
+					{
+						fprintf(salidaAS,"IF");
+					}
+
+					PAR_ABRE
+					{
+						fprintf(salidaAS,"(");
+					}
+
+					condicion
+
+					PAR_CIERRA
+					{
+						fprintf(salidaAS,")\n");
+					}
+
+					lista_sentencias;
+
+decision_parte_B:	PR_FI
+					{
+						fprintf(salidaAS,"FI");
+					};
+
+decision_parte_B:	PR_ELSE
+					{
+						fprintf(salidaAS,"ELSE\n");
+					}
+
+					lista_sentencias 
+			
+					PR_FI
+					{
+						fprintf(salidaAS,"FI");
+					};
+
+
+asignacion: asignacion_parte_A asignacion;
+asignacion: asignacion_parte_A asignacion_parte_B;
+
+asignacion_parte_A:	ID
+					{
+						fprintf(salidaAS,"%s",TS[$1].nombre);
+					}
+
+					OP_ASIGNACION
+					{
+						fprintf(salidaAS," = ");
+					};
+
+asignacion_parte_B:	expresion
+					{
+						fprintf(salidaAS,"(=%d)",$1);
+					};
+
+asignacion_parte_B:	CTE_STRING
+					{
+						fprintf(salidaAS,"\"%s\"",TS[$1].valor);
+					};
+
+asignacion_parte_B:	concatenacion;
+
+
+concatenacion:	concatenacion_parte_extrema
+
+				OP_CONCATENACION
+				{
+					fprintf(salidaAS," ++ "); 
+				}
+
+				concatenacion_parte_extrema;
+
+concatenacion_parte_extrema:	ID
+								{
+									fprintf(salidaAS,"%s",TS[$1].nombre);
+								};
+
+concatenacion_parte_extrema:	CTE_STRING
+								{
+									fprintf(salidaAS,"\"%s\"",TS[$1].valor);
+								};
+
+
+condicion:	proposicion;
+
+condicion:	proposicion 
+			
+			PR_AND
+			{
+				fprintf(salidaAS," AND ");
+			}
+
+			proposicion;
+
+condicion:	proposicion 
+			
+			PR_OR
+			{
+				fprintf(salidaAS," OR ");
+			}
+
+			proposicion;
+
+condicion:	PR_NOT
+			{
+				fprintf(salidaAS," NOT ");
+			}
+
+			PAR_ABRE
+			{
+				fprintf(salidaAS,"(");
+			}
+
+			proposicion
+			
+			PAR_CIERRA
+			{
+				fprintf(salidaAS,")");
+			};
+
+
+proposicion:	expresion
+
+				OP_MAYOR
+				{
+					fprintf(salidaAS," > ");
+				}
+
+				expresion;
+
+proposicion:	expresion
+
+				OP_MAYOR_IGUAL
+				{
+					fprintf(salidaAS," >= ");
+				}
+
+				expresion;
+
+proposicion:	expresion
+
+				OP_MENOR
+				{
+					fprintf(salidaAS," < ");
+				}
+
+				expresion;
+
+proposicion:	expresion 
+
+				OP_MENOR_IGUAL
+				{
+					fprintf(salidaAS," <= ");
+				}
+
+				expresion;
+
+proposicion:	expresion
+
+				OP_IGUAL
+				{
+					fprintf(salidaAS," == ");
+				}
+
+				expresion;
+
+proposicion:	expresion
 	
-	$$ = PR_FLOAT;
-};
+				OP_DISTINTO
+				{
+					fprintf(salidaAS," != ");
+				}
 
-tipo: PR_STRING
-{
-	fprintf(salidaAS,"12 tipo: PR_STRING\n");
+				expresion;
+
+
+expresion:	expresion
+
+			OP_SUMA
+			{
+				fprintf(salidaAS," + ");
+			}
+
+			termino
+			{
+				$$ = $1 + $4;
+			};
+
+expresion:	expresion
 	
-	$$ = PR_STRING;
-};
+			OP_RESTA
+			{
+				fprintf(salidaAS," - ");
+			}
 
+			termino
+			{
+				$$ = $1 - $4;
+			};
 
-bloque_ejecucion: lista_sentencias
-{
-	fprintf(salidaAS,"13 bloque_ejecucion: lista_sentencias\n");
-};
+expresion:	termino;
 
 
-lista_sentencias: lista_sentencias sentencia PUNTO_COMA
-{
-	fprintf(salidaAS,"14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA\n");
-};
+termino:	termino
 
-lista_sentencias: sentencia PUNTO_COMA
-{
-	fprintf(salidaAS,"15 lista_sentencias: sentencia PUNTO_COMA\n");
-};
+			OP_MULTIPLICACION
+			{
+				fprintf(salidaAS," * ");
+			}
 
+			factor
+			{
+				$$ = $1 * $4;
+			};
 
-sentencia: wprint
-{
-	fprintf(salidaAS,"16 sentencia: wprint\n");
-};
+termino:	termino
 
-sentencia: iteracion
-{
-	fprintf(salidaAS,"17 sentencia: iteracion\n");
-};
+			OP_DIVISION
+			{
+				fprintf(salidaAS," / ");
+			}
 
-sentencia: decision
-{
-	fprintf(salidaAS,"18 sentencia: decision\n");
-};
+			factor
+			{
+				$$ = $1 / $4;
+			};
 
-sentencia: asignacion
-{
-	fprintf(salidaAS,"19 sentencia: asignacion\n");
-};
+termino:	factor
+			{
+				$$ = $1;
+			};	
 
 
-lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA
-{
-	fprintf(salidaAS,"20 lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA\n");
-};
-
-lista_wprints_cte: wprint_cte PUNTO_COMA
-{
-	fprintf(salidaAS,"21 lista_wprints_cte: wprint_cte PUNTO_COMA\n");
-};
-
-
-wprint: wprint_cte
-{
-	fprintf(salidaAS,"22 wprint: wprint_cte\n");
-};
-
-wprint: wprint_id
-{
-	fprintf(salidaAS,"23 wprint: wprint_id\n");
-};
-
-
-wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA
-{
-	fprintf(salidaAS,"24 wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA\n");
-};
-
-wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
-{
-	fprintf(salidaAS,"25 wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA\n");
-};
-
-
-wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA
-{
-	fprintf(salidaAS,"26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA\n");
-
-	verificarDeclaracion($3);
-};
-
-
-iteracion: iteracion_for
-{
-	fprintf(salidaAS,"27 iteracion: iteracion_for\n");
-};
-
-iteracion: iteracion_dowhile
-{
-	fprintf(salidaAS,"28 iteracion: iteracion_dowhile\n");
-};
-
-
-iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF
-{
-	fprintf(salidaAS,"29 iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF\n");
-};
-
-
-iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA
-{
-	fprintf(salidaAS,"30 iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA\n");
-};
-
-
-decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI
-{
-	fprintf(salidaAS,"31 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI\n");
-};
-
-decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI
-{
-	fprintf(salidaAS,"32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI\n");
-};
-
-
-asignacion: ID OP_ASIGNACION asignacion
-{
-	fprintf(salidaAS,"33 asignacion: ID OP_ASIGNACION asignacion\n");
-
-	verificarDeclaracion($1);
-
-	if(TS[$1].tipo == PR_INT && $3 == PR_STRING)
-	{
-		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
-	}
-
-	if(TS[$1].tipo == PR_FLOAT && $3 == PR_STRING)
-	{
-		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
-	}
-
-	if(TS[$1].tipo == PR_STRING && $3 == PR_INT)
-	{
-		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
-	}
-
-	if(TS[$1].tipo == PR_STRING && $3 == PR_FLOAT)
-	{
-		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
-	}
-};
-
-asignacion: asignacion_num_o_id
-{
-	fprintf(salidaAS,"34 asignacion: asignacion_num_o_id\n");
-
-	$$ = $1;
-};
-
-asignacion: asignacion_string
-{
-	fprintf(salidaAS,"35 asignacion: asignacion_string\n");
-
-	$$ = $1;
-};
-
-
-asignacion_num_o_id: ID OP_ASIGNACION expresion
-{
-	fprintf(salidaAS,"36 asignacion_num_o_id: ID OP_ASIGNACION expresion\n");
-
-	verificarDeclaracion($1);
-
-	if(TS[$1].tipo == PR_INT && $3 == PR_STRING)
-	{
-		lanzarError("No se puede asignar un tipo STRING a un tipo INT");
-	}
-
-	if(TS[$1].tipo == PR_FLOAT && $3 == PR_STRING)
-	{
-		lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
-	}
-
-	if(TS[$1].tipo == PR_STRING && $3 == PR_INT)
-	{
-		lanzarError("No se puede asignar un tipo INT a un tipo STRING");
-	}
-
-	if(TS[$1].tipo == PR_STRING && $3 == PR_FLOAT)
-	{
-		lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
-	}
-
-	$$ = TS[$1].tipo;
-};
-
-
-asignacion_string: ID OP_ASIGNACION CTE_STRING
-{
-	fprintf(salidaAS,"37 asignacion_string: ID OP_ASIGNACION CTE_STRING\n");
-
-	verificarDeclaracion($1);
-
-	if(TS[$1].tipo == PR_INT)
-	{
-		lanzarError("No puede asignar un tipo STRING a un tipo INT");
-	}
-
-	if(TS[$1].tipo == PR_FLOAT)
-	{
-		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
-	}
-
-	$$ = TS[$1].tipo;
-};
-
-asignacion_string: ID OP_ASIGNACION concatenacion
-{
-	fprintf(salidaAS,"38 asignacion_string: ID OP_ASIGNACION concatenacion\n");
-
-	verificarDeclaracion($1);
-
-	if(TS[$1].tipo == PR_INT)
-	{
-		lanzarError("No puede asignar un tipo STRING a un tipo INT");
-	}
-
-	if(TS[$1].tipo == PR_FLOAT)
-	{
-		lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
-	}
-
-	$$ = TS[$1].tipo;
-};
-
-
-concatenacion: ID OP_CONCATENACION ID
-{
-	fprintf(salidaAS,"39 concatenacion: ID OP_CONCATENACION ID\n");
-
-	verificarDeclaracion($1);
-	verificarDeclaracion($3);
-
-	if(TS[$1].tipo != PR_STRING || TS[$3].tipo != PR_STRING)
-	{
-		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
-	}
-
-	$$ = PR_STRING;
-};
-
-concatenacion: ID OP_CONCATENACION CTE_STRING
-{
-	fprintf(salidaAS,"40 concatenacion: ID OP_CONCATENACION CTE_STRING\n");
-
-	verificarDeclaracion($1);
-
-	if(TS[$1].tipo != PR_STRING)
-	{
-		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
-	}
-
-	$$ = PR_STRING;
-};
-
-concatenacion: CTE_STRING OP_CONCATENACION ID
-{
-	fprintf(salidaAS,"41 concatenacion: CTE_STRING OP_CONCATENACION ID\n");
-
-	verificarDeclaracion($3);
-
-	if(TS[$3].tipo != PR_STRING)
-	{
-		lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
-	}
-
-	$$ = PR_STRING;
-};
-
-concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING
-{
-	fprintf(salidaAS,"42 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING\n");
-
-	$$ = PR_STRING;
-};
-
-
-condicion: proposicion
-{
-	fprintf(salidaAS,"43 condicion: proposicion\n");
-};
-
-condicion: proposicion PR_AND proposicion
-{
-	fprintf(salidaAS,"44 condicion: proposicion PR_AND proposicion\n");
-};
-
-condicion: proposicion PR_OR proposicion
-{
-	fprintf(salidaAS,"45 condicion: proposicion PR_OR proposicion\n");
-};
-
-condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA
-{
-	fprintf(salidaAS,"46 condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA\n");
-};
-
-
-proposicion: expresion OP_MAYOR expresion
-{
-	fprintf(salidaAS,"47 proposicion: expresion OP_MAYOR expresion\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion: expresion OP_MAYOR_IGUAL expresion
-{
-	fprintf(salidaAS,"48 proposicion: expresion OP_MAYOR_IGUAL expresion\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion: expresion OP_MENOR expresion
-{
-	fprintf(salidaAS,"49 proposicion: expresion OP_MENOR expresion\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion: expresion OP_MENOR_IGUAL expresion
-{
-	fprintf(salidaAS,"50 proposicion: expresion OP_MENOR_IGUAL expresion\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion: expresion OP_IGUAL expresion
-{
-	fprintf(salidaAS,"51 proposicion: expresion OP_IGUAL expresion\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion: expresion OP_DISTINTO expresion
-{
-	fprintf(salidaAS,"52 proposicion: expresion OP_DISTINTO expresion\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-
-expresion: expresion OP_SUMA termino
-{
-	fprintf(salidaAS,"53 expresion: expresion OP_SUMA termino\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una expresion");
-	}
-
-	$$ = $1;
-};
-
-expresion: expresion OP_RESTA termino
-{
-	fprintf(salidaAS,"54 expresion: expresion OP_RESTA termino\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una expresion");
-	}
-
-	$$ = $1;
-};
-
-expresion: termino
-{
-	fprintf(salidaAS,"55 expresion: termino\n");
-
-	$$ = $1;
-};
-
-
-termino: termino OP_MULTIPLICACION factor
-{
-	fprintf(salidaAS,"56 termino: termino OP_MULTIPLICACION factor\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una expresion");
-	}
-
-	$$ = $1;
-};
-
-termino: termino OP_DIVISION factor
-{
-	fprintf(salidaAS,"57 termino: termino OP_DIVISION factor\n");
-
-	if($1 == PR_STRING || $3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una expresion");
-	}
-
-	$$ = $1;
-};
-
-termino: factor
-{
-	fprintf(salidaAS,"58 termino: factor\n");
-
-	$$ = $1;
-};
-
-
-factor: ID
-{
-	fprintf(salidaAS,"59 factor: ID\n");
-
-	verificarDeclaracion($1);
-
-	$$ = TS[$1].tipo;
-};
+factor:	ID
+		{
+			fprintf(salidaAS,"%s",TS[$1].nombre);
+		};
 
 factor: CTE_ENTERA
-{
-	fprintf(salidaAS,"60 factor: CTE_ENTERA\n");
-
-	$$ = PR_INT;
-};
+		{
+			fprintf(salidaAS,"%s",TS[$1].valor);
+			$$ = atoi(TS[$1].valor);
+		};
 
 factor: CTE_REAL
-{
-	fprintf(salidaAS,"61 factor: CTE_REAL\n");
+		{	
+			fprintf(salidaAS,"%s",TS[$1].valor);
+			$$ = atoi(TS[$1].valor);
+		};
 
-	$$ = PR_FLOAT;
-};
+factor: PAR_ABRE
+		{
+			fprintf(salidaAS,"(");
+		}
 
-factor: PAR_ABRE expresion PAR_CIERRA
-{
-	fprintf(salidaAS,"62 factor: PAR_ABRE expresion PAR_CIERRA\n");
+		expresion
 
-	$$ = $2;
-};
+		PAR_CIERRA
+		{
+			fprintf(salidaAS,")");
+			$$ = $3;
+		};
 
-factor: filterc
-{
-	fprintf(salidaAS,"63 factor: filterc\n");
-
-	$$ = $1;
-};
-
-
-filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA
-{
-	fprintf(salidaAS,"64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA\n");
-
-	$$ = PR_INT;
-};
+factor: filterc;
 
 
-condicion_f: proposicion_f
-{
-	fprintf(salidaAS,"65 condicion_f: proposicion_f\n");
-};
+filterc:	PR_FILTERC
+			{
+				fprintf(salidaAS,"FILTERC");
+			}
 
-condicion_f: proposicion_f PR_AND proposicion_f
-{
-	fprintf(salidaAS,"66 condicion_f: proposicion_f PR_AND proposicion_f\n");
-};
+			PAR_ABRE
+			{
+				fprintf(salidaAS,"(");
+			}
 
-condicion_f: proposicion_f PR_OR proposicion_f
-{
-	fprintf(salidaAS,"67 condicion_f: proposicion_f PR_OR proposicion_f\n");
-};
+			condicion_f
+			
+			COMA
+			{
+				fprintf(salidaAS,",");
+			}
 
-condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA
-{
-	fprintf(salidaAS,"68 condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA\n");
-};
+			COR_ABRE
+			{
+				fprintf(salidaAS,"[");
+			}
 
+			lista_expresiones
+			
+			COR_CIERRA
+			{
+				fprintf(salidaAS,"]");
+			}
 
-proposicion_f: GUION_BAJO OP_MAYOR expresion
-{
-	fprintf(salidaAS,"69 proposicion_f: GUION_BAJO OP_MAYOR expresion\n");
-
-	if($3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion
-{
-	fprintf(salidaAS,"70 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion\n");
-
-	if($3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion_f: GUION_BAJO OP_MENOR expresion
-{
-	fprintf(salidaAS,"71 proposicion_f: GUION_BAJO OP_MENOR expresion\n");
-
-	if($3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion
-{
-	fprintf(salidaAS,"72 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion\n");
-
-	if($3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion_f: GUION_BAJO OP_IGUAL expresion
-{
-	fprintf(salidaAS,"73 proposicion_f: GUION_BAJO OP_IGUAL expresion\n");
-
-	if($3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
-
-proposicion_f: GUION_BAJO OP_DISTINTO expresion
-{
-	fprintf(salidaAS,"74 proposicion_f: GUION_BAJO OP_DISTINTO expresion\n");
-
-	if($3 == PR_STRING)
-	{
-		lanzarError("No se puede usar un tipo STRING en una comparacion");
-	}
-};
+			PAR_CIERRA
+			{
+				fprintf(salidaAS,")");
+			};
 
 
-lista_expresiones: lista_expresiones COMA expresion
-{
-	fprintf(salidaAS,"75 lista_expresiones: lista_expresiones COMA expresion\n");
-};
+condicion_f:	proposicion_f;
 
-lista_expresiones: expresion
-{
-	fprintf(salidaAS,"76 lista_expresiones: expresion\n");
-};
+condicion_f:	proposicion_f 
+
+				PR_AND
+				{
+					fprintf(salidaAS," AND ");
+				}
+
+				proposicion_f;
+
+condicion_f:	proposicion_f
+
+				PR_OR
+				{
+					fprintf(salidaAS," OR ");
+				}
+
+				proposicion_f;
+
+condicion_f:	PR_NOT 
+				{
+					fprintf(salidaAS,"NOT");
+				}
+
+				PAR_ABRE 
+				{
+					fprintf(salidaAS,"(");
+				}
+
+				proposicion_f 
+				
+				PAR_CIERRA
+				{
+					fprintf(salidaAS,")");
+				};
+
+
+proposicion_f:	GUION_BAJO 
+				{
+					fprintf(salidaAS,"_");
+				}
+
+				OP_MAYOR 
+				{
+					fprintf(salidaAS," > ");
+				}
+
+				expresion;
+
+proposicion_f:	GUION_BAJO
+				{
+					fprintf(salidaAS,"_");
+				}
+
+				OP_MAYOR_IGUAL
+				{
+					fprintf(salidaAS," >= ");
+				}
+
+				expresion;
+
+proposicion_f:	GUION_BAJO
+				{
+					fprintf(salidaAS,"_");
+				}
+
+				OP_MENOR
+				{
+					fprintf(salidaAS," < ");
+				}
+
+				expresion;
+
+proposicion_f:	GUION_BAJO
+				{
+					fprintf(salidaAS,"_");
+				}
+
+				OP_MENOR_IGUAL
+				{
+					fprintf(salidaAS," <= ");
+				}
+
+				expresion;
+
+proposicion_f:	GUION_BAJO
+				{
+					fprintf(salidaAS,"_");
+				}
+
+				OP_IGUAL
+				{
+					fprintf(salidaAS," == ");
+				}
+
+				expresion;
+
+proposicion_f:	GUION_BAJO
+				{
+					fprintf(salidaAS,"_");
+				}
+
+				OP_DISTINTO
+				{
+					fprintf(salidaAS," != ");
+				}
+
+				expresion;
+
+
+lista_expresiones:	lista_expresiones
+
+					COMA
+					{
+						fprintf(salidaAS,",");
+					}
+
+					expresion;
+
+lista_expresiones: expresion;
+
 %%
 
 
