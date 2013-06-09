@@ -4,60 +4,15 @@ VAR
 	[contador3,mensaje3,pi3]:[int,string,float]
 ENDVAR
 
--/Asignacion de ID tipo STRING a ID tipo STRING/-
-mensaje1 = mensaje1;
+contador2 = 10;
 
--/Asignacion de CTE_STRING a ID tipo STRING/-
-mensaje1 = "hola ";
-mensaje2 = "mundo";
-
--/Asignacion de CONCATENACION a ID tipo STRING/-
-mensaje3 = mensaje1 ++ mensaje2;
-mensaje3 = mensaje1 ++ "mundo";
-mensaje3 = "hola" ++ mensaje2;
-mensaje3 = "hola" ++ "mundo";
-
--/Asignacion de ID tipo INT a ID tipo INT/-
-contador1 = contador2;
-
--/Asignacion de CTE_ENTERA a ID tipo INT/-
-contador1 = 0;
-
--/Asignacion de FILTERC a ID tipo INT/-
-contador1 = FILTERC(_<10,[10+11,contador2*contador3]);
-
--/Asignacion de ID tipo FLOAT a ID tipo FLOAT/-
-pi2 = pi3;
-
--/Asignacion de CTE_REAL a ID tipo FLOAT/-
-pi2 = 3.14;
-
--/Asignacion de expresion a ID tipo INT/-
-contador1 = (contador2 * pi2 + FILTERC(_>5 AND _<10,[pi3*4,contador1-contador3]) * 2.64) / 2;
-
-
-do
-	for(contador1 = 0; contador1 <= 10; contador1 = contador1 + 1)
-		do
-			for(contador2 = 100; contador2 > 0; contador2 = contador2 - 1)
-				if(contador1 == 15)
-					if(pi2 >= 3.14 OR contador3 < contador2)
-						wprint(mensaje3);
-
-						if(NOT(pi2==pi3))
-							wprint(mensaje1);
-						fi;
-					fi;
-				else
-					if(contador2 != ((contador3-6)/3))
-						wprint(999999.99999);
-						wprint(0.314);
-					else
-						wprint(contador3);
-						wprint(pi3);
-					fi;
-				fi;
-			rof;
-		while(contador1 != contador3);
-	rof;
-while(contador2 == contador3);
+for(contador1 = 0; contador1 < contador2; contador1 = contador1 + 1)
+	do
+		contador2 = 10 * 2 - 1;
+		wprint(pi2);
+	while(contador3 >= contador1);
+	contador2 = 10 * (2 - 1);
+	wprint(3.14);
+rof;
+wprint("fin del programa");
+		
