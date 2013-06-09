@@ -13,6 +13,8 @@ for(contador1 = 0; contador1 < contador2; contador1 = contador1 + 1)
 	while(contador3 >= contador1);
 	contador2 = 10 * (2 - 1);
 	wprint(3.14);
+	pi3 = 9-(5+3)/2;
 rof;
+contador3 = filterc(_>1 AND _<10,[contador2-5,pi3*5,9-(5+3)/2]);
 wprint("fin del programa");
 		
