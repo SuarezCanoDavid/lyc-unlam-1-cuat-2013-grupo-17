@@ -11,5 +11,7 @@ WPRINT(pi2);
 WHILE(contador3 >= contador1);
 contador2 = 10.0 * (2.0 - 1.0)(=10);
 WPRINT(3.14);
+pi3 = 9.0 - (5.0 + 3.0) / 2.0(=5);
 ROF;
+contador3 = FILTERC(_ > 1.0 AND _ < 10.0,[contador2 - 5.0,pi3 * 5.0,9.0 - (5.0 + 3.0) / 2.0])(=-1);
 WPRINT("fin del programa");

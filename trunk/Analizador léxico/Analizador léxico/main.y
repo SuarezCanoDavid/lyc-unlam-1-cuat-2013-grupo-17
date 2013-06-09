@@ -19,6 +19,8 @@ int tipoDeID[50];
 
 extern int lineaActual;
 
+int aux = 0;
+
 %}
 
 %token PAR_ABRE
@@ -72,9 +74,20 @@ extern int lineaActual;
 %start programa
 
 %%
-programa: bloque_declaracion bloque_ejecucion;
+programa:	bloque_declaracion
+			{
+				++aux;
+			}
 
-programa: lista_wprints_cte;
+			bloque_ejecucion
+			{
+				++aux;
+			};
+
+programa:	lista_wprints_cte
+			{
+				++aux;
+			};
 
 
 bloque_declaracion: PR_VAR
@@ -83,6 +96,9 @@ bloque_declaracion: PR_VAR
 					}
 						
 					declaracion
+					{
+						++aux;
+					}
 
 					PR_ENDVAR
 					{
@@ -91,13 +107,19 @@ bloque_declaracion: PR_VAR
 
 
 declaracion:	declaracion
+				{
+					++aux;
+				}
 
 				COR_ABRE
 				{
 					fprintf(salidaAS,"[");
 				} 
 
-				lista_variables 
+				lista_variables
+				{
+					++aux;
+				} 
 
 				COR_CIERRA
 				{
@@ -115,6 +137,9 @@ declaracion:	declaracion
 				}
 				
 				lista_tipos
+				{
+					++aux;
+				}
 				
 				COR_CIERRA
 				{
@@ -134,7 +159,10 @@ declaracion:	COR_ABRE
 					fprintf(salidaAS,"[");
 				} 
 
-				lista_variables 
+				lista_variables
+				{
+					++aux;
+				} 
 
 				COR_CIERRA
 				{
@@ -152,6 +180,9 @@ declaracion:	COR_ABRE
 				}
 				
 				lista_tipos
+				{
+					++aux;
+				}
 				
 				COR_CIERRA
 				{
@@ -179,7 +210,10 @@ lista_variables:	ID
 						fprintf(salidaAS,",");
 					}
 					
-					lista_variables;
+					lista_variables
+					{
+						++aux;
+					};
 
 lista_variables:	ID
 					{
@@ -199,7 +233,10 @@ lista_tipos:	tipo
 					fprintf(salidaAS,",");
 				}
 
-				lista_tipos;
+				lista_tipos
+				{
+					++aux;
+				};
 
 lista_tipos:	tipo
 				{
@@ -229,19 +266,31 @@ tipo:	PR_STRING
 		};
 
 
-bloque_ejecucion: lista_sentencias;
+bloque_ejecucion:	lista_sentencias
+					{
+						++aux;
+					};
 
 
 lista_sentencias:	lista_sentencias
+					{
+						++aux;
+					}
 
-					sentencia 
+					sentencia
+					{
+						++aux;
+					} 
 					
 					PUNTO_COMA
 					{
 						fprintf(salidaAS,";\n");
 					};
 
-lista_sentencias:	sentencia 
+lista_sentencias:	sentencia
+					{
+						++aux;
+					} 
 					
 					PUNTO_COMA
 					{
@@ -249,25 +298,46 @@ lista_sentencias:	sentencia
 					};
 
 
-sentencia: wprint;
+sentencia:	wprint
+			{
+				++aux;
+			};
 
-sentencia: iteracion;
+sentencia:	iteracion
+			{
+				++aux;
+			};
 
-sentencia: decision;
+sentencia:	decision
+			{
+				++aux;
+			};
 
-sentencia: asignacion;
+sentencia:	asignacion
+			{
+				++aux;
+			};
 
 
-lista_wprints_cte:	lista_wprints_cte 
+lista_wprints_cte:	lista_wprints_cte
+					{
+						++aux;
+					}
 
 					wprint_cte
+					{
+						++aux;
+					}
 					
 					PUNTO_COMA
 					{
 						fprintf(salidaAS,";\n");
 					};
 
-lista_wprints_cte:	wprint_cte 
+lista_wprints_cte:	wprint_cte
+					{
+						++aux;
+					} 
 
 					PUNTO_COMA
 					{
@@ -275,16 +345,25 @@ lista_wprints_cte:	wprint_cte
 					};
 
 
-wprint: wprint_cte;
+wprint:	wprint_cte
+		{
+			++aux;
+		};
 
-wprint: wprint_id;
+wprint: wprint_id
+		{
+			++aux;
+		};
 
 
 wprint_cte:	wprint_parte_A
+			{
+				++aux;
+			}
 			
 			CTE_STRING
 			{
-				fprintf(salidaAS,"\"%s\"",TS[$2].valor);
+				fprintf(salidaAS,"\"%s\"",TS[$3].valor);
 			}
 			
 			PAR_CIERRA
@@ -292,11 +371,14 @@ wprint_cte:	wprint_parte_A
 				fprintf(salidaAS,")");
 			};
 
-wprint_cte: wprint_parte_A 
+wprint_cte: wprint_parte_A
+			{
+				++aux;
+			} 
 			
 			CTE_REAL
 			{
-				fprintf(salidaAS,"%s",TS[$2].valor);
+				fprintf(salidaAS,"%s",TS[$3].valor);
 			} 
 			
 			PAR_CIERRA
@@ -306,10 +388,13 @@ wprint_cte: wprint_parte_A
 
 
 wprint_id:	wprint_parte_A
+			{
+				++aux;
+			}
 			
 			ID
 			{
-				fprintf(salidaAS,"%s",TS[$2].nombre);
+				fprintf(salidaAS,"%s",TS[$3].nombre);
 			}
 			
 			PAR_CIERRA
@@ -328,9 +413,15 @@ wprint_parte_A:	PR_WPRINT
 				};
 
 
-iteracion: iteracion_for;
+iteracion:	iteracion_for
+			{
+				++aux;
+			};
 
-iteracion: iteracion_dowhile;
+iteracion:	iteracion_dowhile
+			{
+				++aux;
+			};
 
 
 iteracion_for:	PR_FOR
@@ -344,6 +435,9 @@ iteracion_for:	PR_FOR
 				}
 
 				asignacion
+				{
+					++aux;
+				}
 				
 				PUNTO_COMA
 				{
@@ -351,6 +445,9 @@ iteracion_for:	PR_FOR
 				}
 
 				condicion
+				{
+					++aux;
+				}
 				
 				PUNTO_COMA
 				{
@@ -358,6 +455,9 @@ iteracion_for:	PR_FOR
 				}
 
 				asignacion
+				{
+					++aux;
+				}
 				
 				PAR_CIERRA
 				{
@@ -365,6 +465,9 @@ iteracion_for:	PR_FOR
 				}
 
 				lista_sentencias
+				{
+					++aux;
+				}
 				
 				PR_ROF
 				{
@@ -378,6 +481,9 @@ iteracion_dowhile:	PR_DO
 					}
 
 					lista_sentencias
+					{
+						++aux;
+					}
 					
 					PR_WHILE
 					{
@@ -390,6 +496,9 @@ iteracion_dowhile:	PR_DO
 					}
 
 					condicion
+					{
+						++aux;
+					}
 					
 					PAR_CIERRA
 					{
@@ -397,7 +506,15 @@ iteracion_dowhile:	PR_DO
 					};
 
 
-decision: decision_parte_A decision_parte_B;
+decision:	decision_parte_A
+			{
+				++aux;
+			}
+			 
+			decision_parte_B
+			{
+				++aux;
+			};
 
 decision_parte_A:	PR_IF
 					{
@@ -410,13 +527,19 @@ decision_parte_A:	PR_IF
 					}
 
 					condicion
+					{
+						++aux;
+					}
 
 					PAR_CIERRA
 					{
 						fprintf(salidaAS,")\n");
 					}
 
-					lista_sentencias;
+					lista_sentencias
+					{
+						++aux;
+					};
 
 decision_parte_B:	PR_FI
 					{
@@ -428,7 +551,10 @@ decision_parte_B:	PR_ELSE
 						fprintf(salidaAS,"ELSE\n");
 					}
 
-					lista_sentencias 
+					lista_sentencias
+					{
+						++aux;
+					} 
 			
 					PR_FI
 					{
@@ -437,6 +563,7 @@ decision_parte_B:	PR_ELSE
 
 
 asignacion: asignacion_parte_A asignacion;
+
 asignacion: asignacion_parte_A asignacion_parte_B;
 
 asignacion_parte_A:	ID
@@ -459,17 +586,26 @@ asignacion_parte_B:	CTE_STRING
 						fprintf(salidaAS,"\"%s\"",TS[$1].valor);
 					};
 
-asignacion_parte_B:	concatenacion;
+asignacion_parte_B:	concatenacion
+					{
+						++aux;
+					};
 
 
 concatenacion:	concatenacion_parte_extrema
+				{
+					++aux;
+				}
 
 				OP_CONCATENACION
 				{
 					fprintf(salidaAS," ++ "); 
 				}
 
-				concatenacion_parte_extrema;
+				concatenacion_parte_extrema
+				{
+					++aux;
+				};
 
 concatenacion_parte_extrema:	ID
 								{
@@ -482,25 +618,40 @@ concatenacion_parte_extrema:	CTE_STRING
 								};
 
 
-condicion:	proposicion;
+condicion:	proposicion
+			{
+				++aux;
+			};
 
-condicion:	proposicion 
+condicion:	proposicion
+			{
+				++aux;
+			} 
 			
 			PR_AND
 			{
 				fprintf(salidaAS," AND ");
 			}
 
-			proposicion;
+			proposicion
+			{
+				++aux;
+			};
 
-condicion:	proposicion 
+condicion:	proposicion
+			{
+				++aux;
+			} 
 			
 			PR_OR
 			{
 				fprintf(salidaAS," OR ");
 			}
 
-			proposicion;
+			proposicion
+			{
+				++aux;
+			};
 
 condicion:	PR_NOT
 			{
@@ -513,6 +664,9 @@ condicion:	PR_NOT
 			}
 
 			proposicion
+			{
+				++aux;
+			}
 			
 			PAR_CIERRA
 			{
@@ -521,61 +675,100 @@ condicion:	PR_NOT
 
 
 proposicion:	expresion
+				{
+					++aux;
+				}
 
 				OP_MAYOR
 				{
 					fprintf(salidaAS," > ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion:	expresion
+				{
+					++aux;
+				}
 
 				OP_MAYOR_IGUAL
 				{
 					fprintf(salidaAS," >= ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion:	expresion
+				{
+					++aux;
+				}
 
 				OP_MENOR
 				{
 					fprintf(salidaAS," < ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
-proposicion:	expresion 
+proposicion:	expresion
+				{
+					++aux;
+				} 
 
 				OP_MENOR_IGUAL
 				{
 					fprintf(salidaAS," <= ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion:	expresion
+				{
+					++aux;
+				}
 
 				OP_IGUAL
 				{
 					fprintf(salidaAS," == ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion:	expresion
+				{
+					++aux;
+				}
 	
 				OP_DISTINTO
 				{
 					fprintf(salidaAS," != ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 
 expresion:	expresion
+			{
+				++aux;
+			}
 
 			OP_SUMA
 			{
@@ -584,10 +777,13 @@ expresion:	expresion
 
 			termino
 			{
-				$$ = $1 + $4;
+				$$ = $1 + $5;
 			};
 
 expresion:	expresion
+			{
+				++aux;
+			}
 	
 			OP_RESTA
 			{
@@ -596,13 +792,19 @@ expresion:	expresion
 
 			termino
 			{
-				$$ = $1 - $4;
+				$$ = $1 - $5;
 			};
 
-expresion:	termino;
+expresion:	termino
+			{
+				++aux;
+			};
 
 
 termino:	termino
+			{
+				++aux;
+			}
 
 			OP_MULTIPLICACION
 			{
@@ -611,10 +813,13 @@ termino:	termino
 
 			factor
 			{
-				$$ = $1 * $4;
+				$$ = $1 * $5;
 			};
 
 termino:	termino
+			{
+				++aux;
+			}
 
 			OP_DIVISION
 			{
@@ -623,7 +828,7 @@ termino:	termino
 
 			factor
 			{
-				$$ = $1 / $4;
+				$$ = $1 / $5;
 			};
 
 termino:	factor
@@ -655,6 +860,9 @@ factor: PAR_ABRE
 		}
 
 		expresion
+		{
+			++aux;
+		}
 
 		PAR_CIERRA
 		{
@@ -662,7 +870,10 @@ factor: PAR_ABRE
 			$$ = $3;
 		};
 
-factor: filterc;
+factor: filterc
+		{
+			++aux;
+		};
 
 
 filterc:	PR_FILTERC
@@ -676,6 +887,9 @@ filterc:	PR_FILTERC
 			}
 
 			condicion_f
+			{
+				++aux;
+			}
 			
 			COMA
 			{
@@ -688,6 +902,9 @@ filterc:	PR_FILTERC
 			}
 
 			lista_expresiones
+			{
+				++aux;
+			}
 			
 			COR_CIERRA
 			{
@@ -700,25 +917,40 @@ filterc:	PR_FILTERC
 			};
 
 
-condicion_f:	proposicion_f;
+condicion_f:	proposicion_f
+				{
+					++aux;
+				};
 
-condicion_f:	proposicion_f 
+condicion_f:	proposicion_f
+				{
+					++aux;
+				} 
 
 				PR_AND
 				{
 					fprintf(salidaAS," AND ");
 				}
 
-				proposicion_f;
+				proposicion_f
+				{
+					++aux;
+				};
 
 condicion_f:	proposicion_f
+				{
+					++aux;
+				}
 
 				PR_OR
 				{
 					fprintf(salidaAS," OR ");
 				}
 
-				proposicion_f;
+				proposicion_f
+				{
+					++aux;
+				};
 
 condicion_f:	PR_NOT 
 				{
@@ -730,7 +962,10 @@ condicion_f:	PR_NOT
 					fprintf(salidaAS,"(");
 				}
 
-				proposicion_f 
+				proposicion_f
+				{
+					++aux;
+				} 
 				
 				PAR_CIERRA
 				{
@@ -748,7 +983,10 @@ proposicion_f:	GUION_BAJO
 					fprintf(salidaAS," > ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion_f:	GUION_BAJO
 				{
@@ -760,7 +998,10 @@ proposicion_f:	GUION_BAJO
 					fprintf(salidaAS," >= ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion_f:	GUION_BAJO
 				{
@@ -772,7 +1013,10 @@ proposicion_f:	GUION_BAJO
 					fprintf(salidaAS," < ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion_f:	GUION_BAJO
 				{
@@ -784,7 +1028,10 @@ proposicion_f:	GUION_BAJO
 					fprintf(salidaAS," <= ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion_f:	GUION_BAJO
 				{
@@ -796,7 +1043,10 @@ proposicion_f:	GUION_BAJO
 					fprintf(salidaAS," == ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 proposicion_f:	GUION_BAJO
 				{
@@ -808,19 +1058,31 @@ proposicion_f:	GUION_BAJO
 					fprintf(salidaAS," != ");
 				}
 
-				expresion;
+				expresion
+				{
+					++aux;
+				};
 
 
 lista_expresiones:	lista_expresiones
+					{
+						++aux;
+					}
 
 					COMA
 					{
 						fprintf(salidaAS,",");
 					}
 
-					expresion;
+					expresion
+					{
+						++aux;
+					};
 
-lista_expresiones: expresion;
+lista_expresiones:	expresion
+					{
+						++aux;
+					};
 
 %%
 

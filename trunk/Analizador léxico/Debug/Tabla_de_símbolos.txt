@@ -11,4 +11,7 @@ _0                                                CTE_ENTERA     0.0            
 _1                                                CTE_ENTERA     1.0                                               0         
 _2                                                CTE_ENTERA     2.0                                               0         
 _3.14                                             CTE_REAL       3.14                                              0         
+_9                                                CTE_ENTERA     9.0                                               0         
+_5                                                CTE_ENTERA     5.0                                               0         
+_3                                                CTE_ENTERA     3.0                                               0         
 _"fin del programa"                               CTE_STRING     fin del programa                                  16        
