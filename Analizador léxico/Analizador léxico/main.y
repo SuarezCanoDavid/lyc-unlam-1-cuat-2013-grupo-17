@@ -1,5 +1,7 @@
 %{
 #include "AnalizadorLexico.h"
+#include "Pila.h"
+#include "GCI.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -20,6 +22,10 @@ int tipoDeID[50];
 extern int lineaActual;
 
 int aux = 0;
+
+Pila pilaExpr;
+
+Terceto tercetoAux;
 
 %}
 
@@ -562,35 +568,43 @@ decision_parte_B:	PR_ELSE
 					};
 
 
-asignacion: asignacion_parte_A asignacion;
+asignacion: ID OP_ASIGNACION asignacion
+			{
+				fprintf(salidaAS,"(=%d)",$1);
+				printf("1 ASIGNACION -> ID := EXPRESION\n");
 
-asignacion: asignacion_parte_A asignacion_parte_B;
+				tercetoAux.x = OP_ASIGNACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $1;
+				tercetoAux.tipoDeY = INDICE_TS;
+				tercetoAux.z = $3;
+				tercetoAux.tipoDeZ = INDICE_TS; 
 
-asignacion_parte_A:	ID
-					{
-						fprintf(salidaAS,"%s",TS[$1].nombre);
-					}
+				push(crearTerceto(&tercetoAux),&pilaExpr);
 
-					OP_ASIGNACION
-					{
-						fprintf(salidaAS," = ");
-					};
+				$$ = $1;
+			};
 
-asignacion_parte_B:	expresion
-					{
-						fprintf(salidaAS,"(=%d)",$1);
-					};
+asignacion: ID OP_ASIGNACION expresion
+			{
+				fprintf(salidaAS,"(=%d)",$1);
+				printf("1 ASIGNACION -> ID := EXPRESION\n");
 
-asignacion_parte_B:	CTE_STRING
-					{
-						fprintf(salidaAS,"\"%s\"",TS[$1].valor);
-					};
+				tercetoAux.x = OP_ASIGNACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $1;
+				tercetoAux.tipoDeY = INDICE_TS;
+				tercetoAux.z = pop(&pilaExpr);
+				tercetoAux.tipoDeZ = NRO_TERCETO; 
 
-asignacion_parte_B:	concatenacion
-					{
-						++aux;
-					};
+				push(crearTerceto(&tercetoAux),&pilaExpr);
 
+				$$ = $1;
+			};
+
+asignacion: ID OP_ASIGNACION CTE_STRING;
+
+asignacion: ID OP_ASIGNACION concatenacion;
 
 concatenacion:	concatenacion_parte_extrema
 				{
@@ -778,6 +792,16 @@ expresion:	expresion
 			termino
 			{
 				$$ = $1 + $5;
+				printf("2 EXPRESION -> EXPRESION + TERMINO\n");
+
+				tercetoAux.x = OP_SUMA;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.z = pop(&pilaExpr);
+				tercetoAux.tipoDeZ = NRO_TERCETO;
+				tercetoAux.y = pop(&pilaExpr);
+				tercetoAux.tipoDeY = NRO_TERCETO; 
+
+				push(crearTerceto(&tercetoAux),&pilaExpr);
 			};
 
 expresion:	expresion
@@ -793,11 +817,21 @@ expresion:	expresion
 			termino
 			{
 				$$ = $1 - $5;
+
+				tercetoAux.x = OP_RESTA;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.z = pop(&pilaExpr);
+				tercetoAux.tipoDeZ = NRO_TERCETO;
+				tercetoAux.y = pop(&pilaExpr);
+				tercetoAux.tipoDeY = NRO_TERCETO; 
+
+				push(crearTerceto(&tercetoAux),&pilaExpr);
 			};
 
 expresion:	termino
 			{
 				++aux;
+				printf("3 EXPRESION -> TERMINO\n");
 			};
 
 
@@ -814,6 +848,16 @@ termino:	termino
 			factor
 			{
 				$$ = $1 * $5;
+				printf("4 TERMINO -> TERMINO * FACTOR\n");
+
+				tercetoAux.x = OP_MULTIPLICACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.z = pop(&pilaExpr);
+				tercetoAux.tipoDeZ = NRO_TERCETO;
+				tercetoAux.y = pop(&pilaExpr);
+				tercetoAux.tipoDeY = NRO_TERCETO; 
+
+				push(crearTerceto(&tercetoAux),&pilaExpr);
 			};
 
 termino:	termino
@@ -829,29 +873,62 @@ termino:	termino
 			factor
 			{
 				$$ = $1 / $5;
+
+				tercetoAux.x = OP_DIVISION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.z = pop(&pilaExpr);
+				tercetoAux.tipoDeZ = NRO_TERCETO;
+				tercetoAux.y = pop(&pilaExpr);
+				tercetoAux.tipoDeY = NRO_TERCETO; 
+
+				push(crearTerceto(&tercetoAux),&pilaExpr);
 			};
 
 termino:	factor
 			{
 				$$ = $1;
+				printf("5 TERMINO -> FACTOR\n");
 			};	
 
 
 factor:	ID
 		{
 			fprintf(salidaAS,"%s",TS[$1].nombre);
+			printf("6 FACTOR -> ID (%s)\n",TS[$1].nombre);
+
+			tercetoAux.x = $1;
+			tercetoAux.tipoDeX = INDICE_TS;
+			tercetoAux.tipoDeY = IGNORAR;
+			tercetoAux.tipoDeZ = IGNORAR;
+
+			push(crearTerceto(&tercetoAux),&pilaExpr);
 		};
 
 factor: CTE_ENTERA
 		{
 			fprintf(salidaAS,"%s",TS[$1].valor);
 			$$ = atoi(TS[$1].valor);
+			printf("7 FACTOR -> CTE (%d)\n",$$);
+
+			tercetoAux.x = $1;
+			tercetoAux.tipoDeX = INDICE_TS;
+			tercetoAux.tipoDeY = IGNORAR;
+			tercetoAux.tipoDeZ = IGNORAR;
+
+			push(crearTerceto(&tercetoAux),&pilaExpr);
 		};
 
 factor: CTE_REAL
 		{	
 			fprintf(salidaAS,"%s",TS[$1].valor);
 			$$ = atoi(TS[$1].valor);
+
+			tercetoAux.x = $1;
+			tercetoAux.tipoDeX = INDICE_TS;
+			tercetoAux.tipoDeY = IGNORAR;
+			tercetoAux.tipoDeZ = IGNORAR;
+
+			push(crearTerceto(&tercetoAux),&pilaExpr);
 		};
 
 factor: PAR_ABRE
@@ -868,6 +945,14 @@ factor: PAR_ABRE
 		{
 			fprintf(salidaAS,")");
 			$$ = $3;
+			printf("8 FACTOR -> ( EXPRESION )\n");
+
+			tercetoAux.x = pop(&pilaExpr);
+			tercetoAux.tipoDeX = NRO_TERCETO;
+			tercetoAux.tipoDeY = IGNORAR;
+			tercetoAux.tipoDeZ = IGNORAR;
+
+			push(crearTerceto(&tercetoAux),&pilaExpr);
 		};
 
 factor: filterc
@@ -1089,6 +1174,8 @@ lista_expresiones:	expresion
 
 int main(int argc, char *argv[])
 {
+	vaciar(&pilaExpr);
+
 	if(argc != 2)
 	{
 		printf("Formato invalido\nSe espera: Compilador <archivo_fuente>");
@@ -1111,6 +1198,8 @@ int main(int argc, char *argv[])
         fclose(archivo);
 		fclose(salidaAS);
     }
+
+	imprimirTercetos();
 
     return 0;
 }

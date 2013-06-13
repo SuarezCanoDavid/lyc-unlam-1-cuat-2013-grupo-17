@@ -417,8 +417,8 @@ void imprimirTS()
 
 	for(i = 0; i < cantTokensEnTS; ++i)
 	{
-		fprintf(archivoDeTS,"%-50s%-15s%-50s%-10d\n",
-			TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
+		fprintf(archivoDeTS,"%-3d%-50s%-15s%-50s%-10d\n",
+			i,TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
 	}
 
 	fclose(archivoDeTS);

@@ -27,12 +27,24 @@
     <ClCompile Include="main.c">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="Pila.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="GCI.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnalizadorLexico.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="tokens.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Pila.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="GCI.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -81,6 +93,9 @@
     </None>
     <None Include="Lista de reglas.txt">
       <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="..\Debug\Tercetos.txt">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
     </None>
   </ItemGroup>
 </Project>

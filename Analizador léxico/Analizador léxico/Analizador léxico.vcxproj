@@ -76,10 +76,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnalizadorLexico.c" />
+    <ClCompile Include="GCI.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="Pila.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnalizadorLexico.h" />
+    <ClInclude Include="GCI.h" />
+    <ClInclude Include="Pila.h" />
     <ClInclude Include="tokens.h" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +99,7 @@
     <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt" />
     <None Include="..\Debug\reglas_aplicadas.txt" />
     <None Include="..\Debug\Tabla_de_símbolos.txt" />
+    <None Include="..\Debug\Tercetos.txt" />
     <None Include="..\Debug\tokens_identificados.txt" />
     <None Include="Lista de reglas.txt" />
     <None Include="main.y" />
