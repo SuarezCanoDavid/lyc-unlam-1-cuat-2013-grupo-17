@@ -1,17 +1,8 @@
-contador1                                         PR_INT                                                           0         
-mensaje1                                          PR_STRING                                                        0         
-contador2                                         PR_INT                                                           0         
-mensaje2                                          PR_STRING                                                        0         
-pi2                                               PR_FLOAT                                                         0         
-contador3                                         PR_INT                                                           0         
-mensaje3                                          PR_STRING                                                        0         
-pi3                                               PR_FLOAT                                                         0         
-_10                                               CTE_ENTERA     10.0                                              0         
-_0                                                CTE_ENTERA     0.0                                               0         
-_1                                                CTE_ENTERA     1.0                                               0         
-_2                                                CTE_ENTERA     2.0                                               0         
-_3.14                                             CTE_REAL       3.14                                              0         
-_9                                                CTE_ENTERA     9.0                                               0         
-_5                                                CTE_ENTERA     5.0                                               0         
-_3                                                CTE_ENTERA     3.0                                               0         
-_"fin del programa"                               CTE_STRING     fin del programa                                  16        
+0  contador                                          PR_INT                                                           0         
+1  mensaje                                           PR_STRING                                                        0         
+2  resultado                                         PR_INT                                                           0         
+3  _10                                               CTE_ENTERA     10.0                                              0         
+4  _2                                                CTE_ENTERA     2.0                                               0         
+5  _3                                                CTE_ENTERA     3.0                                               0         
+6  _5                                                CTE_ENTERA     5.0                                               0         
+7  _8                                                CTE_ENTERA     8.0                                               0         
