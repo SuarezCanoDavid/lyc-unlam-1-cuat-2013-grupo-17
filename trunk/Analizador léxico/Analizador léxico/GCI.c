@@ -43,6 +43,30 @@ void imprimirTercetos()
 								break;
 			case IGNORAR:		fprintf(archivoDeTercetos,"_,");
 								break;
+			case JMP:			fprintf(archivoDeTercetos,"JMP,");
+								break;
+			case JZ:			fprintf(archivoDeTercetos,"JZ,");
+								break;
+			case JNZ:			fprintf(archivoDeTercetos,"JNZ,");
+								break;
+			case JG:			fprintf(archivoDeTercetos,"JG,");
+								break;
+			case JGE:			fprintf(archivoDeTercetos,"JGE,");
+								break;
+			case JL:			fprintf(archivoDeTercetos,"JL,");
+								break;
+			case JLE:			fprintf(archivoDeTercetos,"JLE,");
+								break;
+			case JE:			fprintf(archivoDeTercetos,"JE,");
+								break;
+			case JNE:			fprintf(archivoDeTercetos,"JNE,");
+								break;
+			case BH:			fprintf(archivoDeTercetos,"BH,");
+								break;
+			case BL:			fprintf(archivoDeTercetos,"BL,");
+								break;
+			case VALOR:			fprintf(archivoDeTercetos,"%xh,",listaDeTercetos[i].x);
+								break;
 		}
 
 		switch(listaDeTercetos[i].tipoDeY)
@@ -54,6 +78,30 @@ void imprimirTercetos()
 			case NRO_TERCETO:	fprintf(archivoDeTercetos,"[%d],",listaDeTercetos[i].y);
 								break;
 			case IGNORAR:		fprintf(archivoDeTercetos,"_,");
+								break;
+			case JMP:			fprintf(archivoDeTercetos,"JMP,");
+								break;
+			case JZ:			fprintf(archivoDeTercetos,"JZ,");
+								break;
+			case JNZ:			fprintf(archivoDeTercetos,"JNZ,");
+								break;
+			case JG:			fprintf(archivoDeTercetos,"JG,");
+								break;
+			case JGE:			fprintf(archivoDeTercetos,"JGE,");
+								break;
+			case JL:			fprintf(archivoDeTercetos,"JL,");
+								break;
+			case JLE:			fprintf(archivoDeTercetos,"JLE,");
+								break;
+			case JE:			fprintf(archivoDeTercetos,"JE,");
+								break;
+			case JNE:			fprintf(archivoDeTercetos,"JNE,");
+								break;
+			case BH:			fprintf(archivoDeTercetos,"BH,");
+								break;
+			case BL:			fprintf(archivoDeTercetos,"BL,");
+								break;
+			case VALOR:			fprintf(archivoDeTercetos,"%xh,",listaDeTercetos[i].y);
 								break;
 		}
 
@@ -67,10 +115,41 @@ void imprimirTercetos()
 								break;
 			case IGNORAR:		fprintf(archivoDeTercetos,"_");
 								break;
+			case JMP:			fprintf(archivoDeTercetos,"JMP");
+								break;
+			case JZ:			fprintf(archivoDeTercetos,"JZ");
+								break;
+			case JNZ:			fprintf(archivoDeTercetos,"JNZ");
+								break;
+			case JG:			fprintf(archivoDeTercetos,"JG");
+								break;
+			case JGE:			fprintf(archivoDeTercetos,"JGE");
+								break;
+			case JL:			fprintf(archivoDeTercetos,"JL");
+								break;
+			case JLE:			fprintf(archivoDeTercetos,"JLE");
+								break;
+			case JE:			fprintf(archivoDeTercetos,"JE");
+								break;
+			case JNE:			fprintf(archivoDeTercetos,"JNE");
+								break;
+			case BH:			fprintf(archivoDeTercetos,"BH");
+								break;
+			case BL:			fprintf(archivoDeTercetos,"BL");
+								break;
+			case VALOR:			fprintf(archivoDeTercetos,"%xh",listaDeTercetos[i].z);
+								break;
 		}
 
 		fprintf(archivoDeTercetos,")\n");
 	}
 
 	fclose(archivoDeTercetos);
+}
+
+void borrarTerceto(Terceto *t)
+{
+	t->tipoDeX = IGNORAR;
+	t-> tipoDeY = IGNORAR;
+	t->tipoDeZ = IGNORAR;
 }
