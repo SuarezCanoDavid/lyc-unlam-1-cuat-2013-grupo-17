@@ -1,4 +1,13 @@
 VAR
 [contador,mensaje,resultado]:[int,string,int]
 ENDVAR
-10.0 * ((2.0 * 3.0 + 5.0 * 8.0) / 2.0)(=2)(=0)(=1);
+IF( NOT (contador + 5.0 <= 20.0))
+IF(resultado != contador OR contador >= 56.0)
+0.0(=0);
+FI;
+5.0(=2);
+ELSE
+DO
+resultado + 1.0(=2);
+WHILE(resultado < 20.0);
+FI;
