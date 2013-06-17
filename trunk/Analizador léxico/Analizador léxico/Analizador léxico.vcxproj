@@ -76,12 +76,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnalizadorLexico.c" />
+    <ClCompile Include="gca.c" />
     <ClCompile Include="GCI.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Pila.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnalizadorLexico.h" />
+    <ClInclude Include="gca.h" />
     <ClInclude Include="GCI.h" />
     <ClInclude Include="Pila.h" />
     <ClInclude Include="tokens.h" />
