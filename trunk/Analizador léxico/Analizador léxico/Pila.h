@@ -15,6 +15,7 @@ typedef struct PilaDeInt PilaDeInt;
 void pushInt(int elemento,PilaDeInt *pila);
 int popInt(PilaDeInt *pila);
 void vaciarPilaDeInt(PilaDeInt *pila);
+int VerTope(PilaDeInt *pila);
 
 struct PilaDeColas
 {
