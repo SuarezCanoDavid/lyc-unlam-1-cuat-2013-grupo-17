@@ -97,7 +97,7 @@ programa:	bloque_declaracion
 
 			bloque_ejecucion
 			{
-				++aux;
+				GenerarAssembler();
 			};
 
 programa:	lista_wprints_cte
