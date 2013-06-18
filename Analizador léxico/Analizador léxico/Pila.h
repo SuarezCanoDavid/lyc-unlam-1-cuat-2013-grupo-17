@@ -1,17 +1,30 @@
+#include "Cola.h"
+
 #ifndef PILA_H
 #define PILA_H
 
 #define TAM_PILA	20
 
-struct Pila
+struct PilaDeInt
 {
 	int contenedor[TAM_PILA];
 	int tope;
 };
-typedef struct Pila Pila;
+typedef struct PilaDeInt PilaDeInt;
 
-void push(int elemento,Pila *pila);
-int pop(Pila *pila);
-void vaciar(Pila *pila);
+void pushInt(int elemento,PilaDeInt *pila);
+int popInt(PilaDeInt *pila);
+void vaciarPilaDeInt(PilaDeInt *pila);
+
+struct PilaDeColas
+{
+	ColaDeTercetos *contenedor[TAM_PILA];
+	int tope;
+};
+typedef struct PilaDeColas PilaDeColas;
+
+void pushCola(ColaDeTercetos *c,PilaDeColas *pila);
+ColaDeTercetos *popCola(PilaDeColas *pila);
+void vaciarPilaDeCola(PilaDeColas *pila);
 
 #endif

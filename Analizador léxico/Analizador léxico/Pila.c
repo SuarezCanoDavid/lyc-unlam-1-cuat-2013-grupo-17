@@ -1,20 +1,39 @@
 #include "Pila.h"
 
-void push(int elemento,Pila *pila)
+void pushInt(int elemento,PilaDeInt *pila)
 {
 	pila->contenedor[pila->tope] = elemento;
 
 	++pila->tope;
 }
 
-int pop(Pila *pila)
+int popInt(PilaDeInt *pila)
 {
 	--pila->tope;
 
 	return pila->contenedor[pila->tope];
 }
 
-void vaciar(Pila *pila)
+void vaciarPilaDeInt(PilaDeInt *pila)
+{
+	pila->tope = 0;
+}
+
+void pushCola(ColaDeTercetos *c,PilaDeColas *pila)
+{
+	pila->contenedor[pila->tope] = c;
+
+	++pila->tope;
+}
+
+ColaDeTercetos *popCola(PilaDeColas *pila)
+{
+	--pila->tope;
+
+	return pila->contenedor[pila->tope];
+}
+
+void vaciarPilaDeCola(PilaDeColas *pila)
 {
 	pila->tope = 0;
 }
