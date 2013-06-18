@@ -1,4 +1,5 @@
 #include "Pila.h"
+#include <stdlib.h>
 
 void pushInt(int elemento,PilaDeInt *pila)
 {
@@ -24,6 +25,21 @@ int VerTope(PilaDeInt *pila)
 	return pila->contenedor[pila->tope-1];
 
 }
+
+void OrdenarPila(PilaDeInt *pila)
+
+{
+	qsort (pila->contenedor,(size_t) pila->tope,sizeof(int),comparar);
+}
+int comparar (const void * a, const void * b)
+{
+  if ( *(int*)a <  *(int*)b ) return -1;
+  if ( *(int*)a == *(int*)b ) return 0;
+  if ( *(int*)a >  *(int*)b ) return 1;
+}
+
+
+//Pila de colas
 
 void pushCola(ColaDeTercetos *c,PilaDeColas *pila)
 {

@@ -2,6 +2,7 @@
 #include "AnalizadorLexico.h"
 #include "tokens.h"
 #include "GCI.h"
+#include "Pila.h"
 
 
 /*Tabla de símbolos*/
@@ -9,6 +10,8 @@ extern tablaDeSimbolos TS[LONG_TS];
 extern int cantTokensEnTS;
 extern int cantTercetos;
 extern Terceto listaDeTercetos[MAX_TERCETOS];
+PilaDeInt PilaDeEtiquetas;
+
 
 /*Archivo Assembler*/
 FILE *fileAssembler;
@@ -75,6 +78,9 @@ void GeneracionCodigo()
 
 	//Inicio del codigo assembles del programa fuente
 	
+	//Ordeno la Pila de etiquetas
+	OrdenarPila(&PilaDeEtiquetas);
+
 	//recorro todos los tercetos
 	for(i=0;i<cantTercetos;i++)
 	{
@@ -92,14 +98,26 @@ void GeneracionCodigo()
 void GenerarAssemblerByTerceto(int idTerceto)
 {
 	//Creacion de las etiquetas
-	if(idTerceto==topeDeLaPila)
+	if(idTerceto==VerTope(&PilaDeEtiquetas))
 	{
 		fprintf(fileAssembler, "etiqueta_%d:\n", idTerceto);
+		popInt(&PilaDeEtiquetas);
 	}
 
-	//
 
+
+	if(listaDeTercetos[idTerceto].tipoDeX==INDICE_TS)
+	{
+		//ej. [2](a,_,_) -> subo el valor a el coprocesador
+		fprintf(fileAssembler,"FLD %s", TS[listaDeTercetos[idTerceto].x].nombre);
+	}
+	//VAMOS CON LOS TOKENS!!!!!
+	if(listaDeTercetos[idTerceto].tipoDeX==TOKEN)
+	{
+		//switch(listaDeTercetos[idTerceto].x
+	}
 	
 
 
-}
+
+	}

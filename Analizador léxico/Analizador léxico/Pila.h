@@ -1,5 +1,6 @@
 #include "Cola.h"
 
+
 #ifndef PILA_H
 #define PILA_H
 
@@ -16,6 +17,8 @@ void pushInt(int elemento,PilaDeInt *pila);
 int popInt(PilaDeInt *pila);
 void vaciarPilaDeInt(PilaDeInt *pila);
 int VerTope(PilaDeInt *pila);
+void OrdenarPila(PilaDeInt *pila);
+int comparar (const void* p1, const void* p2);
 
 struct PilaDeColas
 {
