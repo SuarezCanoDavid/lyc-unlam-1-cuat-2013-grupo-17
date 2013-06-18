@@ -2,7 +2,7 @@ VAR
 	[a,b,c]:[int,int,int]
 ENDVAR
 
-if(a > b)
+if(a > b and a <= c)
 	if(c > b)
 		a = a + 1;
 	else

@@ -3,6 +3,7 @@
 #include "Pila.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 FILE *salidaAS;
 FILE *archivo;
@@ -24,6 +25,10 @@ int aux = 0;
 
 PilaDeInt pilaExpresiones;
 PilaDeInt pilaCondiciones;
+PilaDeColas pilaColasTercetos;
+ColaDeTercetos *ptrColaTercetos;
+
+int tercetoInicial;
 
 Terceto tercetoAux;
 
@@ -447,7 +452,7 @@ iteracion_for:	PR_FOR
 
 				asignacion
 				{
-					++aux;
+					pushInt(cantTercetos,&pilaCondiciones);
 				}
 				
 				PUNTO_COMA
@@ -459,7 +464,7 @@ iteracion_for:	PR_FOR
 
 				condicion
 				{
-					++aux;
+					tercetoInicial = cantTercetos;
 				}
 				
 				PUNTO_COMA
@@ -469,7 +474,17 @@ iteracion_for:	PR_FOR
 
 				asignacion
 				{
-					++aux;
+					ptrColaTercetos = (ColaDeTercetos *)malloc(sizeof(ColaDeTercetos));
+
+					vaciarColaDeTercetos(ptrColaTercetos);
+
+					for(aux = tercetoInicial; aux < cantTercetos; ++aux)
+					{
+						encolarTerceto(&listaDeTercetos[aux],ptrColaTercetos);
+					}
+
+					pushCola(ptrColaTercetos,&pilaColasTercetos);
+					cantTercetos = tercetoInicial;
 				}
 				
 				PAR_CIERRA
@@ -478,13 +493,30 @@ iteracion_for:	PR_FOR
 				}
 
 				lista_sentencias
-				{
-					++aux;
-				}
 				
 				PR_ROF
 				{
 					fprintf(salidaAS,"ROF");
+
+					ptrColaTercetos = popCola(&pilaColasTercetos);
+					ajustarTercetos(ptrColaTercetos,cantTercetos);
+
+					while(colaDeTercetosEstaVacia(ptrColaTercetos) == FALSE)
+					{
+						crearTerceto(desencolarTerceto(ptrColaTercetos));
+					}
+
+					free(ptrColaTercetos);
+
+					aux = popInt(&pilaCondiciones);
+					listaDeTercetos[aux].y = cantTercetos + 1;
+					listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
+					
+					borrarTerceto(&tercetoAux);
+					tercetoAux.tipoDeX = JMP;
+					tercetoAux.y = popInt(&pilaCondiciones);
+					tercetoAux.tipoDeY = NRO_TERCETO;
+					crearTerceto(&tercetoAux);
 				};
 
 
@@ -1472,6 +1504,7 @@ int main(int argc, char *argv[])
 {
 	vaciarPilaDeInt(&pilaExpresiones);
 	vaciarPilaDeInt(&pilaCondiciones);
+	vaciarPilaDeCola(&pilaColasTercetos);
 
 	if(argc != 2)
 	{

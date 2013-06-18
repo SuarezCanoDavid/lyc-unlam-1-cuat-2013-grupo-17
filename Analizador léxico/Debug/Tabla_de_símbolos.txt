@@ -1,6 +1,7 @@
 0  a                                                 PR_INT                                                           0         
 1  b                                                 PR_INT                                                           0         
 2  c                                                 PR_INT                                                           0         
-3  _1                                                CTE_ENTERA     1.0                                               0         
-4  _2                                                CTE_ENTERA     2.0                                               0         
-5  _3                                                CTE_ENTERA     3.0                                               0         
+3  _0                                                CTE_ENTERA     0.0                                               0         
+4  _10                                               CTE_ENTERA     10.0                                              0         
+5  _1                                                CTE_ENTERA     1.0                                               0         
+6  _123                                              CTE_ENTERA     123.0                                             0         

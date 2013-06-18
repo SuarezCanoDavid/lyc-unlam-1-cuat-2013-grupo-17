@@ -1,4 +1,5 @@
 #include "Cola.h"
+#include "GCI.h"
 
 void vaciarColaDeTercetos(ColaDeTercetos *c)
 {
@@ -34,5 +35,28 @@ int colaDeTercetosEstaVacia(ColaDeTercetos *c)
 	else
 	{
 		return 0;
+	}
+}
+
+void ajustarTercetos(ColaDeTercetos *c,int ajuste)
+{
+	int i;
+
+	for(i = c->tercetoInicial; i < c->cantTercetos; ++i)
+	{
+		if(c->contenedor[i].tipoDeX == NRO_TERCETO)
+		{
+			c->contenedor[i].x = ajuste++;
+		}
+
+		if(c->contenedor[i].tipoDeY == NRO_TERCETO)
+		{
+			c->contenedor[i].y = ajuste++;
+		}
+
+		if(c->contenedor[i].tipoDeZ == NRO_TERCETO)
+		{
+			c->contenedor[i].z = ajuste++;
+		}
 	}
 }

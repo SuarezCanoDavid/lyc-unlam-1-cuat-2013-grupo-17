@@ -1,7 +1,13 @@
 VAR
-	[a,b,c]:[int,int]
-	[d,e,f]:[int,string,float,string]
-	[h,i]:[float,int]
+	[a,b,c]:[int,int,int]
 ENDVAR
 
-wprint(a);
+do
+	if(b == c)
+		for(a = 0; a < 10; a = a + 1)
+			b = c * a;
+		rof;
+		a = a - 10;
+	fi;
+	b = b + 1;
+while(b != a or c > 123);

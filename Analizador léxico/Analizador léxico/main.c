@@ -4,6 +4,7 @@
 #include "Pila.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 FILE *salidaAS;
 FILE *archivo;
@@ -25,6 +26,10 @@ int aux = 0;
 
 PilaDeInt pilaExpresiones;
 PilaDeInt pilaCondiciones;
+PilaDeColas pilaColasTercetos;
+ColaDeTercetos *ptrColaTercetos;
+
+int tercetoInicial;
 
 Terceto tercetoAux;
 
@@ -80,7 +85,7 @@ int registroBHUsado;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 1468 "main.y"
+# line 1507 "main.y"
 
 
 
@@ -88,6 +93,7 @@ int main(int argc, char *argv[])
 {
 	vaciarPilaDeInt(&pilaExpresiones);
 	vaciarPilaDeInt(&pilaCondiciones);
+	vaciarPilaDeCola(&pilaColasTercetos);
 
 	if(argc != 2)
 	{
@@ -771,72 +777,72 @@ yyparse()
     switch (m) { /* actions associated with grammar rules */
       
       case 1:
-# line 89 "main.y"
-      {
-      				++aux;
-      			} break;
-      case 2:
 # line 94 "main.y"
       {
       				++aux;
       			} break;
-      case 3:
+      case 2:
 # line 99 "main.y"
       {
       				++aux;
       			} break;
+      case 3:
+# line 104 "main.y"
+      {
+      				++aux;
+      			} break;
       case 4:
-# line 105 "main.y"
+# line 110 "main.y"
       {
       						fprintf(salidaAS,"VAR\n");
       					} break;
       case 5:
-# line 110 "main.y"
+# line 115 "main.y"
       {
       						++aux;
       					} break;
       case 6:
-# line 115 "main.y"
+# line 120 "main.y"
       {
       						fprintf(salidaAS,"ENDVAR\n");
       					} break;
       case 7:
-# line 121 "main.y"
+# line 126 "main.y"
       {
       					++aux;
       				} break;
       case 8:
-# line 126 "main.y"
+# line 131 "main.y"
       {
       					fprintf(salidaAS,"[");
       				} break;
       case 9:
-# line 131 "main.y"
+# line 136 "main.y"
       {
       					++aux;
       				} break;
       case 10:
-# line 136 "main.y"
+# line 141 "main.y"
       {
       					fprintf(salidaAS,"]");
       				} break;
       case 11:
-# line 141 "main.y"
+# line 146 "main.y"
       {
       					fprintf(salidaAS,":");
       				} break;
       case 12:
-# line 146 "main.y"
+# line 151 "main.y"
       {
       					fprintf(salidaAS,"[");
       				} break;
       case 13:
-# line 151 "main.y"
+# line 156 "main.y"
       {
       					++aux;
       				} break;
       case 14:
-# line 156 "main.y"
+# line 161 "main.y"
       {
       					fprintf(salidaAS,"]\n");
       	
@@ -849,37 +855,37 @@ yyparse()
       					cantTiposEnDeclaracion = 0;
       				} break;
       case 15:
-# line 169 "main.y"
+# line 174 "main.y"
       {
       					fprintf(salidaAS,"[");
       				} break;
       case 16:
-# line 174 "main.y"
+# line 179 "main.y"
       {
       					++aux;
       				} break;
       case 17:
-# line 179 "main.y"
+# line 184 "main.y"
       {
       					fprintf(salidaAS,"]");
       				} break;
       case 18:
-# line 184 "main.y"
+# line 189 "main.y"
       {
       					fprintf(salidaAS,":");
       				} break;
       case 19:
-# line 189 "main.y"
+# line 194 "main.y"
       {
       					fprintf(salidaAS,"[");
       				} break;
       case 20:
-# line 194 "main.y"
+# line 199 "main.y"
       {
       					++aux;
       				} break;
       case 21:
-# line 199 "main.y"
+# line 204 "main.y"
       {
       					fprintf(salidaAS,"]\n");
       	
@@ -892,303 +898,337 @@ yyparse()
       					cantTiposEnDeclaracion = 0;
       				} break;
       case 22:
-# line 213 "main.y"
+# line 218 "main.y"
       {
       						fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
       	
       						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
       					} break;
       case 23:
-# line 220 "main.y"
+# line 225 "main.y"
       {
       						fprintf(salidaAS,",");
       					} break;
       case 24:
-# line 225 "main.y"
+# line 230 "main.y"
       {
       						++aux;
       					} break;
       case 25:
-# line 230 "main.y"
+# line 235 "main.y"
       {
       						fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
       	
       						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
       					} break;
       case 26:
-# line 238 "main.y"
+# line 243 "main.y"
       {
       					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       				} break;
       case 27:
-# line 243 "main.y"
+# line 248 "main.y"
       {
       					fprintf(salidaAS,",");
       				} break;
       case 28:
-# line 248 "main.y"
+# line 253 "main.y"
       {
       					++aux;
       				} break;
       case 29:
-# line 253 "main.y"
+# line 258 "main.y"
       {
       					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       				} break;
       case 30:
-# line 259 "main.y"
+# line 264 "main.y"
       {
       			fprintf(salidaAS,"int");
       	
       			yyval = PR_INT;
       		} break;
       case 31:
-# line 266 "main.y"
+# line 271 "main.y"
       {
       			fprintf(salidaAS,"float");
       	
       			yyval = PR_FLOAT;
       		} break;
       case 32:
-# line 273 "main.y"
+# line 278 "main.y"
       {
       			fprintf(salidaAS,"string");
       	
       			yyval = PR_STRING;
       		} break;
       case 33:
-# line 281 "main.y"
+# line 286 "main.y"
       {
       						++aux;
       					} break;
       case 34:
-# line 287 "main.y"
-      {
-      						++aux;
-      					} break;
-      case 35:
 # line 292 "main.y"
       {
       						++aux;
       					} break;
-      case 36:
+      case 35:
 # line 297 "main.y"
+      {
+      						++aux;
+      					} break;
+      case 36:
+# line 302 "main.y"
       {
       						fprintf(salidaAS,";\n");
       					} break;
       case 37:
-# line 302 "main.y"
+# line 307 "main.y"
       {
       						++aux;
       					} break;
       case 38:
-# line 307 "main.y"
+# line 312 "main.y"
       {
       						fprintf(salidaAS,";\n");
       					} break;
       case 39:
-# line 313 "main.y"
-      {
-      				++aux;
-      			} break;
-      case 40:
 # line 318 "main.y"
       {
       				++aux;
       			} break;
-      case 41:
+      case 40:
 # line 323 "main.y"
       {
       				++aux;
       			} break;
-      case 42:
+      case 41:
 # line 328 "main.y"
       {
       				++aux;
       			} break;
-      case 43:
-# line 334 "main.y"
+      case 42:
+# line 333 "main.y"
       {
-      						++aux;
-      					} break;
-      case 44:
+      				++aux;
+      			} break;
+      case 43:
 # line 339 "main.y"
       {
       						++aux;
       					} break;
-      case 45:
+      case 44:
 # line 344 "main.y"
+      {
+      						++aux;
+      					} break;
+      case 45:
+# line 349 "main.y"
       {
       						fprintf(salidaAS,";\n");
       					} break;
       case 46:
-# line 349 "main.y"
+# line 354 "main.y"
       {
       						++aux;
       					} break;
       case 47:
-# line 354 "main.y"
+# line 359 "main.y"
       {
       						fprintf(salidaAS,";\n");
       					} break;
       case 48:
-# line 360 "main.y"
-      {
-      			++aux;
-      		} break;
-      case 49:
 # line 365 "main.y"
       {
       			++aux;
       		} break;
+      case 49:
+# line 370 "main.y"
+      {
+      			++aux;
+      		} break;
       case 50:
-# line 371 "main.y"
+# line 376 "main.y"
       {
       				++aux;
       			} break;
       case 51:
-# line 376 "main.y"
+# line 381 "main.y"
       {
       				fprintf(salidaAS,"\"%s\"",TS[yypvt[-0]].valor);
       			} break;
       case 52:
-# line 381 "main.y"
+# line 386 "main.y"
       {
       				fprintf(salidaAS,")");
       			} break;
       case 53:
-# line 386 "main.y"
+# line 391 "main.y"
       {
       				++aux;
       			} break;
       case 54:
-# line 391 "main.y"
+# line 396 "main.y"
       {
       				fprintf(salidaAS,"%s",TS[yypvt[-0]].valor);
       			} break;
       case 55:
-# line 396 "main.y"
+# line 401 "main.y"
       {
       				fprintf(salidaAS,")");
       			} break;
       case 56:
-# line 402 "main.y"
+# line 407 "main.y"
       {
       				++aux;
       			} break;
       case 57:
-# line 407 "main.y"
+# line 412 "main.y"
       {
       				fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
       			} break;
       case 58:
-# line 412 "main.y"
+# line 417 "main.y"
       {
       				fprintf(salidaAS,")");
       			} break;
       case 59:
-# line 417 "main.y"
+# line 422 "main.y"
       {
       					fprintf(salidaAS,"WPRINT");
       				} break;
       case 60:
-# line 422 "main.y"
+# line 427 "main.y"
       {
       					fprintf(salidaAS,"(");
       				} break;
       case 61:
-# line 428 "main.y"
-      {
-      				++aux;
-      			} break;
-      case 62:
 # line 433 "main.y"
       {
       				++aux;
       			} break;
+      case 62:
+# line 438 "main.y"
+      {
+      				++aux;
+      			} break;
       case 63:
-# line 439 "main.y"
+# line 444 "main.y"
       {
       					fprintf(salidaAS,"FOR");
       				} break;
       case 64:
-# line 444 "main.y"
+# line 449 "main.y"
       {
       					fprintf(salidaAS,"(");
       				} break;
       case 65:
-# line 449 "main.y"
+# line 454 "main.y"
       {
       					++aux;
+      
+					pushInt(cantTercetos,&pilaCondiciones);
       				} break;
       case 66:
-# line 454 "main.y"
+# line 461 "main.y"
       {
       					fprintf(salidaAS,";");
       
 					registroBHUsado = FALSE;
       				} break;
       case 67:
-# line 461 "main.y"
+# line 468 "main.y"
       {
       					++aux;
+      					
+      					tercetoInicial = cantTercetos;
       				} break;
       case 68:
-# line 466 "main.y"
+# line 475 "main.y"
       {
       					fprintf(salidaAS,";");
       				} break;
       case 69:
-# line 471 "main.y"
+# line 480 "main.y"
       {
-      					++aux;
+      					ptrColaTercetos = (ColaDeTercetos *)malloc(sizeof(ColaDeTercetos));
+      
+					vaciarColaDeTercetos(ptrColaTercetos);
+      
+					for(aux = tercetoInicial; aux < cantTercetos; ++aux)
+      					{
+      						encolarTerceto(&listaDeTercetos[aux],ptrColaTercetos);
+      					}
+      
+					pushCola(ptrColaTercetos,&pilaColasTercetos);
+      					cantTercetos = tercetoInicial;
       				} break;
       case 70:
-# line 476 "main.y"
+# line 495 "main.y"
       {
       					fprintf(salidaAS,")\n");
       				} break;
       case 71:
-# line 481 "main.y"
+# line 500 "main.y"
       {
       					++aux;
       				} break;
       case 72:
-# line 486 "main.y"
+# line 505 "main.y"
       {
       					fprintf(salidaAS,"ROF");
+      
+					ptrColaTercetos = popCola(&pilaColasTercetos);
+      					ajustarTercetos(ptrColaTercetos,cantTercetos);
+      
+					while(colaDeTercetosEstaVacia(ptrColaTercetos) == FALSE)
+      					{
+      						crearTerceto(desencolarTerceto(ptrColaTercetos));
+      					}
+      
+					free(ptrColaTercetos);
+      
+					aux = popInt(&pilaCondiciones);
+      					listaDeTercetos[aux].y = cantTercetos + 1;
+      					listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
+      					
+      					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = JMP;
+      					tercetoAux.y = popInt(&pilaCondiciones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
       				} break;
       case 73:
-# line 492 "main.y"
+# line 531 "main.y"
       {
       						fprintf(salidaAS,"DO\n");
       
 						pushInt(cantTercetos,&pilaCondiciones);
       					} break;
       case 74:
-# line 499 "main.y"
+# line 538 "main.y"
       {
       						++aux;
       					} break;
       case 75:
-# line 504 "main.y"
+# line 543 "main.y"
       {
       						fprintf(salidaAS,"WHILE");
       					} break;
       case 76:
-# line 509 "main.y"
+# line 548 "main.y"
       {
       						fprintf(salidaAS,"(");
       
 						registroBHUsado = FALSE;
       					} break;
       case 77:
-# line 516 "main.y"
+# line 555 "main.y"
       {
       						++aux;
       					} break;
       case 78:
-# line 521 "main.y"
+# line 560 "main.y"
       {
       						fprintf(salidaAS,")");
       
@@ -1198,44 +1238,44 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 79:
-# line 532 "main.y"
+# line 571 "main.y"
       {
       				++aux;
       			} break;
       case 80:
-# line 537 "main.y"
+# line 576 "main.y"
       {
       				++aux;
       			} break;
       case 81:
-# line 542 "main.y"
+# line 581 "main.y"
       {
       						fprintf(salidaAS,"IF");
       					} break;
       case 82:
-# line 547 "main.y"
+# line 586 "main.y"
       {
       						fprintf(salidaAS,"(");
       
 						registroBHUsado = FALSE;
       					} break;
       case 83:
-# line 554 "main.y"
+# line 593 "main.y"
       {
       						++aux;
       					} break;
       case 84:
-# line 559 "main.y"
+# line 598 "main.y"
       {
       						fprintf(salidaAS,")\n");
       					} break;
       case 85:
-# line 564 "main.y"
+# line 603 "main.y"
       {
       						++aux;
       					} break;
       case 86:
-# line 569 "main.y"
+# line 608 "main.y"
       {
       						fprintf(salidaAS,"FI");
       
@@ -1244,7 +1284,7 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 87:
-# line 578 "main.y"
+# line 617 "main.y"
       {
       						fprintf(salidaAS,"ELSE\n");
       
@@ -1256,12 +1296,12 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 88:
-# line 590 "main.y"
+# line 629 "main.y"
       {
       						++aux;
       					} break;
       case 89:
-# line 595 "main.y"
+# line 634 "main.y"
       {
       						fprintf(salidaAS,"FI");
       
@@ -1270,7 +1310,7 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 90:
-# line 605 "main.y"
+# line 644 "main.y"
       {
       				fprintf(salidaAS,"(=%d)",yypvt[-2]);
       				printf("1 ASIGNACION -> ID := ASIGNACION\n");
@@ -1289,7 +1329,7 @@ yyparse()
 				yyval = yypvt[-2];
       			} break;
       case 91:
-# line 624 "main.y"
+# line 663 "main.y"
       {
       				fprintf(salidaAS,"(=%d)",yypvt[-2]);
       				printf("1 ASIGNACION -> ID := EXPRESION\n");
@@ -1306,32 +1346,32 @@ yyparse()
 				yyval = yypvt[-2];
       			} break;
       case 94:
-# line 645 "main.y"
+# line 684 "main.y"
       {
       					++aux;
       				} break;
       case 95:
-# line 650 "main.y"
+# line 689 "main.y"
       {
       					fprintf(salidaAS," ++ "); 
       				} break;
       case 96:
-# line 655 "main.y"
+# line 694 "main.y"
       {
       					++aux;
       				} break;
       case 97:
-# line 660 "main.y"
+# line 699 "main.y"
       {
       									fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
       								} break;
       case 98:
-# line 665 "main.y"
+# line 704 "main.y"
       {
       									fprintf(salidaAS,"\"%s\"",TS[yypvt[-0]].valor);
       								} break;
       case 99:
-# line 671 "main.y"
+# line 710 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
@@ -1353,17 +1393,17 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 100:
-# line 693 "main.y"
+# line 732 "main.y"
       {
       				++aux;
       			} break;
       case 101:
-# line 698 "main.y"
+# line 737 "main.y"
       {
       				fprintf(salidaAS," AND ");
       			} break;
       case 102:
-# line 703 "main.y"
+# line 742 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_AND;
@@ -1377,17 +1417,17 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 103:
-# line 717 "main.y"
+# line 756 "main.y"
       {
       				++aux;
       			} break;
       case 104:
-# line 722 "main.y"
+# line 761 "main.y"
       {
       				fprintf(salidaAS," OR ");
       			} break;
       case 105:
-# line 727 "main.y"
+# line 766 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_OR;
@@ -1401,22 +1441,22 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 106:
-# line 741 "main.y"
+# line 780 "main.y"
       {
       				fprintf(salidaAS," NOT ");
       			} break;
       case 107:
-# line 746 "main.y"
+# line 785 "main.y"
       {
       				fprintf(salidaAS,"(");
       			} break;
       case 108:
-# line 751 "main.y"
+# line 790 "main.y"
       {
       				++aux;
       			} break;
       case 109:
-# line 756 "main.y"
+# line 795 "main.y"
       {
       				fprintf(salidaAS,")");
       
@@ -1431,17 +1471,17 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 110:
-# line 772 "main.y"
+# line 811 "main.y"
       {
       					++aux;
       				} break;
       case 111:
-# line 777 "main.y"
+# line 816 "main.y"
       {
       					fprintf(salidaAS," > ");
       				} break;
       case 112:
-# line 782 "main.y"
+# line 821 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
@@ -1482,17 +1522,17 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 113:
-# line 823 "main.y"
+# line 862 "main.y"
       {
       					++aux;
       				} break;
       case 114:
-# line 828 "main.y"
+# line 867 "main.y"
       {
       					fprintf(salidaAS," >= ");
       				} break;
       case 115:
-# line 833 "main.y"
+# line 872 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
@@ -1533,17 +1573,17 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 116:
-# line 874 "main.y"
+# line 913 "main.y"
       {
       					++aux;
       				} break;
       case 117:
-# line 879 "main.y"
+# line 918 "main.y"
       {
       					fprintf(salidaAS," < ");
       				} break;
       case 118:
-# line 884 "main.y"
+# line 923 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
@@ -1584,17 +1624,17 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 119:
-# line 925 "main.y"
+# line 964 "main.y"
       {
       					++aux;
       				} break;
       case 120:
-# line 930 "main.y"
+# line 969 "main.y"
       {
       					fprintf(salidaAS," <= ");
       				} break;
       case 121:
-# line 935 "main.y"
+# line 974 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
@@ -1635,17 +1675,17 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 122:
-# line 976 "main.y"
+# line 1015 "main.y"
       {
       					++aux;
       				} break;
       case 123:
-# line 981 "main.y"
+# line 1020 "main.y"
       {
       					fprintf(salidaAS," == ");
       				} break;
       case 124:
-# line 986 "main.y"
+# line 1025 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
@@ -1686,17 +1726,17 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 125:
-# line 1027 "main.y"
+# line 1066 "main.y"
       {
       					++aux;
       				} break;
       case 126:
-# line 1032 "main.y"
+# line 1071 "main.y"
       {
       					fprintf(salidaAS," != ");
       				} break;
       case 127:
-# line 1037 "main.y"
+# line 1076 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
@@ -1737,17 +1777,17 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 128:
-# line 1079 "main.y"
+# line 1118 "main.y"
       {
       				++aux;
       			} break;
       case 129:
-# line 1084 "main.y"
+# line 1123 "main.y"
       {
       				fprintf(salidaAS," + ");
       			} break;
       case 130:
-# line 1089 "main.y"
+# line 1128 "main.y"
       {
       				yyval = yypvt[-4] + yypvt[-0];
       				printf("2 EXPRESION -> EXPRESION + TERMINO\n");
@@ -1762,17 +1802,17 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       			} break;
       case 131:
-# line 1104 "main.y"
+# line 1143 "main.y"
       {
       				++aux;
       			} break;
       case 132:
-# line 1109 "main.y"
+# line 1148 "main.y"
       {
       				fprintf(salidaAS," - ");
       			} break;
       case 133:
-# line 1114 "main.y"
+# line 1153 "main.y"
       {
       				yyval = yypvt[-4] - yypvt[-0];
       
@@ -1786,23 +1826,23 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       			} break;
       case 134:
-# line 1128 "main.y"
+# line 1167 "main.y"
       {
       				++aux;
       				printf("3 EXPRESION -> TERMINO\n");
       			} break;
       case 135:
-# line 1135 "main.y"
+# line 1174 "main.y"
       {
       				++aux;
       			} break;
       case 136:
-# line 1140 "main.y"
+# line 1179 "main.y"
       {
       				fprintf(salidaAS," * ");
       			} break;
       case 137:
-# line 1145 "main.y"
+# line 1184 "main.y"
       {
       				yyval = yypvt[-4] * yypvt[-0];
       				printf("4 TERMINO -> TERMINO * FACTOR\n");
@@ -1817,17 +1857,17 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       			} break;
       case 138:
-# line 1160 "main.y"
+# line 1199 "main.y"
       {
       				++aux;
       			} break;
       case 139:
-# line 1165 "main.y"
+# line 1204 "main.y"
       {
       				fprintf(salidaAS," / ");
       			} break;
       case 140:
-# line 1170 "main.y"
+# line 1209 "main.y"
       {
       				yyval = yypvt[-4] / yypvt[-0];
       
@@ -1841,13 +1881,13 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       			} break;
       case 141:
-# line 1184 "main.y"
+# line 1223 "main.y"
       {
       				yyval = yypvt[-0];
       				printf("5 TERMINO -> FACTOR\n");
       			} break;
       case 142:
-# line 1191 "main.y"
+# line 1230 "main.y"
       {
       			fprintf(salidaAS,"%s",TS[yypvt[-0]].nombre);
       			printf("6 FACTOR -> ID (%s)\n",TS[yypvt[-0]].nombre);
@@ -1860,7 +1900,7 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       		} break;
       case 143:
-# line 1204 "main.y"
+# line 1243 "main.y"
       {
       			fprintf(salidaAS,"%s",TS[yypvt[-0]].valor);
       			yyval = atoi(TS[yypvt[-0]].valor);
@@ -1874,7 +1914,7 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       		} break;
       case 144:
-# line 1218 "main.y"
+# line 1257 "main.y"
       {	
       			fprintf(salidaAS,"%s",TS[yypvt[-0]].valor);
       			yyval = atoi(TS[yypvt[-0]].valor);
@@ -1887,17 +1927,17 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       		} break;
       case 145:
-# line 1231 "main.y"
+# line 1270 "main.y"
       {
       			fprintf(salidaAS,"(");
       		} break;
       case 146:
-# line 1236 "main.y"
+# line 1275 "main.y"
       {
       			++aux;
       		} break;
       case 147:
-# line 1241 "main.y"
+# line 1280 "main.y"
       {
       			fprintf(salidaAS,")");
       			yyval = yypvt[-2];
@@ -1911,212 +1951,212 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
       		} break;
       case 148:
-# line 1255 "main.y"
+# line 1294 "main.y"
       {
       			++aux;
       		} break;
       case 149:
-# line 1261 "main.y"
+# line 1300 "main.y"
       {
       				fprintf(salidaAS,"FILTERC");
       			} break;
       case 150:
-# line 1266 "main.y"
+# line 1305 "main.y"
       {
       				fprintf(salidaAS,"(");
       			} break;
       case 151:
-# line 1271 "main.y"
+# line 1310 "main.y"
       {
       				++aux;
       			} break;
       case 152:
-# line 1276 "main.y"
+# line 1315 "main.y"
       {
       				fprintf(salidaAS,",");
       			} break;
       case 153:
-# line 1281 "main.y"
+# line 1320 "main.y"
       {
       				fprintf(salidaAS,"[");
       			} break;
       case 154:
-# line 1286 "main.y"
+# line 1325 "main.y"
       {
       				++aux;
       			} break;
       case 155:
-# line 1291 "main.y"
+# line 1330 "main.y"
       {
       				fprintf(salidaAS,"]");
       			} break;
       case 156:
-# line 1296 "main.y"
+# line 1335 "main.y"
       {
       				fprintf(salidaAS,")");
       			} break;
       case 157:
-# line 1302 "main.y"
+# line 1341 "main.y"
       {
       					++aux;
       				} break;
       case 158:
-# line 1307 "main.y"
+# line 1346 "main.y"
       {
       					++aux;
       				} break;
       case 159:
-# line 1312 "main.y"
+# line 1351 "main.y"
       {
       					fprintf(salidaAS," AND ");
       				} break;
       case 160:
-# line 1317 "main.y"
+# line 1356 "main.y"
       {
       					++aux;
       				} break;
       case 161:
-# line 1322 "main.y"
+# line 1361 "main.y"
       {
       					++aux;
       				} break;
       case 162:
-# line 1327 "main.y"
+# line 1366 "main.y"
       {
       					fprintf(salidaAS," OR ");
       				} break;
       case 163:
-# line 1332 "main.y"
+# line 1371 "main.y"
       {
       					++aux;
       				} break;
       case 164:
-# line 1337 "main.y"
+# line 1376 "main.y"
       {
       					fprintf(salidaAS,"NOT");
       				} break;
       case 165:
-# line 1342 "main.y"
+# line 1381 "main.y"
       {
       					fprintf(salidaAS,"(");
       				} break;
       case 166:
-# line 1347 "main.y"
+# line 1386 "main.y"
       {
       					++aux;
       				} break;
       case 167:
-# line 1352 "main.y"
+# line 1391 "main.y"
       {
       					fprintf(salidaAS,")");
       				} break;
       case 168:
-# line 1358 "main.y"
+# line 1397 "main.y"
       {
       					fprintf(salidaAS,"_");
       				} break;
       case 169:
-# line 1363 "main.y"
+# line 1402 "main.y"
       {
       					fprintf(salidaAS," > ");
       				} break;
       case 170:
-# line 1368 "main.y"
+# line 1407 "main.y"
       {
       					++aux;
       				} break;
       case 171:
-# line 1373 "main.y"
+# line 1412 "main.y"
       {
       					fprintf(salidaAS,"_");
       				} break;
       case 172:
-# line 1378 "main.y"
+# line 1417 "main.y"
       {
       					fprintf(salidaAS," >= ");
       				} break;
       case 173:
-# line 1383 "main.y"
+# line 1422 "main.y"
       {
       					++aux;
       				} break;
       case 174:
-# line 1388 "main.y"
+# line 1427 "main.y"
       {
       					fprintf(salidaAS,"_");
       				} break;
       case 175:
-# line 1393 "main.y"
+# line 1432 "main.y"
       {
       					fprintf(salidaAS," < ");
       				} break;
       case 176:
-# line 1398 "main.y"
+# line 1437 "main.y"
       {
       					++aux;
       				} break;
       case 177:
-# line 1403 "main.y"
+# line 1442 "main.y"
       {
       					fprintf(salidaAS,"_");
       				} break;
       case 178:
-# line 1408 "main.y"
+# line 1447 "main.y"
       {
       					fprintf(salidaAS," <= ");
       				} break;
       case 179:
-# line 1413 "main.y"
+# line 1452 "main.y"
       {
       					++aux;
       				} break;
       case 180:
-# line 1418 "main.y"
+# line 1457 "main.y"
       {
       					fprintf(salidaAS,"_");
       				} break;
       case 181:
-# line 1423 "main.y"
+# line 1462 "main.y"
       {
       					fprintf(salidaAS," == ");
       				} break;
       case 182:
-# line 1428 "main.y"
+# line 1467 "main.y"
       {
       					++aux;
       				} break;
       case 183:
-# line 1433 "main.y"
+# line 1472 "main.y"
       {
       					fprintf(salidaAS,"_");
       				} break;
       case 184:
-# line 1438 "main.y"
+# line 1477 "main.y"
       {
       					fprintf(salidaAS," != ");
       				} break;
       case 185:
-# line 1443 "main.y"
+# line 1482 "main.y"
       {
       					++aux;
       				} break;
       case 186:
-# line 1449 "main.y"
+# line 1488 "main.y"
       {
       						++aux;
       					} break;
       case 187:
-# line 1454 "main.y"
+# line 1493 "main.y"
       {
       						fprintf(salidaAS,",");
       					} break;
       case 188:
-# line 1459 "main.y"
+# line 1498 "main.y"
       {
       						++aux;
       					} break;
       case 189:
-# line 1464 "main.y"
+# line 1503 "main.y"
       {
       						++aux;
       					} break;    }

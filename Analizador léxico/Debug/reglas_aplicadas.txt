@@ -1,14 +1,12 @@
 VAR
 [a,b,c]:[int,int,int]
 ENDVAR
-IF(a > b)
-IF(c > b)
-a + 1.0(=0);
-ELSE
-b + 2.0(=1);
+DO
+IF(b == c)
+FOR(0.0(=0);a < 10.0;a + 1.0(=0))
+c * a(=1);
+ROF;
+a - 10.0(=0);
 FI;
-ELSE
-IF(a < c)
-c + 3.0(=2);
-FI;
-FI;
+b + 1.0(=1);
+WHILE(b != a OR c > 123.0);

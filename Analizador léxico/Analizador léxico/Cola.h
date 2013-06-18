@@ -17,5 +17,6 @@ void vaciarColaDeTercetos(ColaDeTercetos *c);
 void encolarTerceto(Terceto *t,ColaDeTercetos *c);
 Terceto *desencolarTerceto(ColaDeTercetos *c);
 int colaDeTercetosEstaVacia(ColaDeTercetos *c);
+void ajustarTercetos(ColaDeTercetos *c,int ajuste);
 
 #endif
