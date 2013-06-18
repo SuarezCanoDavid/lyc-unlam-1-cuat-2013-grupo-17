@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnalizadorLexico.c" />
+    <ClCompile Include="Cola.c" />
     <ClCompile Include="gca.c" />
     <ClCompile Include="GCI.c" />
     <ClCompile Include="main.c" />
@@ -83,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnalizadorLexico.h" />
+    <ClInclude Include="Cola.h" />
     <ClInclude Include="gca.h" />
     <ClInclude Include="GCI.h" />
     <ClInclude Include="Pila.h" />

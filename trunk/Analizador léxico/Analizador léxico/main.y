@@ -1,7 +1,6 @@
 %{
 #include "AnalizadorLexico.h"
 #include "Pila.h"
-#include "GCI.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -23,8 +22,8 @@ extern int lineaActual;
 
 int aux = 0;
 
-Pila pilaExpresiones;
-Pila pilaCondiciones;
+PilaDeInt pilaExpresiones;
+PilaDeInt pilaCondiciones;
 
 Terceto tercetoAux;
 
@@ -493,7 +492,7 @@ iteracion_dowhile:	PR_DO
 					{
 						fprintf(salidaAS,"DO\n");
 
-						push(cantTercetos,&pilaCondiciones);
+						pushInt(cantTercetos,&pilaCondiciones);
 					}
 
 					lista_sentencias
@@ -522,9 +521,9 @@ iteracion_dowhile:	PR_DO
 					{
 						fprintf(salidaAS,")");
 
-						aux = pop(&pilaCondiciones);
+						aux = popInt(&pilaCondiciones);
 						listaDeTercetos[aux].tipoDeX = JNZ;
-						listaDeTercetos[aux].y = pop(&pilaCondiciones);
+						listaDeTercetos[aux].y = popInt(&pilaCondiciones);
 						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
 					};
 
@@ -570,7 +569,7 @@ decision_parte_B:	PR_FI
 					{
 						fprintf(salidaAS,"FI");
 
-						aux = pop(&pilaCondiciones);
+						aux = popInt(&pilaCondiciones);
 						listaDeTercetos[aux].y = cantTercetos;
 						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
 					};
@@ -580,9 +579,9 @@ decision_parte_B:	PR_ELSE
 						fprintf(salidaAS,"ELSE\n");
 
 						borrarTerceto(&tercetoAux);
-						aux = pop(&pilaCondiciones);
+						aux = popInt(&pilaCondiciones);
 						tercetoAux.tipoDeX = JMP;
-						push(crearTerceto(&tercetoAux),&pilaCondiciones);
+						pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 						listaDeTercetos[aux].y = cantTercetos;
 						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
 					}
@@ -596,7 +595,7 @@ decision_parte_B:	PR_ELSE
 					{
 						fprintf(salidaAS,"FI");
 
-						aux = pop(&pilaCondiciones);
+						aux = popInt(&pilaCondiciones);
 						listaDeTercetos[aux].y = cantTercetos;
 						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
 					};
@@ -630,7 +629,7 @@ asignacion: ID OP_ASIGNACION expresion
 				tercetoAux.tipoDeX = TOKEN;
 				tercetoAux.y = $1;
 				tercetoAux.tipoDeY = INDICE_TS;
-				tercetoAux.z = pop(&pilaExpresiones);
+				tercetoAux.z = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeZ = NRO_TERCETO; 
 
 				crearTerceto(&tercetoAux);
@@ -687,7 +686,7 @@ condicion:	proposicion
 
 				borrarTerceto(&tercetoAux);
 				tercetoAux.tipoDeX = JZ;
-				push(crearTerceto(&tercetoAux),&pilaCondiciones);
+				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
 
 condicion:	proposicion
@@ -711,7 +710,7 @@ condicion:	proposicion
 
 				borrarTerceto(&tercetoAux);
 				tercetoAux.tipoDeX = JZ;
-				push(crearTerceto(&tercetoAux),&pilaCondiciones);
+				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
 
 condicion:	proposicion
@@ -735,7 +734,7 @@ condicion:	proposicion
 
 				borrarTerceto(&tercetoAux);
 				tercetoAux.tipoDeX = JZ;
-				push(crearTerceto(&tercetoAux),&pilaCondiciones);
+				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
 
 condicion:	PR_NOT
@@ -765,7 +764,7 @@ condicion:	PR_NOT
 
 				borrarTerceto(&tercetoAux);
 				tercetoAux.tipoDeX = JZ;
-				push(crearTerceto(&tercetoAux),&pilaCondiciones);
+				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
 
 
@@ -1093,12 +1092,12 @@ expresion:	expresion
 
 				tercetoAux.x = OP_SUMA;
 				tercetoAux.tipoDeX = TOKEN;
-				tercetoAux.z = pop(&pilaExpresiones);
+				tercetoAux.z = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeZ = NRO_TERCETO;
-				tercetoAux.y = pop(&pilaExpresiones);
+				tercetoAux.y = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
-				push(crearTerceto(&tercetoAux),&pilaExpresiones);
+				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 			};
 
 expresion:	expresion
@@ -1117,12 +1116,12 @@ expresion:	expresion
 
 				tercetoAux.x = OP_RESTA;
 				tercetoAux.tipoDeX = TOKEN;
-				tercetoAux.z = pop(&pilaExpresiones);
+				tercetoAux.z = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeZ = NRO_TERCETO;
-				tercetoAux.y = pop(&pilaExpresiones);
+				tercetoAux.y = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
-				push(crearTerceto(&tercetoAux),&pilaExpresiones);
+				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 			};
 
 expresion:	termino
@@ -1149,12 +1148,12 @@ termino:	termino
 
 				tercetoAux.x = OP_MULTIPLICACION;
 				tercetoAux.tipoDeX = TOKEN;
-				tercetoAux.z = pop(&pilaExpresiones);
+				tercetoAux.z = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeZ = NRO_TERCETO;
-				tercetoAux.y = pop(&pilaExpresiones);
+				tercetoAux.y = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
-				push(crearTerceto(&tercetoAux),&pilaExpresiones);
+				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 			};
 
 termino:	termino
@@ -1173,12 +1172,12 @@ termino:	termino
 
 				tercetoAux.x = OP_DIVISION;
 				tercetoAux.tipoDeX = TOKEN;
-				tercetoAux.z = pop(&pilaExpresiones);
+				tercetoAux.z = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeZ = NRO_TERCETO;
-				tercetoAux.y = pop(&pilaExpresiones);
+				tercetoAux.y = popInt(&pilaExpresiones);
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
-				push(crearTerceto(&tercetoAux),&pilaExpresiones);
+				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 			};
 
 termino:	factor
@@ -1198,7 +1197,7 @@ factor:	ID
 			tercetoAux.tipoDeY = IGNORAR;
 			tercetoAux.tipoDeZ = IGNORAR;
 
-			push(crearTerceto(&tercetoAux),&pilaExpresiones);
+			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 		};
 
 factor: CTE_ENTERA
@@ -1212,7 +1211,7 @@ factor: CTE_ENTERA
 			tercetoAux.tipoDeY = IGNORAR;
 			tercetoAux.tipoDeZ = IGNORAR;
 
-			push(crearTerceto(&tercetoAux),&pilaExpresiones);
+			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 		};
 
 factor: CTE_REAL
@@ -1225,7 +1224,7 @@ factor: CTE_REAL
 			tercetoAux.tipoDeY = IGNORAR;
 			tercetoAux.tipoDeZ = IGNORAR;
 
-			push(crearTerceto(&tercetoAux),&pilaExpresiones);
+			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 		};
 
 factor: PAR_ABRE
@@ -1244,12 +1243,12 @@ factor: PAR_ABRE
 			$$ = $3;
 			printf("8 FACTOR -> ( EXPRESION )\n");
 
-			tercetoAux.x = pop(&pilaExpresiones);
+			tercetoAux.x = popInt(&pilaExpresiones);
 			tercetoAux.tipoDeX = NRO_TERCETO;
 			tercetoAux.tipoDeY = IGNORAR;
 			tercetoAux.tipoDeZ = IGNORAR;
 
-			push(crearTerceto(&tercetoAux),&pilaExpresiones);
+			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 		};
 
 factor: filterc
@@ -1471,8 +1470,8 @@ lista_expresiones:	expresion
 
 int main(int argc, char *argv[])
 {
-	vaciar(&pilaExpresiones);
-	vaciar(&pilaCondiciones);
+	vaciarPilaDeInt(&pilaExpresiones);
+	vaciarPilaDeInt(&pilaCondiciones);
 
 	if(argc != 2)
 	{

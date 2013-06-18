@@ -1,13 +1,14 @@
 VAR
-[contador,mensaje,resultado]:[int,string,int]
+[a,b,c]:[int,int,int]
 ENDVAR
-IF( NOT (contador + 5.0 <= 20.0))
-IF(resultado != contador OR contador >= 56.0)
-0.0(=0);
-FI;
-5.0(=2);
+IF(a > b)
+IF(c > b)
+a + 1.0(=0);
 ELSE
-DO
-resultado + 1.0(=2);
-WHILE(resultado < 20.0);
+b + 2.0(=1);
+FI;
+ELSE
+IF(a < c)
+c + 3.0(=2);
+FI;
 FI;
