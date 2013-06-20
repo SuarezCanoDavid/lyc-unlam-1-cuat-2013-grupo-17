@@ -31,11 +31,24 @@ void OrdenarPila(PilaDeInt *pila)
 {
 	qsort (pila->contenedor,(size_t) pila->tope,sizeof(int),comparar);
 }
+
 int comparar (const void * a, const void * b)
 {
-  if ( *(int*)a <  *(int*)b ) return -1;
-  if ( *(int*)a == *(int*)b ) return 0;
-  if ( *(int*)a >  *(int*)b ) return 1;
+	if( *(int*)a <  *(int*)b )
+	{ 
+		return -1;
+	}
+	else 
+	{	  
+		if( *(int*)a == *(int*)b )
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
+		}
+	}
 }
 
 

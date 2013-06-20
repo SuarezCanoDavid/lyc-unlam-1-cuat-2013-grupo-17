@@ -1,14 +1,1 @@
-VAR
-[a,b,c]:[int,int,int]
-ENDVAR
-IF(a > b AND a <= c)
-IF(c > b)
-a + 1.0(=0);
-ELSE
-b + 2.0(=1);
-FI;
-ELSE
-IF(a < c)
-c + 3.0(=2);
-FI;
-FI;
+]
