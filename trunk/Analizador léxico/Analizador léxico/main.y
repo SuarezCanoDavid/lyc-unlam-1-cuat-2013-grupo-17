@@ -90,74 +90,18 @@ int registroBHUsado;
 %start programa
 
 %%
-programa:	bloque_declaracion
-			{
-				++aux;
-			}
-
-			bloque_ejecucion
+programa:	bloque_declaracion bloque_ejecucion
 			{
 				GenerarAssembler();
 			};
 
-programa:	lista_wprints_cte
-			{
-				++aux;
-			};
+programa:	lista_wprints_cte;
 
 
-bloque_declaracion: PR_VAR
-					{
-						fprintf(salidaAS,"VAR\n");
-					}
-						
-					declaracion
-					{
-						++aux;
-					}
-
-					PR_ENDVAR
-					{
-						fprintf(salidaAS,"ENDVAR\n");
-					};
+bloque_declaracion: PR_VAR declaracion PR_ENDVAR;
 
 
-declaracion:	declaracion
-				{
-					++aux;
-				}
-
-				COR_ABRE
-				{
-					fprintf(salidaAS,"[");
-				} 
-
-				lista_variables
-				{
-					++aux;
-				} 
-
-				COR_CIERRA
-				{
-					fprintf(salidaAS,"]");
-				}
-
-				DOS_PUNTOS
-				{
-					fprintf(salidaAS,":");
-				}
-
-				COR_ABRE
-				{
-					fprintf(salidaAS,"[");
-				}
-				
-				lista_tipos
-				{
-					++aux;
-				}
-				
-				COR_CIERRA
+declaracion:	declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
 				{
 					fprintf(salidaAS,"]\n");
 	
@@ -170,37 +114,7 @@ declaracion:	declaracion
 					cantTiposEnDeclaracion = 0;
 				};
 
-declaracion:	COR_ABRE
-				{
-					fprintf(salidaAS,"[");
-				} 
-
-				lista_variables
-				{
-					++aux;
-				} 
-
-				COR_CIERRA
-				{
-					fprintf(salidaAS,"]");
-				}
-
-				DOS_PUNTOS
-				{
-					fprintf(salidaAS,":");
-				}
-
-				COR_ABRE
-				{
-					fprintf(salidaAS,"[");
-				}
-				
-				lista_tipos
-				{
-					++aux;
-				}
-				
-				COR_CIERRA
+declaracion:	COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
 				{
 					fprintf(salidaAS,"]\n");
 	
@@ -214,44 +128,20 @@ declaracion:	COR_ABRE
 				};
 
 
-lista_variables:	ID
+lista_variables:	ID COMA lista_variables
 					{
-						fprintf(salidaAS,"%s",TS[$1].nombre);
-	
 						posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
-					}
-
-					COMA
-					{
-						fprintf(salidaAS,",");
-					}
-					
-					lista_variables
-					{
-						++aux;
 					};
 
 lista_variables:	ID
 					{
-						fprintf(salidaAS,"%s",TS[$1].nombre);
-	
 						posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
 					};
 
 
-lista_tipos:	tipo
+lista_tipos:	tipo COMA lista_tipos
 				{
 					tipoDeID[cantTiposEnDeclaracion++] = $1;
-				}
-
-				COMA
-				{
-					fprintf(salidaAS,",");
-				}
-
-				lista_tipos
-				{
-					++aux;
 				};
 
 lista_tipos:	tipo
@@ -262,193 +152,65 @@ lista_tipos:	tipo
 
 tipo:	PR_INT
 		{
-			fprintf(salidaAS,"int");
-	
 			$$ = PR_INT;
 		};
 
 tipo:	PR_FLOAT
 		{
-			fprintf(salidaAS,"float");
-	
 			$$ = PR_FLOAT;
 		};
 
 tipo:	PR_STRING
 		{
-			fprintf(salidaAS,"string");
-	
 			$$ = PR_STRING;
 		};
 
 
-bloque_ejecucion:	lista_sentencias
-					{
-						++aux;
-					};
+bloque_ejecucion:	lista_sentencias;
 
 
-lista_sentencias:	lista_sentencias
-					{
-						++aux;
-					}
+lista_sentencias:	lista_sentencias sentencia PUNTO_COMA;
 
-					sentencia
-					{
-						++aux;
-					} 
-					
-					PUNTO_COMA
-					{
-						fprintf(salidaAS,";\n");
-					};
-
-lista_sentencias:	sentencia
-					{
-						++aux;
-					} 
-					
-					PUNTO_COMA
-					{
-						fprintf(salidaAS,";\n");
-					};
+lista_sentencias:	sentencia PUNTO_COMA;
 
 
-sentencia:	wprint
-			{
-				++aux;
-			};
+sentencia:	wprint;
 
-sentencia:	iteracion
-			{
-				++aux;
-			};
+sentencia:	iteracion;
 
-sentencia:	decision
-			{
-				++aux;
-			};
+sentencia:	decision;
 
-sentencia:	asignacion
-			{
-				++aux;
-			};
+sentencia:	asignacion;
 
 
-lista_wprints_cte:	lista_wprints_cte
-					{
-						++aux;
-					}
+lista_wprints_cte:	lista_wprints_cte wprint_cte PUNTO_COMA;
 
-					wprint_cte
-					{
-						++aux;
-					}
-					
-					PUNTO_COMA
-					{
-						fprintf(salidaAS,";\n");
-					};
-
-lista_wprints_cte:	wprint_cte
-					{
-						++aux;
-					} 
-
-					PUNTO_COMA
-					{
-						fprintf(salidaAS,";\n");
-					};
+lista_wprints_cte:	wprint_cte PUNTO_COMA;
 
 
-wprint:	wprint_cte
-		{
-			++aux;
-		};
+wprint:	wprint_cte;
 
-wprint: wprint_id
-		{
-			++aux;
-		};
+wprint: wprint_id;
 
 
-wprint_cte:	wprint_parte_A
-			{
-				++aux;
-			}
-			
-			CTE_STRING
-			{
-				fprintf(salidaAS,"\"%s\"",TS[$3].valor);
-			}
-			
-			PAR_CIERRA
-			{
-				fprintf(salidaAS,")");
-			};
+wprint_cte:	wprint_parte_A CTE_STRING PAR_CIERRA;
 
-wprint_cte: wprint_parte_A
-			{
-				++aux;
-			} 
-			
-			CTE_REAL
-			{
-				fprintf(salidaAS,"%s",TS[$3].valor);
-			} 
-			
-			PAR_CIERRA
-			{
-				fprintf(salidaAS,")");
-			};
+wprint_cte: wprint_parte_A CTE_REAL PAR_CIERRA;
 
 
-wprint_id:	wprint_parte_A
-			{
-				++aux;
-			}
-			
-			ID
-			{
-				fprintf(salidaAS,"%s",TS[$3].nombre);
-			}
-			
-			PAR_CIERRA
-			{
-				fprintf(salidaAS,")");
-			};
+wprint_id:	wprint_parte_A ID PAR_CIERRA;
 
-wprint_parte_A:	PR_WPRINT
-				{
-					fprintf(salidaAS,"WPRINT");
-				}
+wprint_parte_A:	PR_WPRINT PAR_ABRE;
+
+
+iteracion:	iteracion_for;
+
+iteracion:	iteracion_dowhile;
+
+
+iteracion_for:	PR_FOR 
 
 				PAR_ABRE
-				{
-					fprintf(salidaAS,"(");
-				};
-
-
-iteracion:	iteracion_for
-			{
-				++aux;
-			};
-
-iteracion:	iteracion_dowhile
-			{
-				++aux;
-			};
-
-
-iteracion_for:	PR_FOR
-				{
-					fprintf(salidaAS,"FOR");
-				}
-
-				PAR_ABRE
-				{
-					fprintf(salidaAS,"(");
-				}
 
 				asignacion
 				{
@@ -457,8 +219,6 @@ iteracion_for:	PR_FOR
 				
 				PUNTO_COMA
 				{
-					fprintf(salidaAS,";");
-
 					registroBHUsado = FALSE;
 				}
 
@@ -468,9 +228,6 @@ iteracion_for:	PR_FOR
 				}
 				
 				PUNTO_COMA
-				{
-					fprintf(salidaAS,";");
-				}
 
 				asignacion
 				{
@@ -488,16 +245,11 @@ iteracion_for:	PR_FOR
 				}
 				
 				PAR_CIERRA
-				{
-					fprintf(salidaAS,")\n");
-				}
 
 				lista_sentencias
 				
 				PR_ROF
 				{
-					fprintf(salidaAS,"ROF");
-
 					ptrColaTercetos = popCola(&pilaColasTercetos);
 					ajustarTercetos(ptrColaTercetos,cantTercetos);
 
@@ -522,37 +274,22 @@ iteracion_for:	PR_FOR
 
 iteracion_dowhile:	PR_DO
 					{
-						fprintf(salidaAS,"DO\n");
-
 						pushInt(cantTercetos,&pilaCondiciones);
 					}
 
 					lista_sentencias
-					{
-						++aux;
-					}
 					
 					PR_WHILE
-					{
-						fprintf(salidaAS,"WHILE");
-					}
 
 					PAR_ABRE
 					{
-						fprintf(salidaAS,"(");
-
 						registroBHUsado = FALSE;
 					}
 
 					condicion
-					{
-						++aux;
-					}
 					
 					PAR_CIERRA
 					{
-						fprintf(salidaAS,")");
-
 						aux = popInt(&pilaCondiciones);
 						listaDeTercetos[aux].tipoDeX = JNZ;
 						listaDeTercetos[aux].y = popInt(&pilaCondiciones);
@@ -560,47 +297,23 @@ iteracion_dowhile:	PR_DO
 					};
 
 
-decision:	decision_parte_A
-			{
-				++aux;
-			}
-			 
-			decision_parte_B
-			{
-				++aux;
-			};
+decision:	decision_parte_A decision_parte_B;
 
 decision_parte_A:	PR_IF
-					{
-						fprintf(salidaAS,"IF");
-					}
 
 					PAR_ABRE
 					{
-						fprintf(salidaAS,"(");
-
 						registroBHUsado = FALSE;
 					}
 
 					condicion
-					{
-						++aux;
-					}
 
 					PAR_CIERRA
-					{
-						fprintf(salidaAS,")\n");
-					}
 
-					lista_sentencias
-					{
-						++aux;
-					};
+					lista_sentencias;
 
 decision_parte_B:	PR_FI
 					{
-						fprintf(salidaAS,"FI");
-
 						aux = popInt(&pilaCondiciones);
 						listaDeTercetos[aux].y = cantTercetos;
 						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
@@ -608,8 +321,6 @@ decision_parte_B:	PR_FI
 
 decision_parte_B:	PR_ELSE
 					{
-						fprintf(salidaAS,"ELSE\n");
-
 						borrarTerceto(&tercetoAux);
 						aux = popInt(&pilaCondiciones);
 						tercetoAux.tipoDeX = JMP;
@@ -619,14 +330,9 @@ decision_parte_B:	PR_ELSE
 					}
 
 					lista_sentencias
-					{
-						++aux;
-					} 
 			
 					PR_FI
 					{
-						fprintf(salidaAS,"FI");
-
 						aux = popInt(&pilaCondiciones);
 						listaDeTercetos[aux].y = cantTercetos;
 						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
@@ -635,7 +341,6 @@ decision_parte_B:	PR_ELSE
 
 asignacion: ID OP_ASIGNACION asignacion
 			{
-				fprintf(salidaAS,"(=%d)",$1);
 				printf("1 ASIGNACION -> ID := ASIGNACION\n");
 
 				tercetoAux.x = OP_ASIGNACION;
@@ -654,7 +359,6 @@ asignacion: ID OP_ASIGNACION asignacion
 
 asignacion: ID OP_ASIGNACION expresion
 			{
-				fprintf(salidaAS,"(=%d)",$1);
 				printf("1 ASIGNACION -> ID := EXPRESION\n");
 
 				tercetoAux.x = OP_ASIGNACION;
@@ -673,30 +377,11 @@ asignacion: ID OP_ASIGNACION CTE_STRING;
 
 asignacion: ID OP_ASIGNACION concatenacion;
 
-concatenacion:	concatenacion_parte_extrema
-				{
-					++aux;
-				}
+concatenacion:	concatenacion_parte_extrema OP_CONCATENACION concatenacion_parte_extrema;
 
-				OP_CONCATENACION
-				{
-					fprintf(salidaAS," ++ "); 
-				}
+concatenacion_parte_extrema:	ID;
 
-				concatenacion_parte_extrema
-				{
-					++aux;
-				};
-
-concatenacion_parte_extrema:	ID
-								{
-									fprintf(salidaAS,"%s",TS[$1].nombre);
-								};
-
-concatenacion_parte_extrema:	CTE_STRING
-								{
-									fprintf(salidaAS,"\"%s\"",TS[$1].valor);
-								};
+concatenacion_parte_extrema:	CTE_STRING;
 
 
 condicion:	proposicion
@@ -721,17 +406,7 @@ condicion:	proposicion
 				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
 
-condicion:	proposicion
-			{
-				++aux;
-			} 
-			
-			PR_AND
-			{
-				fprintf(salidaAS," AND ");
-			}
-
-			proposicion
+condicion:	proposicion PR_AND proposicion
 			{
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_AND;
@@ -745,17 +420,7 @@ condicion:	proposicion
 				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
 
-condicion:	proposicion
-			{
-				++aux;
-			} 
-			
-			PR_OR
-			{
-				fprintf(salidaAS," OR ");
-			}
-
-			proposicion
+condicion:	proposicion PR_OR proposicion
 			{
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_OR;
@@ -769,25 +434,8 @@ condicion:	proposicion
 				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
 
-condicion:	PR_NOT
+condicion:	PR_NOT PAR_ABRE proposicion PAR_CIERRA
 			{
-				fprintf(salidaAS," NOT ");
-			}
-
-			PAR_ABRE
-			{
-				fprintf(salidaAS,"(");
-			}
-
-			proposicion
-			{
-				++aux;
-			}
-			
-			PAR_CIERRA
-			{
-				fprintf(salidaAS,")");
-
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_NOT;
 				tercetoAux.tipoDeX = TOKEN;
@@ -800,17 +448,7 @@ condicion:	PR_NOT
 			};
 
 
-proposicion:	expresion
-				{
-					++aux;
-				}
-
-				OP_MAYOR
-				{
-					fprintf(salidaAS," > ");
-				}
-
-				expresion
+proposicion:	expresion OP_MAYOR expresion
 				{
 					borrarTerceto(&tercetoAux);
 					tercetoAux.x = OP_ASIGNACION;
@@ -825,6 +463,16 @@ proposicion:	expresion
 					}
 					tercetoAux.z = 1;
 					tercetoAux.tipoDeZ = VALOR;
+					crearTerceto(&tercetoAux);
+
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = OP_MAYOR;
+					tercetoAux.tipoDeX = TOKEN;
+					aux = popInt(&pilaExpresiones);
+					tercetoAux.y = popInt(&pilaExpresiones);
+					tercetoAux.tipoDeY = NRO_TERCETO;
+					tercetoAux.z = aux;
+					tercetoAux.tipoDeZ = NRO_TERCETO;
 					crearTerceto(&tercetoAux);
 
 					borrarTerceto(&tercetoAux);
@@ -851,17 +499,7 @@ proposicion:	expresion
 					registroBHUsado = TRUE;
 				};
 
-proposicion:	expresion
-				{
-					++aux;
-				}
-
-				OP_MAYOR_IGUAL
-				{
-					fprintf(salidaAS," >= ");
-				}
-
-				expresion
+proposicion:	expresion OP_MAYOR_IGUAL expresion
 				{
 					borrarTerceto(&tercetoAux);
 					tercetoAux.x = OP_ASIGNACION;
@@ -876,6 +514,16 @@ proposicion:	expresion
 					}
 					tercetoAux.z = 1;
 					tercetoAux.tipoDeZ = VALOR;
+					crearTerceto(&tercetoAux);
+
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = OP_MAYOR_IGUAL;
+					tercetoAux.tipoDeX = TOKEN;
+					aux = popInt(&pilaExpresiones);
+					tercetoAux.y = popInt(&pilaExpresiones);
+					tercetoAux.tipoDeY = NRO_TERCETO;
+					tercetoAux.z = aux;
+					tercetoAux.tipoDeZ = NRO_TERCETO;
 					crearTerceto(&tercetoAux);
 
 					borrarTerceto(&tercetoAux);
@@ -902,17 +550,7 @@ proposicion:	expresion
 					registroBHUsado = TRUE;
 				};
 
-proposicion:	expresion
-				{
-					++aux;
-				}
-
-				OP_MENOR
-				{
-					fprintf(salidaAS," < ");
-				}
-
-				expresion
+proposicion:	expresion OP_MENOR expresion
 				{
 					borrarTerceto(&tercetoAux);
 					tercetoAux.x = OP_ASIGNACION;
@@ -927,6 +565,16 @@ proposicion:	expresion
 					}
 					tercetoAux.z = 1;
 					tercetoAux.tipoDeZ = VALOR;
+					crearTerceto(&tercetoAux);
+
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = OP_MENOR;
+					tercetoAux.tipoDeX = TOKEN;
+					aux = popInt(&pilaExpresiones);
+					tercetoAux.y = popInt(&pilaExpresiones);
+					tercetoAux.tipoDeY = NRO_TERCETO;
+					tercetoAux.z = aux;
+					tercetoAux.tipoDeZ = NRO_TERCETO;
 					crearTerceto(&tercetoAux);
 
 					borrarTerceto(&tercetoAux);
@@ -953,17 +601,7 @@ proposicion:	expresion
 					registroBHUsado = TRUE;
 				};
 
-proposicion:	expresion
-				{
-					++aux;
-				} 
-
-				OP_MENOR_IGUAL
-				{
-					fprintf(salidaAS," <= ");
-				}
-
-				expresion
+proposicion:	expresion OP_MENOR_IGUAL expresion
 				{
 					borrarTerceto(&tercetoAux);
 					tercetoAux.x = OP_ASIGNACION;
@@ -978,6 +616,16 @@ proposicion:	expresion
 					}
 					tercetoAux.z = 1;
 					tercetoAux.tipoDeZ = VALOR;
+					crearTerceto(&tercetoAux);
+
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = OP_MENOR_IGUAL;
+					tercetoAux.tipoDeX = TOKEN;
+					aux = popInt(&pilaExpresiones);
+					tercetoAux.y = popInt(&pilaExpresiones);
+					tercetoAux.tipoDeY = NRO_TERCETO;
+					tercetoAux.z = aux;
+					tercetoAux.tipoDeZ = NRO_TERCETO;
 					crearTerceto(&tercetoAux);
 
 					borrarTerceto(&tercetoAux);
@@ -1004,17 +652,7 @@ proposicion:	expresion
 					registroBHUsado = TRUE;
 				};
 
-proposicion:	expresion
-				{
-					++aux;
-				}
-
-				OP_IGUAL
-				{
-					fprintf(salidaAS," == ");
-				}
-
-				expresion
+proposicion:	expresion OP_IGUAL expresion
 				{
 					borrarTerceto(&tercetoAux);
 					tercetoAux.x = OP_ASIGNACION;
@@ -1029,6 +667,16 @@ proposicion:	expresion
 					}
 					tercetoAux.z = 1;
 					tercetoAux.tipoDeZ = VALOR;
+					crearTerceto(&tercetoAux);
+
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = OP_IGUAL;
+					tercetoAux.tipoDeX = TOKEN;
+					aux = popInt(&pilaExpresiones);
+					tercetoAux.y = popInt(&pilaExpresiones);
+					tercetoAux.tipoDeY = NRO_TERCETO;
+					tercetoAux.z = aux;
+					tercetoAux.tipoDeZ = NRO_TERCETO;
 					crearTerceto(&tercetoAux);
 
 					borrarTerceto(&tercetoAux);
@@ -1055,17 +703,7 @@ proposicion:	expresion
 					registroBHUsado = TRUE;
 				};
 
-proposicion:	expresion
-				{
-					++aux;
-				}
-	
-				OP_DISTINTO
-				{
-					fprintf(salidaAS," != ");
-				}
-
-				expresion
+proposicion:	expresion OP_DISTINTO expresion
 				{
 					borrarTerceto(&tercetoAux);
 					tercetoAux.x = OP_ASIGNACION;
@@ -1080,6 +718,16 @@ proposicion:	expresion
 					}
 					tercetoAux.z = 1;
 					tercetoAux.tipoDeZ = VALOR;
+					crearTerceto(&tercetoAux);
+
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = OP_DISTINTO;
+					tercetoAux.tipoDeX = TOKEN;
+					aux = popInt(&pilaExpresiones);
+					tercetoAux.y = popInt(&pilaExpresiones);
+					tercetoAux.tipoDeY = NRO_TERCETO;
+					tercetoAux.z = aux;
+					tercetoAux.tipoDeZ = NRO_TERCETO;
 					crearTerceto(&tercetoAux);
 
 					borrarTerceto(&tercetoAux);
@@ -1107,19 +755,8 @@ proposicion:	expresion
 				};
 
 
-expresion:	expresion
+expresion:	expresion OP_SUMA termino
 			{
-				++aux;
-			}
-
-			OP_SUMA
-			{
-				fprintf(salidaAS," + ");
-			}
-
-			termino
-			{
-				$$ = $1 + $5;
 				printf("2 EXPRESION -> EXPRESION + TERMINO\n");
 
 				tercetoAux.x = OP_SUMA;
@@ -1132,20 +769,8 @@ expresion:	expresion
 				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 			};
 
-expresion:	expresion
+expresion:	expresion OP_RESTA termino
 			{
-				++aux;
-			}
-	
-			OP_RESTA
-			{
-				fprintf(salidaAS," - ");
-			}
-
-			termino
-			{
-				$$ = $1 - $5;
-
 				tercetoAux.x = OP_RESTA;
 				tercetoAux.tipoDeX = TOKEN;
 				tercetoAux.z = popInt(&pilaExpresiones);
@@ -1158,24 +783,12 @@ expresion:	expresion
 
 expresion:	termino
 			{
-				++aux;
 				printf("3 EXPRESION -> TERMINO\n");
 			};
 
 
-termino:	termino
+termino:	termino OP_MULTIPLICACION factor
 			{
-				++aux;
-			}
-
-			OP_MULTIPLICACION
-			{
-				fprintf(salidaAS," * ");
-			}
-
-			factor
-			{
-				$$ = $1 * $5;
 				printf("4 TERMINO -> TERMINO * FACTOR\n");
 
 				tercetoAux.x = OP_MULTIPLICACION;
@@ -1188,20 +801,8 @@ termino:	termino
 				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 			};
 
-termino:	termino
+termino:	termino OP_DIVISION factor
 			{
-				++aux;
-			}
-
-			OP_DIVISION
-			{
-				fprintf(salidaAS," / ");
-			}
-
-			factor
-			{
-				$$ = $1 / $5;
-
 				tercetoAux.x = OP_DIVISION;
 				tercetoAux.tipoDeX = TOKEN;
 				tercetoAux.z = popInt(&pilaExpresiones);
@@ -1214,14 +815,12 @@ termino:	termino
 
 termino:	factor
 			{
-				$$ = $1;
 				printf("5 TERMINO -> FACTOR\n");
 			};	
 
 
 factor:	ID
 		{
-			fprintf(salidaAS,"%s",TS[$1].nombre);
 			printf("6 FACTOR -> ID (%s)\n",TS[$1].nombre);
 
 			tercetoAux.x = $1;
@@ -1234,8 +833,6 @@ factor:	ID
 
 factor: CTE_ENTERA
 		{
-			fprintf(salidaAS,"%s",TS[$1].valor);
-			$$ = atoi(TS[$1].valor);
 			printf("7 FACTOR -> CTE (%d)\n",$$);
 
 			tercetoAux.x = $1;
@@ -1247,10 +844,7 @@ factor: CTE_ENTERA
 		};
 
 factor: CTE_REAL
-		{	
-			fprintf(salidaAS,"%s",TS[$1].valor);
-			$$ = atoi(TS[$1].valor);
-
+		{
 			tercetoAux.x = $1;
 			tercetoAux.tipoDeX = INDICE_TS;
 			tercetoAux.tipoDeY = IGNORAR;
@@ -1259,20 +853,8 @@ factor: CTE_REAL
 			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 		};
 
-factor: PAR_ABRE
+factor: PAR_ABRE expresion PAR_CIERRA
 		{
-			fprintf(salidaAS,"(");
-		}
-
-		expresion
-		{
-			++aux;
-		}
-
-		PAR_CIERRA
-		{
-			fprintf(salidaAS,")");
-			$$ = $3;
 			printf("8 FACTOR -> ( EXPRESION )\n");
 
 			tercetoAux.x = popInt(&pilaExpresiones);
@@ -1283,10 +865,7 @@ factor: PAR_ABRE
 			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
 		};
 
-factor: filterc
-		{
-			++aux;
-		};
+factor: filterc;
 
 
 filterc:	PR_FILTERC

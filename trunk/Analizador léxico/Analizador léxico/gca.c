@@ -26,7 +26,7 @@ void GenerarAssembler()
 
 void GenerarEncabezado()
 {
-	fileAssembler = fopen("fileAssembler.asm", "w");
+	fopen_s(&fileAssembler,"fileAssembler.asm", "w");
 	//generar encabezado (ver carpeta)
 	fprintf(fileAssembler,".MODEL SMALL\n");
 	fprintf(fileAssembler,".386\n");
