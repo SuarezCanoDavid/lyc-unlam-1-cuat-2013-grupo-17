@@ -26,7 +26,7 @@ void GenerarAssembler()
 
 void GenerarEncabezado()
 {
-	fopen_s(&fileAssembler,"fileAssembler.asm", "w");
+	fopen_s(&fileAssembler,"final.asm", "w");
 	//generar encabezado (ver carpeta)
 	fprintf(fileAssembler,".MODEL SMALL\n");
 	fprintf(fileAssembler,".386\n");
@@ -114,10 +114,59 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	//VAMOS CON LOS TOKENS!!!!!
 	if(listaDeTercetos[idTerceto].tipoDeX==TOKEN)
 	{
-		//switch(listaDeTercetos[idTerceto].x
+		TercetoTokes(listaDeTercetos[idTerceto].x);
 	}
 	
 
 
 
 	}
+
+
+void TercetoTokes(int token)
+{
+	switch(token)
+		{
+	case OP_ASIGNACION:
+
+		break;
+	case OP_CONCATENACION:
+
+		break;
+	case OP_DISTINTO:
+
+		break;
+
+	case OP_DIVISION:
+
+		break;
+	case  OP_IGUAL:
+
+		break;
+	case OP_MAYOR:
+
+		break;
+	case OP_MAYOR_IGUAL:
+
+		break;
+	case OP_MENOR:
+
+		break;
+
+	case OP_MENOR_IGUAL:
+
+		break;
+	case OP_MULTIPLICACION:
+
+		break;
+	case OP_RESTA:
+
+		break;
+
+	case OP_SUMA:
+
+		break;
+
+	}
+
+}
