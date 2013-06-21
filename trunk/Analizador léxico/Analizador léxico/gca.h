@@ -8,6 +8,6 @@ void GenerarEncabezado();
 void DeclararVariables();
 void GeneracionCodigo();
 void GenerarAssemblerByTerceto();
-
+void TercetoTokes(int);
 
 #endif
