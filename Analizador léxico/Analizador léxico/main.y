@@ -229,12 +229,36 @@ wprint:	wprint_cte;
 wprint: wprint_id;
 
 
-wprint_cte:	wprint_parte_A CTE_STRING PAR_CIERRA;
+wprint_cte:	wprint_parte_A CTE_STRING PAR_CIERRA
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_WPRINT;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $2;
+				tercetoAux.tipoDeY = INDICE_TS;
+				crearTerceto(&tercetoAux);
+			};
 
-wprint_cte: wprint_parte_A CTE_REAL PAR_CIERRA;
+wprint_cte: wprint_parte_A CTE_REAL PAR_CIERRA
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_WPRINT;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $2;
+				tercetoAux.tipoDeY = INDICE_TS;
+				crearTerceto(&tercetoAux);
+			};
 
 
-wprint_id:	wprint_parte_A ID PAR_CIERRA;
+wprint_id:	wprint_parte_A ID PAR_CIERRA
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_WPRINT;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $2;
+				tercetoAux.tipoDeY = INDICE_TS;
+				crearTerceto(&tercetoAux);
+			};
 
 wprint_parte_A:	PR_WPRINT PAR_ABRE;
 

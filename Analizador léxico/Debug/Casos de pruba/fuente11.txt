@@ -2,6 +2,10 @@ VAR
 	[a,b,c]:[int,int,int]
 ENDVAR
 
-for(c = 0; c < 10; c = c + 1)
-	a = filterc(_!=20 and _<c,[a]);
-rof;
+do
+	if(a == 0)
+		wprint("Esto no funciona!!!");
+	else
+		wprint("Esto si que no funciona");
+	fi;
+while(filterc(_<0 or _>10,[a,b,c]) != 0);
