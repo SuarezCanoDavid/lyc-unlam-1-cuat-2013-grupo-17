@@ -65,6 +65,12 @@ void imprimirTercetos()
 								break;
 			case BL:			fprintf(archivoDeTercetos,"BL,");
 								break;
+			case CH:			fprintf(archivoDeTercetos,"CH,");
+								break;
+			case CL:			fprintf(archivoDeTercetos,"CL,");
+								break;
+			case VAR_FILTERC:	fprintf(archivoDeTercetos,"_VAR_FILTERC,");
+								break;
 			case VALOR:			fprintf(archivoDeTercetos,"%xh,",listaDeTercetos[i].x);
 								break;
 		}
@@ -101,6 +107,12 @@ void imprimirTercetos()
 								break;
 			case BL:			fprintf(archivoDeTercetos,"BL,");
 								break;
+			case CH:			fprintf(archivoDeTercetos,"CH,");
+								break;
+			case CL:			fprintf(archivoDeTercetos,"CL,");
+								break;
+			case VAR_FILTERC:	fprintf(archivoDeTercetos,"_VAR_FILTERC,");
+								break;
 			case VALOR:			fprintf(archivoDeTercetos,"%xh,",listaDeTercetos[i].y);
 								break;
 		}
@@ -136,6 +148,12 @@ void imprimirTercetos()
 			case BH:			fprintf(archivoDeTercetos,"BH");
 								break;
 			case BL:			fprintf(archivoDeTercetos,"BL");
+								break;
+			case CH:			fprintf(archivoDeTercetos,"CH");
+								break;
+			case CL:			fprintf(archivoDeTercetos,"CL");
+								break;
+			case VAR_FILTERC:	fprintf(archivoDeTercetos,"_VAR_FILTERC");
 								break;
 			case VALOR:			fprintf(archivoDeTercetos,"%xh",listaDeTercetos[i].z);
 								break;
