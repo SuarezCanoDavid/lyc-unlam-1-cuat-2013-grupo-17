@@ -18,7 +18,11 @@
 #define JNE			12
 #define BH			13
 #define BL			14
-#define VALOR		15
+#define CH			15
+#define CL			16
+#define VAR_FILTERC	17
+#define VALOR		18
+
 
 struct Terceto
 {

@@ -10,32 +10,68 @@ FILE *salidaAS;
 FILE *archivo;
 extern FILE *archivoDeTokens;
 
+/*Tabla de símbolos*/
 extern tablaDeSimbolos TS[LONG_TS];
+
+/*Cantidad de tokens en la tabla de símbolos*/
 extern int cantTokensEnTS;
+
+/*Cantidad de IDs en la tabla de símbolos*/
 int cantIDsEnTS = 0;
 
+/*Variables para controlar los IDs declarados*/
 int cantIDsEnDeclaracion = 0;
 int posicionIDEnTS[50];
 
+/*Variables para controlar los tipos de los IDs declarados*/
 int cantTiposEnDeclaracion = 0;
 int tipoDeID[50];
 
 extern int lineaActual;
 
-int aux = 0;
+/*Pila de desplazamiento para ajustar los números de tercetos*/
+PilaDeInt pilaDesplazamientos;
 
-PilaDeInt pilaExpresiones;
+/*Pila utilizada para controlar el anidamiento en expresiones*/
+PilaDeInt pilaExpresionesNormal;
+PilaDeInt pilaExpresionesFilterc;
+PilaDeInt *pilaExpresiones = &pilaExpresionesNormal;
+
+/*Pila utilizada para almacenar los tercetos de salto (JMP)*/
 PilaDeInt pilaCondiciones;
-PilaDeColas pilaColasTercetos;
-ColaDeTercetos *ptrColaTercetos;
 
-int tercetoInicial;
+/*Puntero a cola utilizada para almacenar el incremento de un FOR*/
+ColaDeTercetos *ptrColaIncremento;
 
+/*Pila utilizada para almacenar colas de incrementos de FOR*/
+PilaDeColas pilaColasIncrementos;
+
+/*Cola utilizada para almacenar las expresiones de un filterc*/
+ColaDeTercetos colasExpresionesFilterc[3];
+
+/*Almacena los tercetos iniciales de cada expresion del filterc*/
+int tercetosInicialesFilterc[3];
+
+/*Variable utilizada para indicar el tipo de condicion en un filterc (Compuesta:AND/OR Simple:0)*/
+int tipoCondicionFilterc;
+
+/*Bandera para indicar que el registro CH está siendo usado*/
+int registroCHUsado;
+
+/*Terceto auxiliar de uso multiple*/
 Terceto tercetoAux;
 
+/*Variables auxiliares de uso multiple*/
+int aux;
+int auy;
+
+/*Cantidad de tercetos almacenados en la lista de tercetos*/
 extern int cantTercetos;
+
+/*Lista de tercetos*/
 extern Terceto listaDeTercetos[MAX_TERCETOS];
 
+/*Bandera para indicar que el registro BH está siendo usado*/
 int registroBHUsado;
 
 #define PAR_ABRE 257
@@ -85,15 +121,17 @@ int registroBHUsado;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 1079 "main.y"
+# line 1600 "main.y"
 
 
 
 int main(int argc, char *argv[])
 {
-	vaciarPilaDeInt(&pilaExpresiones);
+	int i;
+	vaciarPilaDeInt(pilaExpresiones);
 	vaciarPilaDeInt(&pilaCondiciones);
-	vaciarPilaDeCola(&pilaColasTercetos);
+	vaciarPilaDeCola(&pilaColasIncrementos);
+	vaciarPilaDeInt(&pilaDesplazamientos);
 
 	if(argc != 2)
 	{
@@ -120,6 +158,16 @@ int main(int argc, char *argv[])
 
 	imprimirTercetos();
 
+	for(i = pilaExpresiones->tope-1; i >= 0; --i)
+	{
+		printf("%d\n",pilaExpresiones->contenedor[i]);
+	}
+	/*
+	printf("%d\n",pilaExpresiones.tope);
+	printf("%d\n",pilaCondiciones.tope);
+	printf("%d\n",pilaColasIncrementos.tope);
+	printf("%d\n",pilaDesplazamientos.tope);
+	*/
     return 0;
 }
 
@@ -200,111 +248,94 @@ int yyexca[] = {
   -1, 55,
   280, 49,
   -2, 67,
-  -1, 133,
-  290, 81,
-  291, 84,
-  -2, 80,
-  -1, 135,
-  274, 94,
-  275, 97,
-  276, 100,
-  277, 103,
-  278, 106,
-  -2, 91,
-  -1, 192,
-  261, 109,
-  -2, 77,
+  -1, 175,
+  261, 91,
+  -2, 94,
   0,
 };
 
-#define YYNPROD 113
-#define YYLAST 340
+#define YYNPROD 95
+#define YYLAST 322
 
 int yyact[] = {
-     129,     130,     131,      61,      44,      20,     135,     158,
-       7,     102,     103,      78,      37,      59,      60,       4,
-     157,      35,       7,      76,      36,      24,     165,      22,
-      20,     164,       7,     163,      23,      81,     162,     161,
-      20,      63,     134,     160,      20,      20,      84,      43,
-      24,      46,      22,     198,      29,       7,      30,      23,
-      24,      89,      22,     135,      24,       7,      22,      23,
-      61,       7,     111,      23,      61,      74,      75,      87,
-      55,      53,      59,      60,      78,     166,      59,      60,
-      97,      72,      73,      72,      73,     105,     106,     107,
-     108,     109,     110,      72,      73,     200,      63,      99,
-      38,      29,      63,      30,      95,      96,      49,      42,
-      33,      28,     156,     141,      70,     199,     154,     140,
-      86,      69,     178,     126,     112,      27,     203,     194,
-     191,     153,     138,     101,      64,      48,      47,     159,
+     132,     133,     134,      61,      44,      20,     116,       7,
+       7,     136,     137,      78,      76,      59,      60,       4,
+     102,     103,      37,      35,      20,      24,      36,      22,
+      20,      46,       7,     116,      23,      81,      72,      73,
+      20,      63,     115,      29,      20,      30,      84,      43,
+      24,     111,      22,     186,      87,       7,     173,      23,
+      24,      89,      22,      99,      24,       7,      22,      23,
+      61,       7,      49,      23,      61,      74,      75,      42,
+      55,      53,      59,      60,      78,      33,      59,      60,
+      97,      72,      73,      95,      96,     105,     106,     107,
+     108,     109,     110,      72,      73,      28,      63,     181,
+     150,     135,      63,     139,     140,     141,     142,     143,
+     144,      38,      29,      70,      30,     177,     163,     149,
+      86,      69,     151,     129,     112,      27,     182,     180,
+     166,     162,     147,     101,      64,      48,      47,     138,
      104,     100,      98,      41,      39,      31,      85,      10,
-     127,       9,      58,      57,     202,     197,     176,     151,
-      56,      32,      82,      21,       6,      15,       5,       6,
-     175,      25,      21,       3,     150,     174,     149,     173,
-     148,      83,     172,      14,     147,     133,     171,     146,
-      10,     190,     170,     145,      52,     169,     144,      15,
-     168,     143,      66,      45,     201,     196,     192,     189,
-     167,     142,     132,      61,      71,     113,      79,      62,
-      54,      50,      67,      34,      77,      19,     115,      40,
-     188,      51,      32,      65,      50,     152,     114,      32,
-      80,     101,      18,      17,     105,      92,      93,      39,
-      94,      90,      91,      16,      13,      12,      11,     128,
-      68,      26,       3,       8,       2,     166,       1,      75,
-      58,       0,      57,      73,      56,       0,       0,     116,
-     120,     121,     122,     123,     124,     125,       0,       0,
-      70,       0,      88,       0,      32,       0,     191,     106,
-     107,     108,     109,     110,     171,     136,     137,     139,
-     117,     118,     119,       0,      45,       0,       0,       0,
-       0,       0,       0,       0,     141,       0,     155,     103,
-     104,      83,       0,     115,      82,       0,       0,       0,
-       0,       0,       0,       0,     127,       0,       0,       0,
+     130,     174,      14,      58,      57,     183,     178,     114,
+       9,      32,      83,      56,      21,       6,     160,     159,
+       6,      15,       5,      21,     158,      25,      45,       3,
+     157,     156,     155,     165,     113,      79,      62,      54,
+      10,      50,      82,      67,      52,      34,      19,     118,
+      51,      40,      65,      15,     179,     161,     117,      80,
+      18,      66,      17,      61,      16,      13,      39,      12,
+      11,     131,      26,      71,      77,       3,       8,       2,
+       1,       0,      32,      68,     173,       0,       0,      32,
+       0,       0,       0,      50,     105,       0,      92,      93,
+     101,      94,       0,       0,      90,      91,       0,       0,
+       0,       0,       0,      70,       0,      88,       0,       0,
+      75,      58,       0,      57,       0,       0,      73,      56,
+     123,     124,     125,     126,     127,     128,     119,      45,
+       0,     120,     121,     122,       0,       0,       0,      32,
+       0,       0,     106,     107,     108,     109,     110,     155,
+     182,       0,     148,     103,     104,      83,       0,       0,
        0,       0,       0,       0,       0,       0,       0,       0,
-       0,       0,     182,     183,     184,     185,     186,     187,
-       0,       0,       0,       0,       0,     172,     173,     174,
-     175,     176,     189,       0,     193,       0,       0,       0,
-     202,     195,     177,      32,       0,       9,     179,     180,
-     181,     204,       0,      85,       0,      14,       0,       0,
-       0,     169,     170,     133,
+     152,     153,     154,       0,       0,     150,       0,     164,
+     145,     146,     167,     168,     169,     170,     171,     172,
+     137,     138,     114,       0,     175,     130,     156,     157,
+     158,     159,     160,     165,       0,       0,      85,       0,
+     176,       0,       0,      14,     118,      82,     175,       0,
+      32,     185,       0,     174,       0,       0,       0,     184,
+       0,       9,
 };
 
 int yypact[] = {
-    -278,   -1000,    -229,    -268,    -150,    -165,    -222,    -132,
-   -1000,    -229,    -166,   -1000,   -1000,   -1000,   -1000,   -1000,
-   -1000,   -1000,   -1000,    -265,    -267,    -177,    -133,   -1000,
-    -134,    -167,    -255,    -224,   -1000,    -140,    -141,   -1000,
-    -168,   -1000,   -1000,   -1000,   -1000,    -201,    -142,    -228,
-    -229,   -1000,   -1000,   -1000,    -224,    -155,    -161,   -1000,
-   -1000,   -1000,    -229,   -1000,    -194,   -1000,   -1000,    -267,
-    -210,    -261,   -1000,   -1000,   -1000,    -197,   -1000,   -1000,
-   -1000,   -1000,    -260,    -254,    -156,    -200,    -224,    -233,
-    -197,    -197,    -197,    -197,    -173,    -186,   -1000,    -135,
-    -175,    -136,    -143,    -281,    -137,    -196,    -205,    -151,
+    -278,   -1000,    -229,    -279,    -150,    -177,    -231,    -132,
+   -1000,    -229,    -193,   -1000,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,   -1000,    -263,    -261,    -168,    -133,   -1000,
+    -134,    -199,    -255,    -240,   -1000,    -140,    -141,   -1000,
+    -204,   -1000,   -1000,   -1000,   -1000,    -201,    -142,    -245,
+    -229,   -1000,   -1000,   -1000,    -240,    -155,    -162,   -1000,
+   -1000,   -1000,    -229,   -1000,    -239,   -1000,   -1000,    -261,
+    -210,    -268,   -1000,   -1000,   -1000,    -197,   -1000,   -1000,
+   -1000,   -1000,    -260,    -254,    -156,    -219,    -240,    -233,
+    -197,    -197,    -197,    -197,    -190,    -186,   -1000,    -135,
+    -211,    -136,    -143,    -274,    -137,    -196,    -222,    -151,
    -1000,   -1000,    -210,    -210,   -1000,   -1000,   -1000,   -1000,
-   -1000,   -1000,   -1000,   -1000,   -1000,    -229,    -197,    -197,
+   -1000,   -1000,    -258,   -1000,   -1000,    -229,    -197,    -197,
     -197,    -197,    -197,    -197,    -197,    -197,    -197,    -152,
-    -295,    -258,    -254,    -254,    -229,   -1000,   -1000,    -144,
-    -194,    -194,    -194,    -194,    -194,    -194,    -295,    -157,
-    -162,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,
-   -1000,    -145,   -1000,    -158,   -1000,    -295,    -163,    -274,
-    -284,    -138,    -238,    -243,    -245,    -249,    -252,    -256,
-    -193,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,
-   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,    -228,    -153,
-    -213,    -213,    -213,    -197,    -197,    -197,    -197,    -197,
-    -197,   -1000,   -1000,   -1000,   -1000,   -1000,    -194,    -194,
-    -194,    -194,    -194,    -194,    -146,    -197,    -147,    -229,
-   -1000,    -194,   -1000,    -241,    -159,    -176,   -1000,   -1000,
-   -1000,    -148,    -197,   -1000,    -194,
+    -295,    -172,    -281,    -138,    -182,    -254,    -254,    -229,
+   -1000,   -1000,    -144,    -239,    -239,    -239,    -239,    -239,
+    -239,    -295,    -157,    -173,   -1000,   -1000,   -1000,    -153,
+    -237,    -237,    -237,   -1000,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,    -145,   -1000,    -158,   -1000,    -295,   -1000,
+   -1000,   -1000,    -146,    -197,    -197,    -197,    -197,    -197,
+    -197,    -216,   -1000,   -1000,   -1000,    -197,   -1000,    -239,
+    -239,    -239,    -239,    -239,    -239,    -245,    -159,    -239,
+   -1000,    -147,    -174,    -148,   -1000,   -1000,    -229,    -197,
+    -241,   -1000,   -1000,
 };
 
 int yypgo[] = {
-       0,     222,     220,     219,     218,     217,     171,     128,
-     215,     129,     127,     214,     213,     212,     155,     141,
-     211,     139,     203,     202,     200,     198,     138,     197,
-     192,     191,     190,     189,     187,     186,     185,     126,
-     184,     131,     153,     136,     130,     183,     182,     181,
-     178,     177,     176,     175,     174,     173,     172,     157,
-     169,     168,     166,     165,     163,     162,     161,     159,
-     158,     156,     154,     152,     151,     150,     149,     148,
-     144,     135,     134,     133,     132,
+       0,     192,     191,     190,     189,     186,     150,     128,
+     185,     136,     127,     184,     183,     181,     130,     145,
+     180,     140,     178,     176,     175,     174,     162,     173,
+     172,     169,     167,     166,     165,     163,     161,     126,
+     159,     132,     138,     139,     131,     158,     157,     156,
+     155,     129,     135,     154,     153,     152,     148,     143,
+     142,     134,     133,
 };
 
 int yyr1[] = {
@@ -317,12 +348,9 @@ int yyr1[] = {
       32,      33,      33,      22,      22,      22,      22,      34,
       34,      34,      34,      34,      34,      31,      31,      31,
       35,      35,      35,      36,      36,      36,      36,      36,
-      38,      39,      41,      42,      43,      45,      46,      37,
-      40,      48,      49,      40,      50,      51,      40,      52,
-      53,      54,      40,      55,      56,      47,      57,      58,
-      47,      59,      60,      47,      61,      62,      47,      63,
-      64,      47,      65,      66,      47,      67,      68,      44,
-      44,
+      38,      40,      37,      39,      39,      39,      39,      43,
+      42,      44,      42,      45,      42,      46,      42,      47,
+      42,      48,      42,      49,      50,      41,      41,
 };
 
 int yyr2[] = {
@@ -335,12 +363,9 @@ int yyr2[] = {
        3,       1,       1,       1,       3,       3,       4,       3,
        3,       3,       3,       3,       3,       3,       3,       1,
        3,       3,       1,       1,       1,       1,       3,       1,
-       0,       0,       0,       0,       0,       0,       0,      15,
-       1,       0,       0,       5,       0,       0,       5,       0,
-       0,       0,       7,       0,       0,       5,       0,       0,
-       5,       0,       0,       5,       0,       0,       5,       0,
-       0,       5,       0,       0,       5,       0,       0,       5,
-       1,
+       0,       0,      10,       1,       3,       3,       4,       0,
+       4,       0,       4,       0,       4,       0,       4,       0,
+       4,       0,       4,       0,       0,       5,       1,
 };
 
 int yychk[] = {
@@ -358,18 +383,16 @@ int yychk[] = {
       -6,     282,     -35,     -35,     -36,     -36,     -33,     265,
      266,     258,     257,     262,     257,     258,     290,     291,
      257,     273,     274,     275,     276,     277,     278,     263,
-     259,     -39,     -21,     -26,      -9,     -34,     -34,     -34,
-     -31,     -31,     -31,     -31,     -31,     -31,     259,      -7,
-      -8,     295,     296,     297,     -40,     -47,     292,     264,
-     -22,     -22,     258,      -7,     260,     261,     -41,     -48,
-     -50,     -52,     -55,     -57,     -59,     -61,     -63,     -65,
-     -23,     258,     260,      -7,     261,     290,     291,     257,
-     273,     274,     275,     276,     277,     278,     262,     -42,
-     -49,     -51,     -53,     -56,     -58,     -60,     -62,     -64,
-     -66,     -14,     259,     -47,     -47,     -47,     -31,     -31,
-     -31,     -31,     -31,     -31,     -24,     -43,     -54,     258,
-     -44,     -31,     258,      -9,     -45,     -67,     284,     260,
-     261,     -46,     -68,     258,     -31,
+     259,     -39,     -42,     292,     264,     -21,     -26,      -9,
+     -34,     -34,     -34,     -31,     -31,     -31,     -31,     -31,
+     -31,     259,      -7,      -8,     295,     296,     297,     261,
+     290,     291,     257,     273,     274,     275,     276,     277,
+     278,     -22,     -22,     258,      -7,     260,     261,     259,
+     -42,     -42,     -42,     -43,     -44,     -45,     -46,     -47,
+     -48,     -23,     258,     260,      -7,     -40,     258,     -31,
+     -31,     -31,     -31,     -31,     -31,     262,     -41,     -31,
+     -14,     260,     -49,     -24,     258,     261,     258,     -50,
+      -9,     -41,     284,
 };
 
 int yydef[] = {
@@ -385,20 +408,18 @@ int yydef[] = {
        0,       0,       0,       0,       0,       0,      67,       0,
        0,       0,       0,      51,       0,       0,       0,       0,
        6,      43,      61,      62,      64,      65,      48,      49,
-      50,      70,      73,      31,      36,       0,       0,       0,
+      50,      70,       0,      31,      36,       0,       0,       0,
        0,       0,       0,       0,       0,       0,       0,       0,
-       0,       0,       0,       0,      40,      52,      53,       0,
-      55,      56,      57,      58,      59,      60,       0,       0,
-       9,      10,      11,      12,      74,      -2,      87,      -2,
-      32,       0,      54,       0,       5,       0,       0,       0,
-       0,       0,       0,       0,       0,       0,       0,       0,
-       0,      37,       4,       8,      75,      82,      85,      88,
-      92,      95,      98,     101,     104,     107,       0,       0,
-       0,       0,       0,       0,       0,       0,       0,       0,
-       0,      33,      76,      83,      86,      89,      93,      96,
-      99,     102,     105,     108,       0,       0,       0,       0,
-      -2,     112,      90,       0,       0,       0,      34,      78,
-     110,       0,       0,      79,     111,
+       0,       0,      75,       0,       0,       0,       0,      40,
+      52,      53,       0,      55,      56,      57,      58,      59,
+      60,       0,       0,       9,      10,      11,      12,       0,
+       0,       0,       0,      79,      81,      83,      85,      87,
+      89,      32,       0,      54,       0,       5,       0,      73,
+      76,      77,       0,       0,       0,       0,       0,       0,
+       0,       0,      37,       4,       8,       0,      78,      80,
+      82,      84,      86,      88,      90,       0,       0,      -2,
+      33,       0,       0,       0,      74,      92,       0,       0,
+       0,      93,      34,
 };
 
 int *yyxi;
@@ -590,12 +611,12 @@ yyparse()
     switch (m) { /* actions associated with grammar rules */
       
       case 1:
-# line 94 "main.y"
+# line 130 "main.y"
       {
       				GenerarAssembler();
       			} break;
       case 4:
-# line 105 "main.y"
+# line 141 "main.y"
       {
       					fprintf(salidaAS,"]\n");
       	
@@ -608,7 +629,7 @@ yyparse()
       					cantTiposEnDeclaracion = 0;
       				} break;
       case 5:
-# line 118 "main.y"
+# line 154 "main.y"
       {
       					fprintf(salidaAS,"]\n");
       	
@@ -621,82 +642,83 @@ yyparse()
       					cantTiposEnDeclaracion = 0;
       				} break;
       case 6:
-# line 132 "main.y"
+# line 168 "main.y"
       {
       						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-2];
       					} break;
       case 7:
-# line 137 "main.y"
+# line 173 "main.y"
       {
       						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
       					} break;
       case 8:
-# line 143 "main.y"
+# line 179 "main.y"
       {
       					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-2];
       				} break;
       case 9:
-# line 148 "main.y"
+# line 184 "main.y"
       {
       					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       				} break;
       case 10:
-# line 154 "main.y"
+# line 190 "main.y"
       {
       			yyval = PR_INT;
       		} break;
       case 11:
-# line 159 "main.y"
+# line 195 "main.y"
       {
       			yyval = PR_FLOAT;
       		} break;
       case 12:
-# line 164 "main.y"
+# line 200 "main.y"
       {
       			yyval = PR_STRING;
       		} break;
       case 30:
-# line 216 "main.y"
+# line 252 "main.y"
       {
       					pushInt(cantTercetos,&pilaCondiciones);
       				} break;
       case 31:
-# line 221 "main.y"
+# line 257 "main.y"
       {
       					registroBHUsado = FALSE;
       				} break;
       case 32:
-# line 226 "main.y"
+# line 262 "main.y"
       {
-      					tercetoInicial = cantTercetos;
+      					pushInt(cantTercetos,&pilaDesplazamientos);
       				} break;
       case 33:
-# line 233 "main.y"
+# line 269 "main.y"
       {
-      					ptrColaTercetos = (ColaDeTercetos *)malloc(sizeof(ColaDeTercetos));
+      					ptrColaIncremento = (ColaDeTercetos *)malloc(sizeof(ColaDeTercetos));
       
-					vaciarColaDeTercetos(ptrColaTercetos);
+					vaciarColaDeTercetos(ptrColaIncremento);
       
-					for(aux = tercetoInicial; aux < cantTercetos; ++aux)
+					for(aux = VerTope(&pilaDesplazamientos); aux < cantTercetos; ++aux)
       					{
-      						encolarTerceto(&listaDeTercetos[aux],ptrColaTercetos);
+      						encolarTerceto(&listaDeTercetos[aux],ptrColaIncremento);
       					}
       
-					pushCola(ptrColaTercetos,&pilaColasTercetos);
-      					cantTercetos = tercetoInicial;
+					pushCola(ptrColaIncremento,&pilaColasIncrementos);
+      					cantTercetos = VerTope(&pilaDesplazamientos);
       				} break;
       case 34:
-# line 252 "main.y"
+# line 288 "main.y"
       {
-      					ptrColaTercetos = popCola(&pilaColasTercetos);
-      					ajustarTercetos(ptrColaTercetos,cantTercetos);
+      					ptrColaIncremento = popCola(&pilaColasIncrementos);
+      					aux = cantTercetos - popInt(&pilaDesplazamientos);
+      					ajustarTercetos(ptrColaIncremento,aux);
       
-					while(colaDeTercetosEstaVacia(ptrColaTercetos) == FALSE)
+					while(colaDeTercetosEstaVacia(ptrColaIncremento) == FALSE)
       					{
-      						crearTerceto(desencolarTerceto(ptrColaTercetos));
+      						crearTerceto(desencolarTerceto(ptrColaIncremento));
       					}
       
-					free(ptrColaTercetos);
+					free(ptrColaIncremento);
       
 					aux = popInt(&pilaCondiciones);
       					listaDeTercetos[aux].y = cantTercetos + 1;
@@ -709,17 +731,17 @@ yyparse()
       					crearTerceto(&tercetoAux);
       				} break;
       case 35:
-# line 276 "main.y"
+# line 313 "main.y"
       {
       						pushInt(cantTercetos,&pilaCondiciones);
       					} break;
       case 36:
-# line 285 "main.y"
+# line 322 "main.y"
       {
       						registroBHUsado = FALSE;
       					} break;
       case 37:
-# line 292 "main.y"
+# line 329 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].tipoDeX = JNZ;
@@ -727,19 +749,19 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 39:
-# line 305 "main.y"
+# line 342 "main.y"
       {
       						registroBHUsado = FALSE;
       					} break;
       case 41:
-# line 316 "main.y"
+# line 353 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].y = cantTercetos;
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 42:
-# line 323 "main.y"
+# line 360 "main.y"
       {
       						borrarTerceto(&tercetoAux);
       						aux = popInt(&pilaCondiciones);
@@ -749,48 +771,40 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 43:
-# line 335 "main.y"
+# line 372 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].y = cantTercetos;
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 44:
-# line 343 "main.y"
+# line 380 "main.y"
       {
-      				printf("1 ASIGNACION -> ID := ASIGNACION\n");
-      
-				tercetoAux.x = OP_ASIGNACION;
+      				tercetoAux.x = OP_ASIGNACION;
       				tercetoAux.tipoDeX = TOKEN;
       				tercetoAux.y = yypvt[-2];
       				tercetoAux.tipoDeY = INDICE_TS;
       				tercetoAux.z = yypvt[-0];
       				tercetoAux.tipoDeZ = INDICE_TS; 
-      
-				crearTerceto(&tercetoAux);
-      
-				printf("tope=%d\n",pilaExpresiones.tope);
+      				crearTerceto(&tercetoAux);
       
 				yyval = yypvt[-2];
       			} break;
       case 45:
-# line 361 "main.y"
+# line 393 "main.y"
       {
-      				printf("1 ASIGNACION -> ID := EXPRESION\n");
-      
-				tercetoAux.x = OP_ASIGNACION;
+      				tercetoAux.x = OP_ASIGNACION;
       				tercetoAux.tipoDeX = TOKEN;
       				tercetoAux.y = yypvt[-2];
       				tercetoAux.tipoDeY = INDICE_TS;
-      				tercetoAux.z = popInt(&pilaExpresiones);
+      				tercetoAux.z = popInt(pilaExpresiones);
       				tercetoAux.tipoDeZ = NRO_TERCETO; 
-      
-				crearTerceto(&tercetoAux);
+      				crearTerceto(&tercetoAux);
       
 				yyval = yypvt[-2];
       			} break;
       case 51:
-# line 388 "main.y"
+# line 417 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
@@ -812,7 +826,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 52:
-# line 410 "main.y"
+# line 439 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_AND;
@@ -826,7 +840,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 53:
-# line 424 "main.y"
+# line 453 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_OR;
@@ -840,7 +854,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 54:
-# line 438 "main.y"
+# line 467 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_NOT;
@@ -853,19 +867,21 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 55:
-# line 452 "main.y"
+# line 481 "main.y"
       {
-      					borrarTerceto(&tercetoAux);
-      					tercetoAux.x = OP_ASIGNACION;
-      					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
+      					if(registroBHUsado == FALSE)
       					{
-      						tercetoAux.tipoDeY = BL;
+      						auy = BH;
       					}
       					else
       					{
-      						tercetoAux.tipoDeY = BH;
+      						auy = BL;
       					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 1;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -873,11 +889,10 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_MAYOR;
       					tercetoAux.tipoDeX = TOKEN;
-      					aux = popInt(&pilaExpresiones);
-      					tercetoAux.y = popInt(&pilaExpresiones);
-      					tercetoAux.tipoDeY = NRO_TERCETO;
-      					tercetoAux.z = aux;
+      					tercetoAux.z = popInt(pilaExpresiones);
       					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
       					crearTerceto(&tercetoAux);
       
 					borrarTerceto(&tercetoAux);
@@ -889,14 +904,7 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
       					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
-      					{
-      						tercetoAux.tipoDeY = BL;
-      					}
-      					else
-      					{
-      						tercetoAux.tipoDeY = BH;
-      					}
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 0;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -904,19 +912,21 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 56:
-# line 503 "main.y"
+# line 526 "main.y"
       {
-      					borrarTerceto(&tercetoAux);
-      					tercetoAux.x = OP_ASIGNACION;
-      					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
+      					if(registroBHUsado == FALSE)
       					{
-      						tercetoAux.tipoDeY = BL;
+      						auy = BH;
       					}
       					else
       					{
-      						tercetoAux.tipoDeY = BH;
+      						auy = BL;
       					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 1;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -924,11 +934,10 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_MAYOR_IGUAL;
       					tercetoAux.tipoDeX = TOKEN;
-      					aux = popInt(&pilaExpresiones);
-      					tercetoAux.y = popInt(&pilaExpresiones);
-      					tercetoAux.tipoDeY = NRO_TERCETO;
-      					tercetoAux.z = aux;
+      					tercetoAux.z = popInt(pilaExpresiones);
       					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
       					crearTerceto(&tercetoAux);
       
 					borrarTerceto(&tercetoAux);
@@ -940,14 +949,7 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
       					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
-      					{
-      						tercetoAux.tipoDeY = BL;
-      					}
-      					else
-      					{
-      						tercetoAux.tipoDeY = BH;
-      					}
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 0;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -955,19 +957,21 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 57:
-# line 554 "main.y"
+# line 571 "main.y"
       {
-      					borrarTerceto(&tercetoAux);
-      					tercetoAux.x = OP_ASIGNACION;
-      					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
+      					if(registroBHUsado == FALSE)
       					{
-      						tercetoAux.tipoDeY = BL;
+      						auy = BH;
       					}
       					else
       					{
-      						tercetoAux.tipoDeY = BH;
+      						auy = BL;
       					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 1;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -975,11 +979,10 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_MENOR;
       					tercetoAux.tipoDeX = TOKEN;
-      					aux = popInt(&pilaExpresiones);
-      					tercetoAux.y = popInt(&pilaExpresiones);
-      					tercetoAux.tipoDeY = NRO_TERCETO;
-      					tercetoAux.z = aux;
+      					tercetoAux.z = popInt(pilaExpresiones);
       					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
       					crearTerceto(&tercetoAux);
       
 					borrarTerceto(&tercetoAux);
@@ -991,14 +994,7 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
       					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
-      					{
-      						tercetoAux.tipoDeY = BL;
-      					}
-      					else
-      					{
-      						tercetoAux.tipoDeY = BH;
-      					}
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 0;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -1006,19 +1002,21 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 58:
-# line 605 "main.y"
+# line 616 "main.y"
       {
-      					borrarTerceto(&tercetoAux);
-      					tercetoAux.x = OP_ASIGNACION;
-      					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
+      					if(registroBHUsado == FALSE)
       					{
-      						tercetoAux.tipoDeY = BL;
+      						auy = BH;
       					}
       					else
       					{
-      						tercetoAux.tipoDeY = BH;
+      						auy = BL;
       					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 1;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -1026,11 +1024,10 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_MENOR_IGUAL;
       					tercetoAux.tipoDeX = TOKEN;
-      					aux = popInt(&pilaExpresiones);
-      					tercetoAux.y = popInt(&pilaExpresiones);
-      					tercetoAux.tipoDeY = NRO_TERCETO;
-      					tercetoAux.z = aux;
+      					tercetoAux.z = popInt(pilaExpresiones);
       					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
       					crearTerceto(&tercetoAux);
       
 					borrarTerceto(&tercetoAux);
@@ -1042,14 +1039,7 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
       					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
-      					{
-      						tercetoAux.tipoDeY = BL;
-      					}
-      					else
-      					{
-      						tercetoAux.tipoDeY = BH;
-      					}
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 0;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -1057,19 +1047,21 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 59:
-# line 656 "main.y"
+# line 661 "main.y"
       {
-      					borrarTerceto(&tercetoAux);
-      					tercetoAux.x = OP_ASIGNACION;
-      					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
+      					if(registroBHUsado == FALSE)
       					{
-      						tercetoAux.tipoDeY = BL;
+      						auy = BH;
       					}
       					else
       					{
-      						tercetoAux.tipoDeY = BH;
+      						auy = BL;
       					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 1;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -1077,11 +1069,10 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_IGUAL;
       					tercetoAux.tipoDeX = TOKEN;
-      					aux = popInt(&pilaExpresiones);
-      					tercetoAux.y = popInt(&pilaExpresiones);
-      					tercetoAux.tipoDeY = NRO_TERCETO;
-      					tercetoAux.z = aux;
+      					tercetoAux.z = popInt(pilaExpresiones);
       					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
       					crearTerceto(&tercetoAux);
       
 					borrarTerceto(&tercetoAux);
@@ -1093,14 +1084,7 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
       					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
-      					{
-      						tercetoAux.tipoDeY = BL;
-      					}
-      					else
-      					{
-      						tercetoAux.tipoDeY = BH;
-      					}
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 0;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -1108,19 +1092,21 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 60:
-# line 707 "main.y"
+# line 706 "main.y"
       {
-      					borrarTerceto(&tercetoAux);
-      					tercetoAux.x = OP_ASIGNACION;
-      					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
+      					if(registroBHUsado == FALSE)
       					{
-      						tercetoAux.tipoDeY = BL;
+      						auy = BH;
       					}
       					else
       					{
-      						tercetoAux.tipoDeY = BH;
+      						auy = BL;
       					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 1;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -1128,11 +1114,10 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_DISTINTO;
       					tercetoAux.tipoDeX = TOKEN;
-      					aux = popInt(&pilaExpresiones);
-      					tercetoAux.y = popInt(&pilaExpresiones);
-      					tercetoAux.tipoDeY = NRO_TERCETO;
-      					tercetoAux.z = aux;
+      					tercetoAux.z = popInt(pilaExpresiones);
       					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
       					crearTerceto(&tercetoAux);
       
 					borrarTerceto(&tercetoAux);
@@ -1144,14 +1129,7 @@ yyparse()
 					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_ASIGNACION;
       					tercetoAux.tipoDeX = TOKEN;
-      					if(registroBHUsado == TRUE)
-      					{
-      						tercetoAux.tipoDeY = BL;
-      					}
-      					else
-      					{
-      						tercetoAux.tipoDeY = BH;
-      					}
+      					tercetoAux.tipoDeY = auy;
       					tercetoAux.z = 0;
       					tercetoAux.tipoDeZ = VALOR;
       					crearTerceto(&tercetoAux);
@@ -1159,317 +1137,817 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 61:
-# line 759 "main.y"
+# line 752 "main.y"
       {
-      				printf("2 EXPRESION -> EXPRESION + TERMINO\n");
-      
-				tercetoAux.x = OP_SUMA;
+      				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = OP_SUMA;
       				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.z = popInt(&pilaExpresiones);
+      				tercetoAux.z = popInt(pilaExpresiones);
       				tercetoAux.tipoDeZ = NRO_TERCETO;
-      				tercetoAux.y = popInt(&pilaExpresiones);
+      				tercetoAux.y = popInt(pilaExpresiones);
       				tercetoAux.tipoDeY = NRO_TERCETO; 
       
-				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
+				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 62:
-# line 773 "main.y"
+# line 765 "main.y"
       {
+      				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_RESTA;
       				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.z = popInt(&pilaExpresiones);
+      				tercetoAux.z = popInt(pilaExpresiones);
       				tercetoAux.tipoDeZ = NRO_TERCETO;
-      				tercetoAux.y = popInt(&pilaExpresiones);
+      				tercetoAux.y = popInt(pilaExpresiones);
       				tercetoAux.tipoDeY = NRO_TERCETO; 
       
-				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
-      			} break;
-      case 63:
-# line 785 "main.y"
-      {
-      				printf("3 EXPRESION -> TERMINO\n");
+				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 64:
-# line 791 "main.y"
+# line 781 "main.y"
       {
-      				printf("4 TERMINO -> TERMINO * FACTOR\n");
-      
-				tercetoAux.x = OP_MULTIPLICACION;
+      				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = OP_MULTIPLICACION;
       				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.z = popInt(&pilaExpresiones);
+      				tercetoAux.z = popInt(pilaExpresiones);
       				tercetoAux.tipoDeZ = NRO_TERCETO;
-      				tercetoAux.y = popInt(&pilaExpresiones);
+      				tercetoAux.y = popInt(pilaExpresiones);
       				tercetoAux.tipoDeY = NRO_TERCETO; 
       
-				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
+				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 65:
-# line 805 "main.y"
+# line 794 "main.y"
       {
+      				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_DIVISION;
       				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.z = popInt(&pilaExpresiones);
+      				tercetoAux.z = popInt(pilaExpresiones);
       				tercetoAux.tipoDeZ = NRO_TERCETO;
-      				tercetoAux.y = popInt(&pilaExpresiones);
+      				tercetoAux.y = popInt(pilaExpresiones);
       				tercetoAux.tipoDeY = NRO_TERCETO; 
       
-				pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
-      			} break;
-      case 66:
-# line 817 "main.y"
-      {
-      				printf("5 TERMINO -> FACTOR\n");
+				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 67:
-# line 823 "main.y"
+# line 810 "main.y"
       {
-      			printf("6 FACTOR -> ID (%s)\n",TS[yypvt[-0]].nombre);
-      
-			tercetoAux.x = yypvt[-0];
-      			tercetoAux.tipoDeX = INDICE_TS;
-      			tercetoAux.tipoDeY = IGNORAR;
-      			tercetoAux.tipoDeZ = IGNORAR;
-      
-			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
-      		} break;
-      case 68:
-# line 835 "main.y"
-      {
-      			printf("7 FACTOR -> CTE (%d)\n",yyval);
-      
-			tercetoAux.x = yypvt[-0];
-      			tercetoAux.tipoDeX = INDICE_TS;
-      			tercetoAux.tipoDeY = IGNORAR;
-      			tercetoAux.tipoDeZ = IGNORAR;
-      
-			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
-      		} break;
-      case 69:
-# line 847 "main.y"
-      {
+      			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
       			tercetoAux.tipoDeX = INDICE_TS;
-      			tercetoAux.tipoDeY = IGNORAR;
-      			tercetoAux.tipoDeZ = IGNORAR;
       
-			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
+			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+      		} break;
+      case 68:
+# line 819 "main.y"
+      {
+      			borrarTerceto(&tercetoAux);
+      			tercetoAux.x = yypvt[-0];
+      			tercetoAux.tipoDeX = INDICE_TS;
+      
+			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+      		} break;
+      case 69:
+# line 828 "main.y"
+      {
+      			borrarTerceto(&tercetoAux);
+      			tercetoAux.x = yypvt[-0];
+      			tercetoAux.tipoDeX = INDICE_TS;
+      
+			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       		} break;
       case 70:
-# line 857 "main.y"
+# line 837 "main.y"
       {
-      			printf("8 FACTOR -> ( EXPRESION )\n");
-      
-			tercetoAux.x = popInt(&pilaExpresiones);
+      			borrarTerceto(&tercetoAux);
+      			tercetoAux.x = popInt(pilaExpresiones);
       			tercetoAux.tipoDeX = NRO_TERCETO;
-      			tercetoAux.tipoDeY = IGNORAR;
-      			tercetoAux.tipoDeZ = IGNORAR;
       
-			pushInt(crearTerceto(&tercetoAux),&pilaExpresiones);
+			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       		} break;
       case 72:
-# line 872 "main.y"
+# line 849 "main.y"
       {
-      				fprintf(salidaAS,"FILTERC");
+      				borrarTerceto(&tercetoAux);
+      				tercetoAux.tipoDeX = VAR_FILTERC;
+      				aux = crearTerceto(&tercetoAux);
+      				pushInt(aux,pilaExpresiones);
+      
+				registroCHUsado = FALSE;
+      
+				vaciarPilaDeInt(&pilaExpresionesFilterc);
+      				pilaExpresiones = &pilaExpresionesFilterc;
+      				pushInt(aux,pilaExpresiones);
       			} break;
       case 73:
-# line 877 "main.y"
+# line 869 "main.y"
       {
-      				fprintf(salidaAS,"(");
+      				tercetosInicialesFilterc[0] = cantTercetos;
       			} break;
       case 74:
-# line 882 "main.y"
+# line 878 "main.y"
       {
-      				++aux;
+      				pilaExpresiones = &pilaExpresionesNormal;
       			} break;
       case 75:
-# line 887 "main.y"
+# line 884 "main.y"
       {
-      				fprintf(salidaAS,",");
-      			} break;
+      					tipoCondicionFilterc = 0;
+      				} break;
       case 76:
-# line 892 "main.y"
+# line 889 "main.y"
       {
-      				fprintf(salidaAS,"[");
-      			} break;
+      					tipoCondicionFilterc = PR_AND;
+      				} break;
       case 77:
-# line 897 "main.y"
+# line 894 "main.y"
       {
-      				++aux;
-      			} break;
+      					tipoCondicionFilterc = PR_OR;
+      				} break;
       case 78:
-# line 902 "main.y"
+# line 899 "main.y"
       {
-      				fprintf(salidaAS,"]");
-      			} break;
+      					tipoCondicionFilterc = PR_NOT;
+      				} break;
       case 79:
 # line 907 "main.y"
       {
-      				fprintf(salidaAS,")");
-      			} break;
+      					if(registroCHUsado == FALSE)
+      					{
+      						tercetosInicialesFilterc[1] = cantTercetos;
+      					}
+      					else
+      					{
+      						tercetosInicialesFilterc[2] = cantTercetos;
+      					}
+      				} break;
       case 80:
-# line 913 "main.y"
+# line 919 "main.y"
       {
-      					++aux;
+      					if(registroCHUsado == FALSE)
+      					{
+      						auy = CH;
+      					}
+      					else
+      					{
+      						auy = CL;
+      					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 1;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_MAYOR;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.z = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = JG;
+      					tercetoAux.y = cantTercetos + 2;
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 0;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					if(registroCHUsado == FALSE)
+      					{
+      						auy = 1;
+      					}
+      					else
+      					{
+      						auy = 2;
+      					}
+      
+					vaciarColaDeTercetos(&colasExpresionesFilterc[auy]);
+      
+					for(aux = tercetosInicialesFilterc[auy]; aux < cantTercetos; ++aux)
+      					{
+      						encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[auy]);
+      					}
+      
+					cantTercetos = tercetosInicialesFilterc[auy];
+      
+					registroCHUsado = TRUE;
       				} break;
       case 81:
-# line 918 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 82:
-# line 923 "main.y"
-      {
-      					fprintf(salidaAS," AND ");
-      				} break;
-      case 83:
-# line 928 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 84:
-# line 933 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 85:
-# line 938 "main.y"
-      {
-      					fprintf(salidaAS," OR ");
-      				} break;
-      case 86:
-# line 943 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 87:
-# line 948 "main.y"
-      {
-      					fprintf(salidaAS,"NOT");
-      				} break;
-      case 88:
-# line 953 "main.y"
-      {
-      					fprintf(salidaAS,"(");
-      				} break;
-      case 89:
-# line 958 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 90:
-# line 963 "main.y"
-      {
-      					fprintf(salidaAS,")");
-      				} break;
-      case 91:
-# line 969 "main.y"
-      {
-      					fprintf(salidaAS,"_");
-      				} break;
-      case 92:
-# line 974 "main.y"
-      {
-      					fprintf(salidaAS," > ");
-      				} break;
-      case 93:
-# line 979 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 94:
 # line 984 "main.y"
       {
-      					fprintf(salidaAS,"_");
+      					if(registroCHUsado == FALSE)
+      					{
+      						tercetosInicialesFilterc[1] = cantTercetos;
+      					}
+      					else
+      					{
+      						tercetosInicialesFilterc[2] = cantTercetos;
+      					}
       				} break;
-      case 95:
-# line 989 "main.y"
+      case 82:
+# line 996 "main.y"
       {
-      					fprintf(salidaAS," >= ");
+      					if(registroCHUsado == FALSE)
+      					{
+      						auy = CH;
+      					}
+      					else
+      					{
+      						auy = CL;
+      					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 1;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_MAYOR_IGUAL;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.z = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = JGE;
+      					tercetoAux.y = cantTercetos + 2;
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 0;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					if(registroCHUsado == FALSE)
+      					{
+      						auy = 1;
+      					}
+      					else
+      					{
+      						auy = 2;
+      					}
+      
+					vaciarColaDeTercetos(&colasExpresionesFilterc[auy]);
+      
+					for(aux = tercetosInicialesFilterc[auy]; aux < cantTercetos; ++aux)
+      					{
+      						encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[auy]);
+      					}
+      
+					cantTercetos = tercetosInicialesFilterc[auy];
+      
+					registroCHUsado = TRUE;
       				} break;
-      case 96:
-# line 994 "main.y"
+      case 83:
+# line 1061 "main.y"
       {
-      					++aux;
+      					if(registroCHUsado == FALSE)
+      					{
+      						tercetosInicialesFilterc[1] = cantTercetos;
+      					}
+      					else
+      					{
+      						tercetosInicialesFilterc[2] = cantTercetos;
+      					}
       				} break;
-      case 97:
-# line 999 "main.y"
+      case 84:
+# line 1073 "main.y"
       {
-      					fprintf(salidaAS,"_");
+      					if(registroCHUsado == FALSE)
+      					{
+      						auy = CH;
+      					}
+      					else
+      					{
+      						auy = CL;
+      					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 1;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_MENOR;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.z = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = JL;
+      					tercetoAux.y = cantTercetos + 2;
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 0;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					if(registroCHUsado == FALSE)
+      					{
+      						auy = 1;
+      					}
+      					else
+      					{
+      						auy = 2;
+      					}
+      
+					vaciarColaDeTercetos(&colasExpresionesFilterc[auy]);
+      
+					for(aux = tercetosInicialesFilterc[auy]; aux < cantTercetos; ++aux)
+      					{
+      						encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[auy]);
+      					}
+      
+					cantTercetos = tercetosInicialesFilterc[auy];
+      
+					registroCHUsado = TRUE;
       				} break;
-      case 98:
-# line 1004 "main.y"
+      case 85:
+# line 1138 "main.y"
       {
-      					fprintf(salidaAS," < ");
+      					if(registroCHUsado == FALSE)
+      					{
+      						tercetosInicialesFilterc[1] = cantTercetos;
+      					}
+      					else
+      					{
+      						tercetosInicialesFilterc[2] = cantTercetos;
+      					}
       				} break;
-      case 99:
-# line 1009 "main.y"
+      case 86:
+# line 1150 "main.y"
       {
-      					++aux;
+      					if(registroCHUsado == FALSE)
+      					{
+      						auy = CH;
+      					}
+      					else
+      					{
+      						auy = CL;
+      					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 1;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_MENOR_IGUAL;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.z = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = JLE;
+      					tercetoAux.y = cantTercetos + 2;
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 0;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					if(registroCHUsado == FALSE)
+      					{
+      						auy = 1;
+      					}
+      					else
+      					{
+      						auy = 2;
+      					}
+      
+					vaciarColaDeTercetos(&colasExpresionesFilterc[auy]);
+      
+					for(aux = tercetosInicialesFilterc[auy]; aux < cantTercetos; ++aux)
+      					{
+      						encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[auy]);
+      					}
+      
+					cantTercetos = tercetosInicialesFilterc[auy];
+      
+					registroCHUsado = TRUE;
       				} break;
-      case 100:
-# line 1014 "main.y"
+      case 87:
+# line 1215 "main.y"
       {
-      					fprintf(salidaAS,"_");
+      					if(registroCHUsado == FALSE)
+      					{
+      						tercetosInicialesFilterc[1] = cantTercetos;
+      					}
+      					else
+      					{
+      						tercetosInicialesFilterc[2] = cantTercetos;
+      					}
       				} break;
-      case 101:
-# line 1019 "main.y"
+      case 88:
+# line 1227 "main.y"
       {
-      					fprintf(salidaAS," <= ");
+      					if(registroCHUsado == FALSE)
+      					{
+      						auy = CH;
+      					}
+      					else
+      					{
+      						auy = CL;
+      					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 1;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_IGUAL;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.z = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = JE;
+      					tercetoAux.y = cantTercetos + 2;
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 0;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					if(registroCHUsado == FALSE)
+      					{
+      						auy = 1;
+      					}
+      					else
+      					{
+      						auy = 2;
+      					}
+      
+					vaciarColaDeTercetos(&colasExpresionesFilterc[auy]);
+      
+					for(aux = tercetosInicialesFilterc[auy]; aux < cantTercetos; ++aux)
+      					{
+      						encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[auy]);
+      					}
+      
+					cantTercetos = tercetosInicialesFilterc[auy];
+      
+					registroCHUsado = TRUE;
       				} break;
-      case 102:
-# line 1024 "main.y"
+      case 89:
+# line 1292 "main.y"
       {
-      					++aux;
+      					if(registroCHUsado == FALSE)
+      					{
+      						tercetosInicialesFilterc[1] = cantTercetos;
+      					}
+      					else
+      					{
+      						tercetosInicialesFilterc[2] = cantTercetos;
+      					}
       				} break;
-      case 103:
-# line 1029 "main.y"
+      case 90:
+# line 1304 "main.y"
       {
-      					fprintf(salidaAS,"_");
+      					if(registroCHUsado == FALSE)
+      					{
+      						auy = CH;
+      					}
+      					else
+      					{
+      						auy = CL;
+      					}
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 1;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_DISTINTO;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.z = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeZ = NRO_TERCETO;
+      					tercetoAux.y = popInt(pilaExpresiones);
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = JNE;
+      					tercetoAux.y = cantTercetos + 2;
+      					tercetoAux.tipoDeY = NRO_TERCETO;
+      					crearTerceto(&tercetoAux);
+      
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_ASIGNACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.tipoDeY = auy;
+      					tercetoAux.z = 0;
+      					tercetoAux.tipoDeZ = VALOR;
+      					crearTerceto(&tercetoAux);
+      
+					if(registroCHUsado == FALSE)
+      					{
+      						auy = 1;
+      					}
+      					else
+      					{
+      						auy = 2;
+      					}
+      
+					vaciarColaDeTercetos(&colasExpresionesFilterc[auy]);
+      
+					for(aux = tercetosInicialesFilterc[auy]; aux < cantTercetos; ++aux)
+      					{
+      						encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[auy]);
+      					}
+      
+					cantTercetos = tercetosInicialesFilterc[auy];
+      
+					registroCHUsado = TRUE;
       				} break;
-      case 104:
-# line 1034 "main.y"
+      case 91:
+# line 1368 "main.y"
       {
-      					fprintf(salidaAS," == ");
-      				} break;
-      case 105:
-# line 1039 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 106:
-# line 1044 "main.y"
-      {
-      					fprintf(salidaAS,"_");
-      				} break;
-      case 107:
-# line 1049 "main.y"
-      {
-      					fprintf(salidaAS," != ");
-      				} break;
-      case 108:
-# line 1054 "main.y"
-      {
-      					++aux;
-      				} break;
-      case 109:
-# line 1060 "main.y"
-      {
-      						++aux;
+      						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
+      					
+      						for(aux = tercetosInicialesFilterc[0]; aux < cantTercetos; ++aux)
+      						{
+      							encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[0]);
+      						}
+      
+						auy = cantTercetos - tercetosInicialesFilterc[1];
+      
+						ajustarTercetos(&colasExpresionesFilterc[1],auy);
+      						 
+      						for(aux = 0; aux < colasExpresionesFilterc[1].cantTercetos; ++aux)
+      						{
+      							crearTerceto(&colasExpresionesFilterc[1].contenedor[aux]);
+      						}
+      
+						ajustarTercetos(&colasExpresionesFilterc[1],-auy);
+      
+						if(tipoCondicionFilterc == 0 || tipoCondicionFilterc == PR_NOT)
+      						{
+      							if(tipoCondicionFilterc == 0)
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = OP_ASIGNACION;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CL;
+      								tercetoAux.z = 1;
+      								tercetoAux.tipoDeZ = VALOR;
+      								crearTerceto(&tercetoAux);
+      
+								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_AND;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
+      								crearTerceto(&tercetoAux);
+      							}
+      							else
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_NOT;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								crearTerceto(&tercetoAux);
+      							}
+      						}
+      						else
+      						{
+      							auy = cantTercetos - tercetosInicialesFilterc[0];
+      
+							ajustarTercetos(&colasExpresionesFilterc[0],auy);
+      
+							while(colaDeTercetosEstaVacia(&colasExpresionesFilterc[0]) == FALSE)
+      							{
+      								crearTerceto(desencolarTerceto(&colasExpresionesFilterc[0]));
+      							}
+      
+							auy = cantTercetos - tercetosInicialesFilterc[2];
+      
+							ajustarTercetos(&colasExpresionesFilterc[2],auy);
+      						 
+      							for(aux = 0; aux < colasExpresionesFilterc[2].cantTercetos; ++aux)
+      							{
+      								crearTerceto(&colasExpresionesFilterc[2].contenedor[aux]);
+      							}
+      
+							ajustarTercetos(&colasExpresionesFilterc[2],-auy);
+      
+							if(tipoCondicionFilterc == PR_AND)
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_AND;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
+      								crearTerceto(&tercetoAux);
+      							}
+      							else
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_OR;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
+      								crearTerceto(&tercetoAux);
+      							}
+      						}
+      
+						borrarTerceto(&tercetoAux);
+      						tercetoAux.tipoDeX = JZ;
+      						tercetoAux.y = cantTercetos + 3;
+      						tercetoAux.tipoDeY = NRO_TERCETO;
+      						crearTerceto(&tercetoAux);
+      							
+      						borrarTerceto(&tercetoAux);
+      						tercetoAux.x = OP_SUMA;
+      						tercetoAux.tipoDeX = TOKEN;
+      						tercetoAux.tipoDeY = VAR_FILTERC;
+      						tercetoAux.z = 1,
+      						tercetoAux.tipoDeZ = VALOR;
+      						crearTerceto(&tercetoAux);
+      
+						borrarTerceto(&tercetoAux);
+      						tercetoAux.x = OP_ASIGNACION;
+      						tercetoAux.tipoDeX = TOKEN,
+      						tercetoAux.tipoDeY = VAR_FILTERC;
+      						tercetoAux.z = 1;
+      						tercetoAux.tipoDeZ = VALOR;
+      						crearTerceto(&tercetoAux);
       					} break;
-      case 110:
-# line 1065 "main.y"
+      case 92:
+# line 1481 "main.y"
       {
-      						fprintf(salidaAS,",");
+      						tercetosInicialesFilterc[0] = cantTercetos;
       					} break;
-      case 111:
-# line 1070 "main.y"
+      case 94:
+# line 1488 "main.y"
       {
-      						++aux;
-      					} break;
-      case 112:
-# line 1075 "main.y"
-      {
-      						++aux;
+      						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
+      					
+      						for(aux = tercetosInicialesFilterc[0]; aux < cantTercetos; ++aux)
+      						{
+      							encolarTerceto(&listaDeTercetos[aux],&colasExpresionesFilterc[0]);
+      						}
+      
+						auy = cantTercetos - tercetosInicialesFilterc[1];
+      
+						ajustarTercetos(&colasExpresionesFilterc[1],auy);
+      						 
+      						for(aux = 0; aux < colasExpresionesFilterc[1].cantTercetos; ++aux)
+      						{
+      							crearTerceto(&colasExpresionesFilterc[1].contenedor[aux]);
+      						}
+      
+						ajustarTercetos(&colasExpresionesFilterc[1],-auy);
+      
+						if(tipoCondicionFilterc == 0 || tipoCondicionFilterc == PR_NOT)
+      						{
+      							if(tipoCondicionFilterc == 0)
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = OP_ASIGNACION;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CL;
+      								tercetoAux.z = 1;
+      								tercetoAux.tipoDeZ = VALOR;
+      								crearTerceto(&tercetoAux);
+      
+								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_AND;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
+      								crearTerceto(&tercetoAux);
+      							}
+      							else
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_NOT;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								crearTerceto(&tercetoAux);
+      							}
+      						}
+      						else
+      						{
+      							auy = cantTercetos - tercetosInicialesFilterc[0];
+      
+							ajustarTercetos(&colasExpresionesFilterc[0],auy);
+      
+							while(colaDeTercetosEstaVacia(&colasExpresionesFilterc[0]) == FALSE)
+      							{
+      								crearTerceto(desencolarTerceto(&colasExpresionesFilterc[0]));
+      							}
+      
+							auy = cantTercetos - tercetosInicialesFilterc[2];
+      
+							ajustarTercetos(&colasExpresionesFilterc[2],auy);
+      						 
+      							for(aux = 0; aux < colasExpresionesFilterc[2].cantTercetos; ++aux)
+      							{
+      								crearTerceto(&colasExpresionesFilterc[2].contenedor[aux]);
+      							}
+      
+							ajustarTercetos(&colasExpresionesFilterc[2],-auy);
+      
+							if(tipoCondicionFilterc == PR_AND)
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_AND;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
+      								crearTerceto(&tercetoAux);
+      							}
+      							else
+      							{
+      								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_OR;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
+      								crearTerceto(&tercetoAux);
+      							}
+      						}
+      
+						borrarTerceto(&tercetoAux);
+      						tercetoAux.tipoDeX = JZ;
+      						tercetoAux.y = cantTercetos + 3;
+      						tercetoAux.tipoDeY = NRO_TERCETO;
+      						crearTerceto(&tercetoAux);
+      							
+      						borrarTerceto(&tercetoAux);
+      						tercetoAux.x = OP_SUMA;
+      						tercetoAux.tipoDeX = TOKEN;
+      						tercetoAux.tipoDeY = VAR_FILTERC;
+      						tercetoAux.z = 1,
+      						tercetoAux.tipoDeZ = VALOR;
+      						crearTerceto(&tercetoAux);
+      
+						borrarTerceto(&tercetoAux);
+      						tercetoAux.x = OP_ASIGNACION;
+      						tercetoAux.tipoDeX = TOKEN,
+      						tercetoAux.tipoDeY = VAR_FILTERC;
+      						tercetoAux.z = 1;
+      						tercetoAux.tipoDeZ = VALOR;
+      						crearTerceto(&tercetoAux);
       					} break;    }
     goto enstack;
 }

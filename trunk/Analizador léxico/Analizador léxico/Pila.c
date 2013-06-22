@@ -1,11 +1,15 @@
 #include "Pila.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void pushInt(int elemento,PilaDeInt *pila)
 {
 	pila->contenedor[pila->tope] = elemento;
 
 	++pila->tope;
+
+	if(pila->tope > TAM_PILA)
+		printf("Tamano max pila!!!\n");
 }
 
 int popInt(PilaDeInt *pila)
@@ -27,7 +31,6 @@ int VerTope(PilaDeInt *pila)
 }
 
 void OrdenarPila(PilaDeInt *pila)
-
 {
 	qsort (pila->contenedor,(size_t) pila->tope,sizeof(int),comparar);
 }

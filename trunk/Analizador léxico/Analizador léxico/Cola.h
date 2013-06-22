@@ -3,7 +3,7 @@
 #ifndef COLA_H
 #define COLA_H
 
-#define TAM_COLA	20
+#define TAM_COLA	40
 
 struct ColaDeTercetos
 {

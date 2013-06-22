@@ -70,9 +70,6 @@
     <None Include="..\Debug\Casos de pruba\fuente11.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
-    <None Include="..\Debug\Casos de pruba\fuente2.txt">
-      <Filter>Archivos de recursos\Casos de prueba</Filter>
-    </None>
     <None Include="..\Debug\Casos de pruba\fuente3.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
@@ -108,6 +105,9 @@
     </None>
     <None Include="..\Debug\Tercetos.txt">
       <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\filterc.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
   </ItemGroup>
 </Project>
