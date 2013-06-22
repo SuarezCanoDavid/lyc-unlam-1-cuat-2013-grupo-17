@@ -857,6 +857,7 @@ filterc:	PR_FILTERC
 				vaciarPilaDeInt(&pilaExpresionesFilterc);
 				pilaExpresiones = &pilaExpresionesFilterc;
 				pushInt(aux,pilaExpresiones);
+				pushInt(aux,pilaExpresiones);
 			}
 
 			PAR_ABRE
