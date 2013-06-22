@@ -121,7 +121,7 @@ int registroBHUsado;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 1600 "main.y"
+# line 1601 "main.y"
 
 
 
@@ -1237,39 +1237,40 @@ yyparse()
 				vaciarPilaDeInt(&pilaExpresionesFilterc);
       				pilaExpresiones = &pilaExpresionesFilterc;
       				pushInt(aux,pilaExpresiones);
+      				pushInt(aux,pilaExpresiones);
       			} break;
       case 73:
-# line 869 "main.y"
+# line 870 "main.y"
       {
       				tercetosInicialesFilterc[0] = cantTercetos;
       			} break;
       case 74:
-# line 878 "main.y"
+# line 879 "main.y"
       {
       				pilaExpresiones = &pilaExpresionesNormal;
       			} break;
       case 75:
-# line 884 "main.y"
+# line 885 "main.y"
       {
       					tipoCondicionFilterc = 0;
       				} break;
       case 76:
-# line 889 "main.y"
+# line 890 "main.y"
       {
       					tipoCondicionFilterc = PR_AND;
       				} break;
       case 77:
-# line 894 "main.y"
+# line 895 "main.y"
       {
       					tipoCondicionFilterc = PR_OR;
       				} break;
       case 78:
-# line 899 "main.y"
+# line 900 "main.y"
       {
       					tipoCondicionFilterc = PR_NOT;
       				} break;
       case 79:
-# line 907 "main.y"
+# line 908 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1281,7 +1282,7 @@ yyparse()
       					}
       				} break;
       case 80:
-# line 919 "main.y"
+# line 920 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1344,7 +1345,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 81:
-# line 984 "main.y"
+# line 985 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1356,7 +1357,7 @@ yyparse()
       					}
       				} break;
       case 82:
-# line 996 "main.y"
+# line 997 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1419,7 +1420,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 83:
-# line 1061 "main.y"
+# line 1062 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1431,7 +1432,7 @@ yyparse()
       					}
       				} break;
       case 84:
-# line 1073 "main.y"
+# line 1074 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1494,7 +1495,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 85:
-# line 1138 "main.y"
+# line 1139 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1506,7 +1507,7 @@ yyparse()
       					}
       				} break;
       case 86:
-# line 1150 "main.y"
+# line 1151 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1569,7 +1570,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 87:
-# line 1215 "main.y"
+# line 1216 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1581,7 +1582,7 @@ yyparse()
       					}
       				} break;
       case 88:
-# line 1227 "main.y"
+# line 1228 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1644,7 +1645,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 89:
-# line 1292 "main.y"
+# line 1293 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1656,7 +1657,7 @@ yyparse()
       					}
       				} break;
       case 90:
-# line 1304 "main.y"
+# line 1305 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1719,7 +1720,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 91:
-# line 1368 "main.y"
+# line 1369 "main.y"
       {
       						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
       					
@@ -1832,12 +1833,12 @@ yyparse()
       						crearTerceto(&tercetoAux);
       					} break;
       case 92:
-# line 1481 "main.y"
+# line 1482 "main.y"
       {
       						tercetosInicialesFilterc[0] = cantTercetos;
       					} break;
       case 94:
-# line 1488 "main.y"
+# line 1489 "main.y"
       {
       						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
       					

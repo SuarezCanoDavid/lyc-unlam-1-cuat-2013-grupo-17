@@ -2,12 +2,6 @@ VAR
 	[a,b,c]:[int,int,int]
 ENDVAR
 
-do
-	if(b == c)
-		for(a = 0; a < 10; a = a + 1)
-			b = c * a;
-		rof;
-		a = a - 10;
-	fi;
-	b = b + 1;
-while(b != a or c > 123);
+for(c = 0; c < 10; c = c + 1)
+	a = filterc(_!=20 and _<c,[a]);
+rof;
