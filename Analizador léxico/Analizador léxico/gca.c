@@ -133,7 +133,7 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	//VAMOS CON LOS TOKENS!!!!!
 	if(listaDeTercetos[idTerceto].tipoDeX==TOKEN)
 	{
-		TercetoTokes(listaDeTercetos[idTerceto].x);
+		TercetoTokes(listaDeTercetos[idTerceto].x,  idTerceto);
 	}
 	
 
@@ -142,12 +142,12 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	}
 
 
-void TercetoTokes(int token)
+void TercetoTokes(int token, int idTerceto)
 {
 	switch(token)
 		{
 	case OP_ASIGNACION:
-		asmAsignacion();
+		asmAsignacion(idTerceto);
 		break;
 	case OP_CONCATENACION:
 
@@ -239,9 +239,11 @@ void asmDividir()
 	fprintf(fileAssembler,"FDIVP \n");
 }
 
-void asmAsignacion()
+void asmAsignacion(int idTerceto)
 {
-	fprintf(fileAssembler,"FSTP \n");
+
+	//printf("%s ",
+	fprintf(fileAssembler,"FSTP %s \n",TS[listaDeTercetos[idTerceto].y].nombre);
 }
 
 void asmDistinto()

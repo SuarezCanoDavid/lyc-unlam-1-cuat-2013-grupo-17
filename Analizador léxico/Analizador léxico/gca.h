@@ -14,7 +14,7 @@ void asmSuma();
 void asmResta();
 void asmMultiplicar();
 void asmDividir();
-void asmAsignacion();
+void asmAsignacion(int);
 void asmDistinto();
 void asmIgual();
 void asmMayor();
