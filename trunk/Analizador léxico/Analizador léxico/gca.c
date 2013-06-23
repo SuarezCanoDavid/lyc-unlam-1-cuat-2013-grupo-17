@@ -133,7 +133,7 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	//VAMOS CON LOS TOKENS!!!!!
 	if(listaDeTercetos[idTerceto].tipoDeX==TOKEN)
 	{
-		TercetoTokes(listaDeTercetos[idTerceto].x,idTerceto);
+		TercetoTokes(listaDeTercetos[idTerceto].x);
 	}
 	
 
@@ -142,48 +142,48 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	}
 
 
-void TercetoTokes(int token, int idTerceto)
+void TercetoTokes(int token)
 {
 	switch(token)
 		{
 	case OP_ASIGNACION:
-
+		asmAsignacion();
 		break;
 	case OP_CONCATENACION:
 
 		break;
 	case OP_DISTINTO:
-
+		asmDistinto();
 		break;
 
 	case OP_DIVISION:
-
+		asmDividir();
 		break;
 	case  OP_IGUAL:
-
+		asmIgual();
 		break;
 	case OP_MAYOR:
-
+		asmMayor();
 		break;
 	case OP_MAYOR_IGUAL:
-
+		asmMayorIgual();
 		break;
 	case OP_MENOR:
-
+		asmMenor();
 		break;
 
 	case OP_MENOR_IGUAL:
-
+		asmMenorIgual();
 		break;
 	case OP_MULTIPLICACION:
-
+		asmMultiplicar();
 		break;
 	case OP_RESTA:
-
+		asmResta();
 		break;
 
 	case OP_SUMA:
-		asmSuma(idTerceto);
+		asmSuma();
 		break;
 
 	}
@@ -215,12 +215,66 @@ void LlenarPilaEtiquetas()
 
 //SUMA
 
-void asmSuma(int idTerceto)
+void asmSuma()
 {
-	fprintf(fileAssembler,"FADD \n");
-	fprintf(fileAssembler, "FST AUX%d\n", idTerceto);
-	fprintf(fileAssembler, "ffree st(0)\n");
-    fprintf(fileAssembler, "ffree st(1)\n");
+	fprintf(fileAssembler,"FADDP \n");
+	//fprintf(fileAssembler, "FST AUX%d\n", idTerceto);
+	//fprintf(fileAssembler, "ffree st(0)\n");
+ //   fprintf(fileAssembler, "ffree st(1)\n");
+
 }
 
+void asmResta()
+{
+	fprintf(fileAssembler,"FSUBP \n");
+}
+
+void asmMultiplicar()
+{
+	fprintf(fileAssembler,"FMULP \n");
+}
+
+void asmDividir()
+{
+	fprintf(fileAssembler,"FDIVP \n");
+}
+
+void asmAsignacion()
+{
+	fprintf(fileAssembler,"FSTP \n");
+}
+
+void asmDistinto()
+{
+	fprintf(fileAssembler,"FCOMPP \n");
+}
+
+void asmIgual()
+{
+	fprintf(fileAssembler,"FCOMPP \n");
+}
+
+void asmMayor()
+{
+	fprintf(fileAssembler,"FXCH \n");
+	fprintf(fileAssembler,"FCOMPP \n");
+}
+
+void asmMayorIgual()
+{
+	fprintf(fileAssembler,"FXCH \n");
+	fprintf(fileAssembler,"FCOMPP \n");
+}
+
+void asmMenor()
+{
+	fprintf(fileAssembler,"FXCH \n");
+	fprintf(fileAssembler,"FCOMPP \n");
+}
+
+void asmMenorIgual()
+{
+	fprintf(fileAssembler,"FXCH \n");
+	fprintf(fileAssembler,"FCOMPP \n");
+}
 

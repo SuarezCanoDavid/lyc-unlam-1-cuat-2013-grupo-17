@@ -1,0 +1,9 @@
+VAR
+	[a,b,resultado]:[int,int,int]
+ENDVAR
+
+a=10;
+b=5;
+resultado=a+b+3;
+resultado= a*5;
+

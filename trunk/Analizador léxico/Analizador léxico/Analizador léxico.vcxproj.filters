@@ -112,5 +112,8 @@
     <None Include="..\Debug\Casos de pruba\fuente6.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
+    <None Include="..\Debug\final.asm">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
   </ItemGroup>
 </Project>
