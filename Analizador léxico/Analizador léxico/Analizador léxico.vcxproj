@@ -51,6 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,6 +98,7 @@
     <None Include="..\Debug\Casos de pruba\fuente3.txt" />
     <None Include="..\Debug\Casos de pruba\fuente4.txt" />
     <None Include="..\Debug\Casos de pruba\fuente5.txt" />
+    <None Include="..\Debug\Casos de pruba\fuente6.txt" />
     <None Include="..\Debug\Casos de pruba\if_anidados.txt" />
     <None Include="..\Debug\Casos de pruba\programa_complejo.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt" />
@@ -107,6 +109,13 @@
     <None Include="..\Debug\tokens_identificados.txt" />
     <None Include="Lista de reglas.txt" />
     <None Include="main.y" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,5 +9,6 @@ void DeclararVariables();
 void GeneracionCodigo();
 void GenerarAssemblerByTerceto();
 void TercetoTokes(int);
-
+void LlenarPilaEtiquetas();
+void asmSuma();
 #endif

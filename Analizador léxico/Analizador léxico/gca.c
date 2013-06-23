@@ -67,7 +67,7 @@ void DeclararVariables()
 
 void GeneracionCodigo()
 {
-	int i;
+	int i,r;
 	//Inicio de la generacion del codigo
 	fprintf(fileAssembler,"\n.CODE\n");
 	fprintf(fileAssembler,"mov AX, @DATA\n");
@@ -78,8 +78,16 @@ void GeneracionCodigo()
 
 	//Inicio del codigo assembles del programa fuente
 	
+	vaciarPilaDeInt(&PilaDeEtiquetas);
+	//LLeno la Pila de Eriquetas
+	LlenarPilaEtiquetas();
+	
 	//Ordeno la Pila de etiquetas
 	OrdenarPila(&PilaDeEtiquetas);
+
+	
+
+
 
 	//recorro todos los tercetos
 	for(i=0;i<cantTercetos;i++)
@@ -87,6 +95,10 @@ void GeneracionCodigo()
 		GenerarAssemblerByTerceto(i);
 	}
 
+	//while(PilaVacia(&PilaDeEtiquetas)==0)
+	//{
+	//	printf("%d ",popInt(&PilaDeEtiquetas));
+	//}
 
 
 	//Finalizar
@@ -98,10 +110,17 @@ void GeneracionCodigo()
 void GenerarAssemblerByTerceto(int idTerceto)
 {
 	//Creacion de las etiquetas
+
+
 	if(idTerceto==VerTope(&PilaDeEtiquetas))
 	{
 		fprintf(fileAssembler, "etiqueta_%d:\n", idTerceto);
 		popInt(&PilaDeEtiquetas);
+
+		while(idTerceto==VerTope(&PilaDeEtiquetas))
+		{
+			popInt(&PilaDeEtiquetas);
+		}
 	}
 
 
@@ -109,12 +128,12 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	if(listaDeTercetos[idTerceto].tipoDeX==INDICE_TS)
 	{
 		//ej. [2](a,_,_) -> subo el valor a el coprocesador
-		fprintf(fileAssembler,"FLD %s", TS[listaDeTercetos[idTerceto].x].nombre);
+		fprintf(fileAssembler,"FLD %s \n", TS[listaDeTercetos[idTerceto].x].nombre);
 	}
 	//VAMOS CON LOS TOKENS!!!!!
 	if(listaDeTercetos[idTerceto].tipoDeX==TOKEN)
 	{
-		TercetoTokes(listaDeTercetos[idTerceto].x);
+		TercetoTokes(listaDeTercetos[idTerceto].x,idTerceto);
 	}
 	
 
@@ -123,7 +142,7 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	}
 
 
-void TercetoTokes(int token)
+void TercetoTokes(int token, int idTerceto)
 {
 	switch(token)
 		{
@@ -164,9 +183,44 @@ void TercetoTokes(int token)
 		break;
 
 	case OP_SUMA:
-
+		asmSuma(idTerceto);
 		break;
 
 	}
 
 }
+
+void LlenarPilaEtiquetas()
+{
+	int i;
+	for(i=0;i<cantTercetos;i++)
+	{
+		if(listaDeTercetos[i].tipoDeX==JMP || listaDeTercetos[i].tipoDeX==JZ
+			|| listaDeTercetos[i].tipoDeX==JNZ || listaDeTercetos[i].tipoDeX==JG
+			|| listaDeTercetos[i].tipoDeX==JGE || listaDeTercetos[i].tipoDeX==JL
+			|| listaDeTercetos[i].tipoDeX==JLE || listaDeTercetos[i].tipoDeX==JE
+			|| listaDeTercetos[i].tipoDeX==JNE
+
+			)
+		{
+			pushInt(listaDeTercetos[i].y,&PilaDeEtiquetas);
+			
+		}
+	}
+
+}
+////////////////////////////
+//OPERACIONES///////////////
+////////////////////////////
+
+//SUMA
+
+void asmSuma(int idTerceto)
+{
+	fprintf(fileAssembler,"FADD \n");
+	fprintf(fileAssembler, "FST AUX%d\n", idTerceto);
+	fprintf(fileAssembler, "ffree st(0)\n");
+    fprintf(fileAssembler, "ffree st(1)\n");
+}
+
+
