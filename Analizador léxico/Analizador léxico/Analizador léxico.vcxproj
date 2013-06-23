@@ -103,6 +103,7 @@
     <None Include="..\Debug\Casos de pruba\programa_complejo.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt" />
+    <None Include="..\Debug\final.asm" />
     <None Include="..\Debug\reglas_aplicadas.txt" />
     <None Include="..\Debug\Tabla_de_símbolos.txt" />
     <None Include="..\Debug\Tercetos.txt" />
