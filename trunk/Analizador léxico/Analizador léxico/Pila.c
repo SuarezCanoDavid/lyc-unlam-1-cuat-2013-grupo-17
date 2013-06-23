@@ -30,6 +30,13 @@ int VerTope(PilaDeInt *pila)
 
 }
 
+int PilaVacia(PilaDeInt *pila)
+{
+	if(pila->tope==0)
+		return 1;
+		return 0;
+}
+
 void OrdenarPila(PilaDeInt *pila)
 {
 	qsort (pila->contenedor,(size_t) pila->tope,sizeof(int),comparar);
@@ -37,7 +44,7 @@ void OrdenarPila(PilaDeInt *pila)
 
 int comparar (const void * a, const void * b)
 {
-	if( *(int*)a <  *(int*)b )
+	if( *(int*)a >  *(int*)b )
 	{ 
 		return -1;
 	}

@@ -19,7 +19,7 @@ void vaciarPilaDeInt(PilaDeInt *pila);
 int VerTope(PilaDeInt *pila);
 void OrdenarPila(PilaDeInt *pila);
 int comparar (const void* p1, const void* p2);
-
+int PilaVacia(PilaDeInt *);
 struct PilaDeColas
 {
 	ColaDeTercetos *contenedor[TAM_PILA];
