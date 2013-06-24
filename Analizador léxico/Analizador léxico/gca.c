@@ -155,6 +155,9 @@ void GenerarAssemblerByTerceto(int idTerceto)
 
 
 
+
+
+
 	}
 
 void asmSalto(int idTerceto)
@@ -182,6 +185,7 @@ void asmSalto(int idTerceto)
 							break;
 	}
 }
+
 void TercetoTokes(int token, int idTerceto)
 {
 	switch(token)
@@ -225,9 +229,64 @@ void TercetoTokes(int token, int idTerceto)
 	case OP_SUMA:
 		asmSuma();
 		break;
+	
+	case PR_AND:
+		asmAnd(idTerceto);
+		break;
+
+	case PR_OR:
+		asmOr(idTerceto);
+		break;
+	
+	case PR_NOT:
+		asmNot(idTerceto);
+		break;
 
 	}
 
+}
+
+
+void asmNot(int idTerceto)
+{
+	if(listaDeTercetos[idTerceto].tipoDeY==BH)
+		fprintf(fileAssembler,"NOT BH \n");
+
+	if(listaDeTercetos[idTerceto].tipoDeY==CH)
+		fprintf(fileAssembler,"NOT CH \n");
+}
+void asmOr(int idTerceto)
+{
+	if(listaDeTercetos[idTerceto].tipoDeY==BH
+		&& listaDeTercetos[idTerceto].tipoDeZ==BL
+		)
+	{
+		fprintf(fileAssembler,"OR BH , BL \n");
+	}
+
+	if(listaDeTercetos[idTerceto].tipoDeY==CH
+		&& listaDeTercetos[idTerceto].tipoDeZ==CL
+		)
+	{
+		fprintf(fileAssembler,"OR CH , CL \n");
+	}
+}
+
+void asmAnd(int idTerceto)
+{
+	if(listaDeTercetos[idTerceto].tipoDeY==BH
+		&& listaDeTercetos[idTerceto].tipoDeZ==BL
+		)
+	{
+		fprintf(fileAssembler,"ADD BH , BL \n");
+	}
+
+	if(listaDeTercetos[idTerceto].tipoDeY==CH
+		&& listaDeTercetos[idTerceto].tipoDeZ==CL
+		)
+	{
+		fprintf(fileAssembler,"ADD CH , CL \n");
+	}
 }
 
 void LlenarPilaEtiquetas()
@@ -288,14 +347,14 @@ void asmAsignacion(int idTerceto)
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==1)
 	{
-		fprintf(fileAssembler,"MOV BH ffh\n");
+		fprintf(fileAssembler,"MOV BH , ffh\n");
 	}
 
 	if(listaDeTercetos[idTerceto].tipoDeY==BH
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==0)
 	{
-		fprintf(fileAssembler,"MOV BH 00h\n");
+		fprintf(fileAssembler,"MOV BH , 00h\n");
 	}
 
 
@@ -303,21 +362,21 @@ void asmAsignacion(int idTerceto)
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==1)
 	{
-		fprintf(fileAssembler,"MOV BL ffh\n");
+		fprintf(fileAssembler,"MOV BL , ffh\n");
 	}
 	
 	if(listaDeTercetos[idTerceto].tipoDeY==BL
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==0)
 	{
-		fprintf(fileAssembler,"MOV BL 00h\n");
+		fprintf(fileAssembler,"MOV BL , 00h\n");
 	}
 
 	if(listaDeTercetos[idTerceto].tipoDeY==BL
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==0)
 	{
-		fprintf(fileAssembler,"MOV BL 00h\n");
+		fprintf(fileAssembler,"MOV BL , 00h\n");
 	}
 	if(listaDeTercetos[idTerceto].tipoDeY==INDICE_TS)
 	{

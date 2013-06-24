@@ -496,6 +496,21 @@ condicion:	PR_NOT PAR_ABRE proposicion PAR_CIERRA
 				crearTerceto(&tercetoAux);
 
 				borrarTerceto(&tercetoAux);
+				tercetoAux.x = OP_ASIGNACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.tipoDeY = BL;
+				tercetoAux.z = 1;
+				tercetoAux.tipoDeZ = VALOR;
+				crearTerceto(&tercetoAux);
+
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_AND;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.tipoDeY = BH;
+				tercetoAux.tipoDeZ = BL;
+				crearTerceto(&tercetoAux);
+
+				borrarTerceto(&tercetoAux);
 				tercetoAux.tipoDeX = JZ;
 				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
 			};
