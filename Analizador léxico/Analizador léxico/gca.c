@@ -79,9 +79,9 @@ void GeneracionCodigo()
 	//Inicio de la generacion del codigo
 	fprintf(fileAssembler,"\n.CODE\n");
 	fprintf(fileAssembler,"mov AX, @DATA\n");
-	/*fprintf(fileAssembler,"mov DS, AX\n");
+	fprintf(fileAssembler,"mov DS, AX\n");
 	fprintf(fileAssembler,"mov ES, AX\n");
-	fprintf(fileAssembler,"finit\n\n");*/
+	fprintf(fileAssembler,"finit\n\n");
 	
 	
 	//Inicio del codigo assembles del programa fuente
