@@ -47,7 +47,8 @@ void DeclararVariables()
 			fprintf(fileAssembler, "%s dd ?\n",TS[i].nombre);
 			break;
 			case PR_STRING:
-				fprintf(fileAssembler, "%s db MAXTEXTSIZE dup (?),'$'\n", TS[i].nombre);      
+				fprintf(fileAssembler, "%s db $ , 60 dup (?)\n", TS[i].nombre);    
+				fprintf(fileAssembler, "_%s_long dd 1 \n", TS[i].nombre); 
 			break;
 			case  CTE_ENTERA:
 			case  CTE_REAL:
@@ -55,13 +56,14 @@ void DeclararVariables()
 
 			break;
 			case CTE_STRING:
-				fprintf(fileAssembler, "%s db \"%s\",'$', %d dup (?)\n", TS[i].nombre,  TS[i].valor, MAX_LONG_CTE_STRING);
+				fprintf(fileAssembler, "%s db \"%s\",'$', %d dup (?)\n", TS[i].nombre,  TS[i].valor, MAX_LONG_CTE_STRING-TS[i].longitud-1);
+				fprintf(fileAssembler, "%s_long dd %d \n", TS[i].nombre,  TS[i].longitud+1);
 			break;
 
 		}
 	}
 	
-
+	fprintf(fileAssembler, "_VAR_FILTERC dd 0.0 \n");
 
 
 }
@@ -116,7 +118,7 @@ void GenerarAssemblerByTerceto(int idTerceto)
 {
 	//Creacion de las etiquetas
 	
-	printf("%d  %d \n", idTerceto,VerTope(&PilaDeEtiquetas));
+	//printf("%d  %d \n", idTerceto,VerTope(&PilaDeEtiquetas));
 	if(PilaVacia(&PilaDeEtiquetas)==0 && idTerceto==VerTope(&PilaDeEtiquetas))
 	{
 		fprintf(fileAssembler, "etiqueta_%d:\n", idTerceto);
@@ -151,6 +153,12 @@ void GenerarAssemblerByTerceto(int idTerceto)
 			)
 	{
 		asmSalto(idTerceto);
+	}
+
+	//VAMOS CON EL QUERIADO FILTERC
+	if(listaDeTercetos[idTerceto].tipoDeX==VAR_FILTERC)
+	{
+		fprintf(fileAssembler,"_VAR_FILTERC \n");
 	}
 
 
@@ -255,6 +263,7 @@ void asmNot(int idTerceto)
 	if(listaDeTercetos[idTerceto].tipoDeY==CH)
 		fprintf(fileAssembler,"NOT CH \n");
 }
+
 void asmOr(int idTerceto)
 {
 	if(listaDeTercetos[idTerceto].tipoDeY==BH
@@ -309,6 +318,7 @@ void LlenarPilaEtiquetas()
 	}
 
 }
+
 ////////////////////////////
 //OPERACIONES///////////////
 ////////////////////////////
