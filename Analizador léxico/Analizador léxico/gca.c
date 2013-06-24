@@ -75,19 +75,23 @@ void GeneracionCodigo()
 	fprintf(fileAssembler,"mov ES, AX\n");
 	fprintf(fileAssembler,"finit\n\n");*/
 	
-
+	
 	//Inicio del codigo assembles del programa fuente
 	
 	vaciarPilaDeInt(&PilaDeEtiquetas);
 	//LLeno la Pila de Eriquetas
 	LlenarPilaEtiquetas();
 	
+	while(PilaVacia(&PilaDeEtiquetas)==0)
+	{
+		printf("%d ",popInt(&PilaDeEtiquetas));
+	}
 	//Ordeno la Pila de etiquetas
 	OrdenarPila(&PilaDeEtiquetas);
 
 	
-
-
+	
+	
 
 	//recorro todos los tercetos
 	for(i=0;i<cantTercetos;i++)
@@ -95,10 +99,7 @@ void GeneracionCodigo()
 		GenerarAssemblerByTerceto(i);
 	}
 
-	//while(PilaVacia(&PilaDeEtiquetas)==0)
-	//{
-	//	printf("%d ",popInt(&PilaDeEtiquetas));
-	//}
+
 
 
 	//Finalizar
@@ -111,8 +112,8 @@ void GenerarAssemblerByTerceto(int idTerceto)
 {
 	//Creacion de las etiquetas
 
-
-	if(idTerceto==VerTope(&PilaDeEtiquetas))
+	//printf("%d  %d \n", idTerceto,VerTope(&PilaDeEtiquetas));
+	if(PilaVacia(&PilaDeEtiquetas)==0 && idTerceto==VerTope(&PilaDeEtiquetas))
 	{
 		fprintf(fileAssembler, "etiqueta_%d:\n", idTerceto);
 		popInt(&PilaDeEtiquetas);
@@ -203,6 +204,7 @@ void LlenarPilaEtiquetas()
 
 			)
 		{
+			
 			pushInt(listaDeTercetos[i].y,&PilaDeEtiquetas);
 			
 		}
@@ -242,8 +244,49 @@ void asmDividir()
 void asmAsignacion(int idTerceto)
 {
 
-	//printf("%s ",
-	fprintf(fileAssembler,"FSTP %s \n",TS[listaDeTercetos[idTerceto].y].nombre);
+	if(listaDeTercetos[idTerceto].tipoDeY==BH
+		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
+		&& listaDeTercetos[idTerceto].z==1)
+	{
+		fprintf(fileAssembler,"MOV BH ffh\n");
+	}
+
+	if(listaDeTercetos[idTerceto].tipoDeY==BH
+		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
+		&& listaDeTercetos[idTerceto].z==0)
+	{
+		fprintf(fileAssembler,"MOV BH 00h\n");
+	}
+
+
+	if(listaDeTercetos[idTerceto].tipoDeY==BL
+		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
+		&& listaDeTercetos[idTerceto].z==1)
+	{
+		fprintf(fileAssembler,"MOV BL ffh\n");
+	}
+	
+	if(listaDeTercetos[idTerceto].tipoDeY==BL
+		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
+		&& listaDeTercetos[idTerceto].z==0)
+	{
+		fprintf(fileAssembler,"MOV BL 00h\n");
+	}
+
+	if(listaDeTercetos[idTerceto].tipoDeY==BL
+		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
+		&& listaDeTercetos[idTerceto].z==0)
+	{
+		fprintf(fileAssembler,"MOV BL 00h\n");
+	}
+	if(listaDeTercetos[idTerceto].tipoDeY==INDICE_TS)
+	{
+		fprintf(fileAssembler,"FSTP %s \n", TS[listaDeTercetos[idTerceto].y].nombre);
+	}
+
+	
+	
+	
 }
 
 void asmDistinto()

@@ -2,8 +2,9 @@ VAR
 	[a,b,resultado]:[int,int,int]
 ENDVAR
 
-a=10;
+a=15;
 b=5;
-resultado=a+b+3;
-resultado= a*5;
+resultado=a+b;
+
+
 
