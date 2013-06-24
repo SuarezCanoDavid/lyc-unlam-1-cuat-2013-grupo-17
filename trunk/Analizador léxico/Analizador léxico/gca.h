@@ -23,4 +23,7 @@ void asmMayorIgual();
 void asmMenor();
 void asmMenorIgual();
 void asmSalto(int);
+void asmAnd(int);
+void asmOr(int);
+void asmNot(int);
 #endif
