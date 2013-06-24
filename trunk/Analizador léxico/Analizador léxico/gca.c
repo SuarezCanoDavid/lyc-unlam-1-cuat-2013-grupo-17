@@ -66,6 +66,7 @@ void DeclararVariables()
 	}
 	
 	fprintf(fileAssembler, "_VAR_FILTERC dd 0.0 \n");
+	//fprintf(fileAssembler,  "__ENTER db \"%s\",'$', %d dup (?)\n",MAX_LONG_CTE_STRING);
 
 
 }
@@ -106,6 +107,8 @@ void GeneracionCodigo()
 	{
 		GenerarAssemblerByTerceto(i);
 	}
+
+	fprintf(fileAssembler, "etiqueta_%d:\n",cantTercetos);
 
 
 
@@ -434,3 +437,17 @@ void asmMenorIgual()
 	fprintf(fileAssembler,"FCOMPP \n");
 }
 
+void GenerarCodigoString()
+{
+	//Rutina de salida a pantalla
+    fprintf(fileAssembler, "IMPRIMIR PROC\n");
+    fprintf(fileAssembler, "	mov AH, 9\n");
+    fprintf(fileAssembler, "	int 21h\n");
+    fprintf(fileAssembler, "	mov DX, OFFSET __ENTER\n");
+    fprintf(fileAssembler, "	mov AH, 9\n");
+    fprintf(fileAssembler, "	int 21h\n");
+    fprintf(fileAssembler, "	ret\n");
+    fprintf(fileAssembler, "IMPRIMIR ENDP\n\n");
+     
+
+}
