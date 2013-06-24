@@ -1,11 +1,7 @@
 VAR
-	[a,b,c]:[int,int,int]
+	[a,b,resultado]:[int,int,int]
 ENDVAR
 
-do
-	if(a == 0)
-		wprint("Esto no funciona!!!");
-	else
-		wprint("Esto si que no funciona");
-	fi;
-while(filterc(_<0 or _>10,[a,b,c]) != 0);
+a = 10;
+b = 5;
+resultado = a + b;
