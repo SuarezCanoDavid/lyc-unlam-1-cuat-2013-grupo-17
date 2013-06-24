@@ -99,6 +99,7 @@
     <None Include="..\Debug\Casos de pruba\fuente4.txt" />
     <None Include="..\Debug\Casos de pruba\fuente5.txt" />
     <None Include="..\Debug\Casos de pruba\fuente6.txt" />
+    <None Include="..\Debug\Casos de pruba\fuente7.txt" />
     <None Include="..\Debug\Casos de pruba\if_anidados.txt" />
     <None Include="..\Debug\Casos de pruba\programa_complejo.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt" />

@@ -340,7 +340,7 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 		{
 			nombreAux[0] = '\0';
 
-			if(tipoDeToken == CTE_STRING || tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
+			if(tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL)
 			{
 				nombreAux[0] = '_';
 				nombreAux[1] = '\0';
@@ -363,15 +363,20 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 					/*Si es una constante string*/
 					if(tipoDeToken == CTE_STRING)
 					{
+						nombreAux[0] = '_';
 						/*Guardo el valor del token sin las comillas*/
 						for(j = 1; tokenActual->token[j] != '"'; ++j)
 						{
 							TS[i].valor[j-1] = tokenActual->token[j];
+							nombreAux[j] = tokenActual->token[j];
+							if(nombreAux[j] == ' ')
+							{
+								nombreAux[j] = '_';
+							}
 						}
-
 						TS[i].longitud = j-1;
-
 						TS[i].valor[TS[i].longitud] = '\0';
+						nombreAux[j] = '\0';
 					}
 					else /*Si es una constante numerica*/
 					{
