@@ -402,6 +402,7 @@ decision_parte_B:	PR_ELSE
 
 asignacion: ID OP_ASIGNACION asignacion
 			{
+				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
 				tercetoAux.y = $1;
@@ -415,6 +416,7 @@ asignacion: ID OP_ASIGNACION asignacion
 
 asignacion: ID OP_ASIGNACION expresion
 			{
+				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
 				tercetoAux.y = $1;
@@ -426,11 +428,41 @@ asignacion: ID OP_ASIGNACION expresion
 				$$ = $1;
 			};
 
-asignacion: ID OP_ASIGNACION CTE_STRING;
+asignacion: ID OP_ASIGNACION CTE_STRING
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = OP_ASIGNACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $1;
+				tercetoAux.tipoDeY = INDICE_TS;
+				tercetoAux.z = $3;
+				tercetoAux.tipoDeZ = INDICE_TS;
+				crearTerceto(&tercetoAux);
+			};
 
-asignacion: ID OP_ASIGNACION concatenacion;
+asignacion: ID OP_ASIGNACION concatenacion
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = OP_ASIGNACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $1;
+				tercetoAux.tipoDeY = INDICE_TS;
+				tercetoAux.z = cantTercetos - 1;
+				tercetoAux.tipoDeZ = NRO_TERCETO;
+				crearTerceto(&tercetoAux);
+			};
 
-concatenacion:	concatenacion_parte_extrema OP_CONCATENACION concatenacion_parte_extrema;
+concatenacion:	concatenacion_parte_extrema OP_CONCATENACION concatenacion_parte_extrema
+				{
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = OP_CONCATENACION;
+					tercetoAux.tipoDeX = TOKEN;
+					tercetoAux.y = $1;
+					tercetoAux.tipoDeY = INDICE_TS;
+					tercetoAux.z = $3;
+					tercetoAux.tipoDeZ = INDICE_TS;
+					crearTerceto(&tercetoAux);
+				};
 
 concatenacion_parte_extrema:	ID;
 

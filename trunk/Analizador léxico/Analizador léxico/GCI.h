@@ -22,6 +22,9 @@
 #define CL			16
 #define VAR_FILTERC	17
 #define VALOR		18
+#define AX			19
+#define CADENA_AUX	20
+#define	ERROR		21
 
 
 struct Terceto

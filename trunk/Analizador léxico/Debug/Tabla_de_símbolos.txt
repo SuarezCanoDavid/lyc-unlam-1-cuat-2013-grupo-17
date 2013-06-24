@@ -1,7 +1,5 @@
 0  a                                                 PR_INT                                                           0         
 1  b                                                 PR_INT                                                           0         
-2  c                                                 PR_INT                                                           0         
-3  _0                                                CTE_ENTERA     0.0                                               0         
-4  _"Esto no funciona!!!"                            CTE_STRING     Esto no funciona!!!                               19        
-5  _"Esto si que no funciona"                        CTE_STRING     Esto si que no funciona                           23        
-6  _10                                               CTE_ENTERA     10.0                                              0         
+2  resultado                                         PR_INT                                                           0         
+3  _10                                               CTE_ENTERA     10.0                                              0         
+4  _5                                                CTE_ENTERA     5.0                                               0         
