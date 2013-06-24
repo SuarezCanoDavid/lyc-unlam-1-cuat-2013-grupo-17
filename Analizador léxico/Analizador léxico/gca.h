@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 #ifndef GCA_H
 #define GCA_H
 
@@ -21,4 +22,5 @@ void asmMayor();
 void asmMayorIgual();
 void asmMenor();
 void asmMenorIgual();
+void asmSalto(int);
 #endif
