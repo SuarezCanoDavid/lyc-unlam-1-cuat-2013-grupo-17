@@ -4,7 +4,10 @@ ENDVAR
 
 a=15;
 b=5;
-resultado=a+b;
+if( b > 6)
+	resultado=a+b;
+
+fi;
 
 
 

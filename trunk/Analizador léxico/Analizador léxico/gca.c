@@ -19,15 +19,16 @@ FILE *fileAssembler;
 
 void GenerarAssembler()
 {
+	
 	GenerarEncabezado();
 	 DeclararVariables();
+	
 	 GeneracionCodigo();
 }
 
 void GenerarEncabezado()
 {
 	fopen_s(&fileAssembler,"final.asm", "w");
-	//generar encabezado (ver carpeta)
 	fprintf(fileAssembler,".MODEL SMALL\n");
 	fprintf(fileAssembler,".386\n");
 	fprintf(fileAssembler,".STACK 200h\n\n");
@@ -67,7 +68,9 @@ void DeclararVariables()
 
 void GeneracionCodigo()
 {
+	
 	int i,r;
+	 
 	//Inicio de la generacion del codigo
 	fprintf(fileAssembler,"\n.CODE\n");
 	fprintf(fileAssembler,"mov AX, @DATA\n");
@@ -82,15 +85,16 @@ void GeneracionCodigo()
 	//LLeno la Pila de Eriquetas
 	LlenarPilaEtiquetas();
 	
-	while(PilaVacia(&PilaDeEtiquetas)==0)
-	{
-		printf("%d ",popInt(&PilaDeEtiquetas));
-	}
+
+	
 	//Ordeno la Pila de etiquetas
 	OrdenarPila(&PilaDeEtiquetas);
 
 	
-	
+	/*while(PilaVacia(&PilaDeEtiquetas)==0)
+	{
+		printf("%d ",popInt(&PilaDeEtiquetas));
+	}*/
 	
 
 	//recorro todos los tercetos
@@ -111,8 +115,8 @@ void GeneracionCodigo()
 void GenerarAssemblerByTerceto(int idTerceto)
 {
 	//Creacion de las etiquetas
-
-	//printf("%d  %d \n", idTerceto,VerTope(&PilaDeEtiquetas));
+	
+	printf("%d  %d \n", idTerceto,VerTope(&PilaDeEtiquetas));
 	if(PilaVacia(&PilaDeEtiquetas)==0 && idTerceto==VerTope(&PilaDeEtiquetas))
 	{
 		fprintf(fileAssembler, "etiqueta_%d:\n", idTerceto);
@@ -125,7 +129,7 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	}
 
 
-
+	
 	if(listaDeTercetos[idTerceto].tipoDeX==INDICE_TS)
 	{
 		//ej. [2](a,_,_) -> subo el valor a el coprocesador
@@ -136,13 +140,48 @@ void GenerarAssemblerByTerceto(int idTerceto)
 	{
 		TercetoTokes(listaDeTercetos[idTerceto].x,  idTerceto);
 	}
-	
+
+	//VAMOS CON LOS SALTOS!!!
+	if(listaDeTercetos[idTerceto].tipoDeX==JMP || listaDeTercetos[idTerceto].tipoDeX==JZ
+			|| listaDeTercetos[idTerceto].tipoDeX==JNZ || listaDeTercetos[idTerceto].tipoDeX==JG
+			|| listaDeTercetos[idTerceto].tipoDeX==JGE || listaDeTercetos[idTerceto].tipoDeX==JL
+			|| listaDeTercetos[idTerceto].tipoDeX==JLE || listaDeTercetos[idTerceto].tipoDeX==JE
+			|| listaDeTercetos[idTerceto].tipoDeX==JNE
+
+			)
+	{
+		asmSalto(idTerceto);
+	}
 
 
 
 	}
 
-
+void asmSalto(int idTerceto)
+{
+	
+	switch(listaDeTercetos[idTerceto].tipoDeX)
+	{
+		case JMP:			fprintf(fileAssembler, "JMP etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JZ:			fprintf(fileAssembler,"JZ etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JNZ:			fprintf(fileAssembler,"JNZ etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JG:			fprintf(fileAssembler,"JG etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JGE:			fprintf(fileAssembler,"JGE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JL:			fprintf(fileAssembler,"JL etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JLE:			fprintf(fileAssembler,"JLE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JE:			fprintf(fileAssembler,"JE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+		case JNE:			fprintf(fileAssembler,"JNE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+							break;
+	}
+}
 void TercetoTokes(int token, int idTerceto)
 {
 	switch(token)
@@ -244,6 +283,7 @@ void asmDividir()
 void asmAsignacion(int idTerceto)
 {
 
+	//printf("%d - %d - %d   ",listaDeTercetos[idTerceto].tipoDeY,listaDeTercetos[idTerceto].tipoDeZ,listaDeTercetos[idTerceto].z);
 	if(listaDeTercetos[idTerceto].tipoDeY==BH
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==1)
