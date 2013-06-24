@@ -8,6 +8,7 @@ void GenerarAssembler();
 void GenerarEncabezado();
 void DeclararVariables();
 void GeneracionCodigo();
+void GenerarCodigoString();
 void GenerarAssemblerByTerceto();
 void TercetoTokes(int);
 void LlenarPilaEtiquetas();
