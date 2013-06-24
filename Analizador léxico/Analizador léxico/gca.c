@@ -24,6 +24,8 @@ void GenerarAssembler()
 	 DeclararVariables();
 	
 	 GeneracionCodigo();
+	 //GenerarCodigoString();
+	 fprintf(fileAssembler,"\nEND;");
 }
 
 void GenerarEncabezado()
