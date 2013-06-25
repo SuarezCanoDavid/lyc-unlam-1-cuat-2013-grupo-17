@@ -49,7 +49,7 @@ void DeclararVariables()
 			fprintf(fileAssembler, "%s dd ?\n",TS[i].nombre);
 			break;
 			case PR_STRING:
-				fprintf(fileAssembler, "%s db $ , 60 dup (?)\n", TS[i].nombre);    
+				fprintf(fileAssembler, "%s db '$' , 60 dup (?)\n", TS[i].nombre);    
 				fprintf(fileAssembler, "_%s_long dd 1 \n", TS[i].nombre); 
 			break;
 			case  CTE_ENTERA:
@@ -69,6 +69,7 @@ void DeclararVariables()
 	fprintf(fileAssembler,"MAXTEXTSIZE equ 50\n");
 	fprintf(fileAssembler,  "__MENSAJE db  '$', %d dup (?)\n",MAX_LONG_CTE_STRING);
 	fprintf(fileAssembler,"__ENTER	db \"HOLA MUNDO\" ,'$'\n");
+	fprintf(fileAssembler,"_AUXPrintReal db 14 dup(?), '$'\n");
 
 
 }
@@ -268,6 +269,13 @@ void TercetoTokes(int token, int idTerceto)
 
 void asmWprint(int idTerceto)
 {
+
+	//fprintf(fileAssembler, "lea di, _AUXPrintReal\n");
+	//fprintf(fileAssembler, "lea si, TS%d\n", posSegundo); 
+	//fprintf(fileAssembler, "call formatReal\n");
+	//fprintf(fileAssembler, "lea DX, _AUXPrintReal\n");
+	//fprintf(fileAssembler, "call IMPRIMIR\n\n");
+
 	fprintf(fileAssembler, "mov eax,  %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
 	fprintf(fileAssembler, "cld\n");
 	fprintf(fileAssembler, "mov esi , OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
