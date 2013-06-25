@@ -4,7 +4,7 @@
 #ifndef PILA_H
 #define PILA_H
 
-#define TAM_PILA	20
+#define TAM_PILA	50
 
 struct PilaDeInt
 {

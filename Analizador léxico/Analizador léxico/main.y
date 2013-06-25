@@ -139,8 +139,6 @@ bloque_declaracion: PR_VAR declaracion PR_ENDVAR;
 
 declaracion:	declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
 				{
-					fprintf(salidaAS,"]\n");
-	
 					equilibrarDeclaracion();
 	
 					asignarTipoDeDato();
@@ -152,8 +150,6 @@ declaracion:	declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE
 
 declaracion:	COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
 				{
-					fprintf(salidaAS,"]\n");
-	
 					equilibrarDeclaracion();
 	
 					asignarTipoDeDato();
@@ -229,7 +225,7 @@ wprint:	wprint_cte;
 wprint: wprint_id;
 
 
-wprint_cte:	wprint_parte_A CTE_STRING PAR_CIERRA
+wprint_cte:	PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA
 			{
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_WPRINT;
@@ -239,7 +235,7 @@ wprint_cte:	wprint_parte_A CTE_STRING PAR_CIERRA
 				crearTerceto(&tercetoAux);
 			};
 
-wprint_cte: wprint_parte_A CTE_REAL PAR_CIERRA
+wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
 			{
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_WPRINT;
@@ -250,8 +246,10 @@ wprint_cte: wprint_parte_A CTE_REAL PAR_CIERRA
 			};
 
 
-wprint_id:	wprint_parte_A ID PAR_CIERRA
+wprint_id:	PR_WPRINT PAR_ABRE ID PAR_CIERRA
 			{
+				verificarDeclaracion($3);
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_WPRINT;
 				tercetoAux.tipoDeX = TOKEN;
@@ -259,8 +257,6 @@ wprint_id:	wprint_parte_A ID PAR_CIERRA
 				tercetoAux.tipoDeY = INDICE_TS;
 				crearTerceto(&tercetoAux);
 			};
-
-wprint_parte_A:	PR_WPRINT PAR_ABRE;
 
 
 iteracion:	iteracion_for;
@@ -402,6 +398,28 @@ decision_parte_B:	PR_ELSE
 
 asignacion: ID OP_ASIGNACION asignacion
 			{
+				verificarDeclaracion($1);
+
+				if(TS[$1].tipo == PR_INT && TS[$3].tipo == PR_STRING)
+				{
+					lanzarError("No se puede asignar un tipo STRING a un tipo INT");
+				}
+
+				if(TS[$1].tipo == PR_FLOAT && TS[$3].tipo == PR_STRING)
+				{
+					lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
+				}
+
+				if(TS[$1].tipo == PR_STRING && TS[$3].tipo == PR_INT)
+				{
+					lanzarError("No se puede asignar un tipo INT a un tipo STRING");
+				}
+
+				if(TS[$1].tipo == PR_STRING && TS[$3].tipo == PR_FLOAT)
+				{
+					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -438,10 +456,24 @@ asignacion: ID OP_ASIGNACION CTE_STRING
 				tercetoAux.z = $3;
 				tercetoAux.tipoDeZ = INDICE_TS;
 				crearTerceto(&tercetoAux);
+
+				$$ = $1;
 			};
 
 asignacion: ID OP_ASIGNACION concatenacion
 			{
+				verificarDeclaracion($1);
+
+				if(TS[$1].tipo == PR_INT)
+				{
+					lanzarError("No puede asignar un tipo STRING a un tipo INT");
+				}
+
+				if(TS[$1].tipo == PR_FLOAT)
+				{
+					lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -450,6 +482,8 @@ asignacion: ID OP_ASIGNACION concatenacion
 				tercetoAux.z = cantTercetos - 1;
 				tercetoAux.tipoDeZ = NRO_TERCETO;
 				crearTerceto(&tercetoAux);
+
+				$$ = TS[$1].tipo;
 			};
 
 concatenacion:	concatenacion_parte_extrema OP_CONCATENACION concatenacion_parte_extrema
@@ -464,9 +498,22 @@ concatenacion:	concatenacion_parte_extrema OP_CONCATENACION concatenacion_parte_
 					crearTerceto(&tercetoAux);
 				};
 
-concatenacion_parte_extrema:	ID;
+concatenacion_parte_extrema:	ID
+								{
+									verificarDeclaracion($1);
 
-concatenacion_parte_extrema:	CTE_STRING;
+									if(TS[$1].tipo != PR_STRING)
+									{
+										lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+									}
+
+									$$ = TS[$1].tipo;
+								};
+
+concatenacion_parte_extrema:	CTE_STRING
+								{
+									$$ = PR_STRING;
+								};
 
 
 condicion:	proposicion
@@ -830,6 +877,8 @@ expresion:	expresion OP_SUMA termino
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+				$$ = $1;
 			};
 
 expresion:	expresion OP_RESTA termino
@@ -843,9 +892,14 @@ expresion:	expresion OP_RESTA termino
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+				$$ = $1;
 			};
 
-expresion:	termino;
+expresion:	termino
+			{
+				$$ = $1;
+			};
 
 
 termino:	termino OP_MULTIPLICACION factor
@@ -859,6 +913,8 @@ termino:	termino OP_MULTIPLICACION factor
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+				$$ = $1;
 			};
 
 termino:	termino OP_DIVISION factor
@@ -872,18 +928,32 @@ termino:	termino OP_DIVISION factor
 				tercetoAux.tipoDeY = NRO_TERCETO; 
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+				$$ = $1;
 			};
 
-termino:	factor;	
+termino:	factor
+			{
+				$$ = $1;
+			};	
 
 
 factor:	ID
 		{
+			verificarDeclaracion($1);
+
+			if(TS[$1].tipo == PR_STRING)
+			{
+				lanzarError("No se puede usar un tipo STRING en una expresion");
+			}
+
 			borrarTerceto(&tercetoAux);
 			tercetoAux.x = $1;
 			tercetoAux.tipoDeX = INDICE_TS;
 
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+			$$ = TS[$1].tipo;
 		};
 
 factor: CTE_ENTERA
@@ -893,6 +963,8 @@ factor: CTE_ENTERA
 			tercetoAux.tipoDeX = INDICE_TS;
 
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+			$$ = PR_INT;
 		};
 
 factor: CTE_REAL
@@ -902,6 +974,8 @@ factor: CTE_REAL
 			tercetoAux.tipoDeX = INDICE_TS;
 
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+			$$ = PR_FLOAT;
 		};
 
 factor: PAR_ABRE expresion PAR_CIERRA
@@ -911,9 +985,14 @@ factor: PAR_ABRE expresion PAR_CIERRA
 			tercetoAux.tipoDeX = NRO_TERCETO;
 
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
+
+			$$ = $2;
 		};
 
-factor: filterc;
+factor: filterc
+		{
+			$$ = PR_INT;
+		};
 
 
 filterc:	PR_FILTERC
@@ -1482,6 +1561,21 @@ lista_expresiones:	expresion
 								tercetoAux.tipoDeX = TOKEN;
 								tercetoAux.tipoDeY = CH;
 								crearTerceto(&tercetoAux);
+
+								borrarTerceto(&tercetoAux);
+								tercetoAux.x = OP_ASIGNACION;
+								tercetoAux.tipoDeX = TOKEN;
+								tercetoAux.tipoDeY = CL;
+								tercetoAux.z = 1;
+								tercetoAux.tipoDeZ = VALOR;
+								crearTerceto(&tercetoAux);
+
+								borrarTerceto(&tercetoAux);
+								tercetoAux.x = PR_AND;
+								tercetoAux.tipoDeX = TOKEN;
+								tercetoAux.tipoDeY = CH;
+								tercetoAux.tipoDeZ = CL;
+								crearTerceto(&tercetoAux);
 							}
 						}
 						else
@@ -1602,6 +1696,21 @@ lista_expresiones:	expresion
 								tercetoAux.tipoDeX = TOKEN;
 								tercetoAux.tipoDeY = CH;
 								crearTerceto(&tercetoAux);
+
+								borrarTerceto(&tercetoAux);
+								tercetoAux.x = OP_ASIGNACION;
+								tercetoAux.tipoDeX = TOKEN;
+								tercetoAux.tipoDeY = CL;
+								tercetoAux.z = 1;
+								tercetoAux.tipoDeZ = VALOR;
+								crearTerceto(&tercetoAux);
+
+								borrarTerceto(&tercetoAux);
+								tercetoAux.x = PR_AND;
+								tercetoAux.tipoDeX = TOKEN;
+								tercetoAux.tipoDeY = CH;
+								tercetoAux.tipoDeZ = CL;
+								crearTerceto(&tercetoAux);
 							}
 						}
 						else
@@ -1720,7 +1829,7 @@ int main(int argc, char *argv[])
 
 int yyerror(char *mensaje)
 {
-	fprintf(salidaAS,"\nLinea %d: %s",lineaActual,mensaje);
+	printf("\nLinea %d: %s",lineaActual,mensaje);
 	
 	fclose(archivo);
 	fclose(archivoDeTokens);
@@ -1754,7 +1863,7 @@ void asignarTipoDeDato()
 
 void lanzarError(char *mensaje)
 {
-	fprintf(salidaAS,"\nLinea %d: %s",lineaActual,mensaje);
+	printf("\nLinea %d: %s",lineaActual,mensaje);
 		
 	fclose(archivo);
 	fclose(archivoDeTokens);
