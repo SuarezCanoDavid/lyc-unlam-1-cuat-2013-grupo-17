@@ -24,7 +24,7 @@ void GenerarAssembler()
 	 DeclararVariables();
 	
 	 GeneracionCodigo();
-	 //GenerarCodigoString();
+	 GenerarCodigoString();
 	 fprintf(fileAssembler,"\nEND;");
 }
 
@@ -66,7 +66,9 @@ void DeclararVariables()
 	}
 	
 	fprintf(fileAssembler, "_VAR_FILTERC dd 0.0 \n");
-	//fprintf(fileAssembler,  "__ENTER db \"%s\",'$', %d dup (?)\n",MAX_LONG_CTE_STRING);
+	fprintf(fileAssembler,"MAXTEXTSIZE equ 50\n");
+	fprintf(fileAssembler,  "__MENSAJE db  '$', %d dup (?)\n",MAX_LONG_CTE_STRING);
+	fprintf(fileAssembler,"__ENTER	db \"HOLA MUNDO\" ,'$'\n");
 
 
 }
@@ -255,10 +257,27 @@ void TercetoTokes(int token, int idTerceto)
 		asmNot(idTerceto);
 		break;
 
+	case PR_WPRINT:
+		asmWprint(idTerceto);
+		break;
+
 	}
 
 }
 
+
+void asmWprint(int idTerceto)
+{
+	fprintf(fileAssembler, "mov eax,  %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
+	fprintf(fileAssembler, "cld\n");
+	fprintf(fileAssembler, "mov esi , OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+	fprintf(fileAssembler, "mov edi , OFFSET __ENTER\n");
+	fprintf(fileAssembler, " mov ecx, eax \n");
+	fprintf(fileAssembler, " rep movsb \n");
+	fprintf(fileAssembler, "call IMPRIMIR\n\n");
+ 
+
+}
 
 void asmNot(int idTerceto)
 {
@@ -362,7 +381,7 @@ void asmAsignacion(int idTerceto)
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==1)
 	{
-		fprintf(fileAssembler,"MOV BH , ffh\n");
+		fprintf(fileAssembler,"MOV BH , 0ffh\n");
 	}
 
 	if(listaDeTercetos[idTerceto].tipoDeY==BH
@@ -377,7 +396,7 @@ void asmAsignacion(int idTerceto)
 		&& listaDeTercetos[idTerceto].tipoDeZ==VALOR
 		&& listaDeTercetos[idTerceto].z==1)
 	{
-		fprintf(fileAssembler,"MOV BL , ffh\n");
+		fprintf(fileAssembler,"MOV BL , 0ffh\n");
 	}
 	
 	if(listaDeTercetos[idTerceto].tipoDeY==BL
@@ -398,6 +417,15 @@ void asmAsignacion(int idTerceto)
 		fprintf(fileAssembler,"FSTP %s \n", TS[listaDeTercetos[idTerceto].y].nombre);
 	}
 
+	//Asignacion de cadenas
+	if(listaDeTercetos[idTerceto].tipoDeY==INDICE_TS
+		&& listaDeTercetos[idTerceto].tipoDeZ==INDICE_TS)
+	{
+		fprintf(fileAssembler, "mov si, OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+		fprintf(fileAssembler, "mov di, OFFSET %s\n", TS[listaDeTercetos[idTerceto].z].nombre);
+		fprintf(fileAssembler, "call COPIAR\n\n");
+	
+	}
 	
 	
 	
@@ -439,15 +467,45 @@ void asmMenorIgual()
 
 void GenerarCodigoString()
 {
+	
 	//Rutina de salida a pantalla
     fprintf(fileAssembler, "IMPRIMIR PROC\n");
-    fprintf(fileAssembler, "	mov AH, 9\n");
-    fprintf(fileAssembler, "	int 21h\n");
+    //fprintf(fileAssembler, "	mov AH, 9\n");
+    //fprintf(fileAssembler, "	int 21h\n");
     fprintf(fileAssembler, "	mov DX, OFFSET __ENTER\n");
     fprintf(fileAssembler, "	mov AH, 9\n");
     fprintf(fileAssembler, "	int 21h\n");
     fprintf(fileAssembler, "	ret\n");
     fprintf(fileAssembler, "IMPRIMIR ENDP\n\n");
      
+	    //Rutina para contar cantidad de caracteres de una cadena
+    fprintf(fileAssembler, "STRLEN PROC\n");
+    fprintf(fileAssembler, "	mov bx,0\n");
+    fprintf(fileAssembler, "STRL01:\n");
+    fprintf(fileAssembler, "	cmp BYTE PTR [SI+BX],'$'\n");
+    fprintf(fileAssembler, "	je STREND\n");
+    fprintf(fileAssembler, "	inc BX\n");
+    fprintf(fileAssembler, "	cmp BX, MAXTEXTSIZE\n");
+    fprintf(fileAssembler, "	jl STRL01\n");
+    fprintf(fileAssembler, "STREND:\n");
+    fprintf(fileAssembler, "	ret\n");
+    fprintf(fileAssembler, "STRLEN ENDP\n\n");
+
+
+	    //Rutina para copiar cadenas de caracteres
+    fprintf(fileAssembler, "COPIAR PROC\n");
+    fprintf(fileAssembler, "	call STRLEN ; busco la cantidad de caracteres\n");
+    fprintf(fileAssembler, "	cmp bx,MAXTEXTSIZE\n");
+    fprintf(fileAssembler, "	jle COPIARSIZEOK\n");
+    fprintf(fileAssembler, "	mov bx,MAXTEXTSIZE\n");
+    fprintf(fileAssembler, "COPIARSIZEOK:\n");
+    fprintf(fileAssembler, "	mov cx,bx					; la copia se hace de 'CX' caracteres\n");
+    fprintf(fileAssembler, "	cld							; cld es para que la copia se realice hacia adelante\n");
+    fprintf(fileAssembler, "	rep movsb					; copia la cadea\n");
+    fprintf(fileAssembler, "	mov al,'$'					; carácter terminador\n");
+    fprintf(fileAssembler, "	mov BYTE PTR [DI],al		; el registro DI quedo apuntando al final\n");
+    fprintf(fileAssembler, "	ret\n");
+    fprintf(fileAssembler, "COPIAR ENDP\n\n");
+
 
 }

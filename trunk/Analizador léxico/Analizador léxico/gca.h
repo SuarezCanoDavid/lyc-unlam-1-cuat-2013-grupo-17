@@ -27,4 +27,5 @@ void asmSalto(int);
 void asmAnd(int);
 void asmOr(int);
 void asmNot(int);
+void asmWprint(int);
 #endif
