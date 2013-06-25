@@ -121,7 +121,7 @@ int registroBHUsado;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 1640 "main.y"
+# line 1706 "main.y"
 
 
 
@@ -810,6 +810,7 @@ yyparse()
       case 44:
 # line 404 "main.y"
       {
+      				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
       				tercetoAux.tipoDeX = TOKEN;
       				tercetoAux.y = yypvt[-2];
@@ -821,8 +822,9 @@ yyparse()
 				yyval = yypvt[-2];
       			} break;
       case 45:
-# line 417 "main.y"
+# line 418 "main.y"
       {
+      				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
       				tercetoAux.tipoDeX = TOKEN;
       				tercetoAux.y = yypvt[-2];
@@ -833,8 +835,48 @@ yyparse()
       
 				yyval = yypvt[-2];
       			} break;
+      case 46:
+# line 432 "main.y"
+      {
+      				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = OP_ASIGNACION;
+      				tercetoAux.tipoDeX = TOKEN;
+      				tercetoAux.y = yypvt[-2];
+      				tercetoAux.tipoDeY = INDICE_TS;
+      				tercetoAux.z = yypvt[-0];
+      				tercetoAux.tipoDeZ = INDICE_TS;
+      				crearTerceto(&tercetoAux);
+      
+				yyval = yypvt[-2];
+      			} break;
+      case 47:
+# line 446 "main.y"
+      {
+      				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = OP_ASIGNACION;
+      				tercetoAux.tipoDeX = TOKEN;
+      				tercetoAux.y = yypvt[-2];
+      				tercetoAux.tipoDeY = INDICE_TS;
+      				tercetoAux.z = cantTercetos - 1;
+      				tercetoAux.tipoDeZ = NRO_TERCETO;
+      				crearTerceto(&tercetoAux);
+      
+				yyval = yypvt[-2];
+      			} break;
+      case 48:
+# line 460 "main.y"
+      {
+      					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = OP_CONCATENACION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.y = yypvt[-2];
+      					tercetoAux.tipoDeY = INDICE_TS;
+      					tercetoAux.z = yypvt[-0];
+      					tercetoAux.tipoDeZ = INDICE_TS;
+      					crearTerceto(&tercetoAux);
+      				} break;
       case 51:
-# line 441 "main.y"
+# line 477 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
@@ -856,7 +898,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 52:
-# line 463 "main.y"
+# line 499 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_AND;
@@ -870,7 +912,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 53:
-# line 477 "main.y"
+# line 513 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_OR;
@@ -884,7 +926,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 54:
-# line 491 "main.y"
+# line 527 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_NOT;
@@ -912,7 +954,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 55:
-# line 520 "main.y"
+# line 556 "main.y"
       {
       					if(registroBHUsado == FALSE)
       					{
@@ -957,7 +999,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 56:
-# line 565 "main.y"
+# line 601 "main.y"
       {
       					if(registroBHUsado == FALSE)
       					{
@@ -1002,7 +1044,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 57:
-# line 610 "main.y"
+# line 646 "main.y"
       {
       					if(registroBHUsado == FALSE)
       					{
@@ -1047,7 +1089,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 58:
-# line 655 "main.y"
+# line 691 "main.y"
       {
       					if(registroBHUsado == FALSE)
       					{
@@ -1092,7 +1134,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 59:
-# line 700 "main.y"
+# line 736 "main.y"
       {
       					if(registroBHUsado == FALSE)
       					{
@@ -1137,7 +1179,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 60:
-# line 745 "main.y"
+# line 781 "main.y"
       {
       					if(registroBHUsado == FALSE)
       					{
@@ -1182,7 +1224,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 61:
-# line 791 "main.y"
+# line 827 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_SUMA;
@@ -1195,7 +1237,7 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 62:
-# line 804 "main.y"
+# line 840 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_RESTA;
@@ -1208,7 +1250,7 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 64:
-# line 820 "main.y"
+# line 856 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_MULTIPLICACION;
@@ -1221,7 +1263,7 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 65:
-# line 833 "main.y"
+# line 869 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_DIVISION;
@@ -1234,7 +1276,7 @@ yyparse()
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       			} break;
       case 67:
-# line 849 "main.y"
+# line 885 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
@@ -1243,7 +1285,7 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       		} break;
       case 68:
-# line 858 "main.y"
+# line 894 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
@@ -1252,7 +1294,7 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       		} break;
       case 69:
-# line 867 "main.y"
+# line 903 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
@@ -1261,7 +1303,7 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       		} break;
       case 70:
-# line 876 "main.y"
+# line 912 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = popInt(pilaExpresiones);
@@ -1270,7 +1312,7 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       		} break;
       case 72:
-# line 888 "main.y"
+# line 924 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.tipoDeX = VAR_FILTERC;
@@ -1285,37 +1327,37 @@ yyparse()
       				pushInt(aux,pilaExpresiones);
       			} break;
       case 73:
-# line 909 "main.y"
+# line 945 "main.y"
       {
       				tercetosInicialesFilterc[0] = cantTercetos;
       			} break;
       case 74:
-# line 918 "main.y"
+# line 954 "main.y"
       {
       				pilaExpresiones = &pilaExpresionesNormal;
       			} break;
       case 75:
-# line 924 "main.y"
+# line 960 "main.y"
       {
       					tipoCondicionFilterc = 0;
       				} break;
       case 76:
-# line 929 "main.y"
+# line 965 "main.y"
       {
       					tipoCondicionFilterc = PR_AND;
       				} break;
       case 77:
-# line 934 "main.y"
+# line 970 "main.y"
       {
       					tipoCondicionFilterc = PR_OR;
       				} break;
       case 78:
-# line 939 "main.y"
+# line 975 "main.y"
       {
       					tipoCondicionFilterc = PR_NOT;
       				} break;
       case 79:
-# line 947 "main.y"
+# line 983 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1327,7 +1369,7 @@ yyparse()
       					}
       				} break;
       case 80:
-# line 959 "main.y"
+# line 995 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1390,7 +1432,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 81:
-# line 1024 "main.y"
+# line 1060 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1402,7 +1444,7 @@ yyparse()
       					}
       				} break;
       case 82:
-# line 1036 "main.y"
+# line 1072 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1465,7 +1507,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 83:
-# line 1101 "main.y"
+# line 1137 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1477,7 +1519,7 @@ yyparse()
       					}
       				} break;
       case 84:
-# line 1113 "main.y"
+# line 1149 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1540,7 +1582,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 85:
-# line 1178 "main.y"
+# line 1214 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1552,7 +1594,7 @@ yyparse()
       					}
       				} break;
       case 86:
-# line 1190 "main.y"
+# line 1226 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1615,7 +1657,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 87:
-# line 1255 "main.y"
+# line 1291 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1627,7 +1669,7 @@ yyparse()
       					}
       				} break;
       case 88:
-# line 1267 "main.y"
+# line 1303 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1690,7 +1732,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 89:
-# line 1332 "main.y"
+# line 1368 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1702,7 +1744,7 @@ yyparse()
       					}
       				} break;
       case 90:
-# line 1344 "main.y"
+# line 1380 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1765,7 +1807,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 91:
-# line 1408 "main.y"
+# line 1444 "main.y"
       {
       						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
       					
@@ -1810,6 +1852,21 @@ yyparse()
       								tercetoAux.x = PR_NOT;
       								tercetoAux.tipoDeX = TOKEN;
       								tercetoAux.tipoDeY = CH;
+      								crearTerceto(&tercetoAux);
+      
+								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = OP_ASIGNACION;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CL;
+      								tercetoAux.z = 1;
+      								tercetoAux.tipoDeZ = VALOR;
+      								crearTerceto(&tercetoAux);
+      
+								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_AND;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
       								crearTerceto(&tercetoAux);
       							}
       						}
@@ -1878,12 +1935,12 @@ yyparse()
       						crearTerceto(&tercetoAux);
       					} break;
       case 92:
-# line 1521 "main.y"
+# line 1572 "main.y"
       {
       						tercetosInicialesFilterc[0] = cantTercetos;
       					} break;
       case 94:
-# line 1528 "main.y"
+# line 1579 "main.y"
       {
       						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
       					
@@ -1928,6 +1985,21 @@ yyparse()
       								tercetoAux.x = PR_NOT;
       								tercetoAux.tipoDeX = TOKEN;
       								tercetoAux.tipoDeY = CH;
+      								crearTerceto(&tercetoAux);
+      
+								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = OP_ASIGNACION;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CL;
+      								tercetoAux.z = 1;
+      								tercetoAux.tipoDeZ = VALOR;
+      								crearTerceto(&tercetoAux);
+      
+								borrarTerceto(&tercetoAux);
+      								tercetoAux.x = PR_AND;
+      								tercetoAux.tipoDeX = TOKEN;
+      								tercetoAux.tipoDeY = CH;
+      								tercetoAux.tipoDeZ = CL;
       								crearTerceto(&tercetoAux);
       							}
       						}

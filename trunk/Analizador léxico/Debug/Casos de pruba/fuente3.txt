@@ -1,19 +1,10 @@
 VAR
-	[contador,mensaje,resultado]:[int,string,int]
+	[cadena1,cadena2,mensaje1]:[string,string,string]
+	[mensaje2]:[string]
 ENDVAR
 
-mensaje = "Una iteracion";
+cadena1 = "hola ";
+cadena2 = "mundo ";
 
--/Se escribe 10 veces el siguiente mensaje/-
-FOR(contador = 0; contador < 600000000; contador = contador + 1)
-	WPRINT(mensaje);
-ROF;
+mensaje2 = mensaje1 = cadena1 ++ cadena2;
 
--/Se prueba el filterc/-
-resultado = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]);
-
-wprint(resultado);
-
-WPRINT(153.91);
-
--/FIN DEL PROGRAMA/-
