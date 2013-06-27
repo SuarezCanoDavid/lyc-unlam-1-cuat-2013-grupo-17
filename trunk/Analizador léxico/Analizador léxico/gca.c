@@ -69,7 +69,7 @@ void DeclararVariables()
 	fprintf(fileAssembler,"MAXTEXTSIZE equ 50\n");
 	fprintf(fileAssembler,  "__MENSAJE db  '$', %d dup (?)\n",MAX_LONG_CTE_STRING);
 	fprintf(fileAssembler,"__ENTER	db \"HOLA MUNDO\" ,'$'\n");
-	fprintf(fileAssembler,"_AUXPrintReal db 14 dup(?), '$'\n");
+	fprintf(fileAssembler,"_AUXPrintReal db 14 dup (?), '$'\n");
 
 
 }
@@ -270,20 +270,20 @@ void TercetoTokes(int token, int idTerceto)
 void asmWprint(int idTerceto)
 {
 
-	//fprintf(fileAssembler, "lea di, _AUXPrintReal\n");
-	//fprintf(fileAssembler, "lea si, TS%d\n", posSegundo); 
-	//fprintf(fileAssembler, "call formatReal\n");
-	//fprintf(fileAssembler, "lea DX, _AUXPrintReal\n");
-	//fprintf(fileAssembler, "call IMPRIMIR\n\n");
-
-	fprintf(fileAssembler, "mov eax,  %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
-	fprintf(fileAssembler, "cld\n");
-	fprintf(fileAssembler, "mov esi , OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
-	fprintf(fileAssembler, "mov edi , OFFSET __ENTER\n");
-	fprintf(fileAssembler, " mov ecx, eax \n");
-	fprintf(fileAssembler, " rep movsb \n");
+	fprintf(fileAssembler, "lea di, _AUXPrintReal\n");
+	fprintf(fileAssembler, "lea si, _%s\n", TS[listaDeTercetos[idTerceto].y].valor); 
+	fprintf(fileAssembler, "call formatReal\n");
+	fprintf(fileAssembler, "lea DX, _AUXPrintReal\n");
 	fprintf(fileAssembler, "call IMPRIMIR\n\n");
- 
+
+	//fprintf(fileAssembler, "mov eax,  %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
+	//fprintf(fileAssembler, "cld\n");
+	//fprintf(fileAssembler, "mov esi , OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+	//fprintf(fileAssembler, "mov edi , OFFSET __ENTER\n");
+	//fprintf(fileAssembler, " mov ecx, eax \n");
+	//fprintf(fileAssembler, " rep movsb \n");
+	//fprintf(fileAssembler, "call IMPRIMIR\n\n");
+ //
 
 }
 
@@ -515,5 +515,127 @@ void GenerarCodigoString()
     fprintf(fileAssembler, "	ret\n");
     fprintf(fileAssembler, "COPIAR ENDP\n\n");
 
+
+
+	   fprintf(fileAssembler, "FRBUFFLEN equ 13\n");
+    fprintf(fileAssembler, "FRBUFFPTO equ 9\n");
+
+
+	fprintf(fileAssembler, "formatReal PROC\n");
+    fprintf(fileAssembler, "    push di\n");
+    fprintf(fileAssembler, "    mov cx,FRBUFFLEN\n");
+    fprintf(fileAssembler, "    mov al,byte ptr ' '\n");
+    fprintf(fileAssembler, "    rep stosb\n");
+    fprintf(fileAssembler, "    mov [di],byte ptr '$'\n");
+    fprintf(fileAssembler, "    call getSigno\n");
+    fprintf(fileAssembler, "    pop di\n");
+    fprintf(fileAssembler, "    push di\n");
+    fprintf(fileAssembler, "    mov byte ptr [di],al\n");
+    fprintf(fileAssembler, "    mov byte ptr [di+FRBUFFPTO],byte ptr '.'\n");
+    fprintf(fileAssembler, "    call getExponente\n");
+    fprintf(fileAssembler, "    mov bx,ax\n");
+    fprintf(fileAssembler, "    call getMantisa\n");
+    fprintf(fileAssembler, "    push eax\n");
+    fprintf(fileAssembler, "    mov cl,10d\n");
+    fprintf(fileAssembler, "    shr eax,cl\n");
+    fprintf(fileAssembler, "    add di,FRBUFFPTO-1\n");
+    fprintf(fileAssembler, "    call format9\n");
+    fprintf(fileAssembler, "    pop eax\n");
+    fprintf(fileAssembler, "    and eax,003FFFFh\n");
+    fprintf(fileAssembler, "    call convDecimal\n");
+    fprintf(fileAssembler, "    pop di\n");
+    fprintf(fileAssembler, "    add di,FRBUFFPTO+3\n");
+    fprintf(fileAssembler, "    mov cx,3\n");
+    fprintf(fileAssembler, "    call formatX\n");
+    fprintf(fileAssembler, "    ret\n");
+    fprintf(fileAssembler, "formatReal ENDP\n");
+
+
+	
+	fprintf(fileAssembler, "getSigno:\n");
+    fprintf(fileAssembler, "    mov word ptr ax,[si+2]\n");
+    fprintf(fileAssembler, "    test ax,08000h\n");
+    fprintf(fileAssembler, "    je csPos\n");
+    fprintf(fileAssembler, "    mov al,'-'\n");
+    fprintf(fileAssembler, "    jmp csEnd\n");
+    fprintf(fileAssembler, "cSPos:\n");
+    fprintf(fileAssembler, "    mov al,'+'\n");
+    fprintf(fileAssembler, "csEnd:\n");
+    fprintf(fileAssembler, "    ret\n");
+    fprintf(fileAssembler, "getExponente:\n");
+    fprintf(fileAssembler, "    mov ax,[si+2]\n");
+    fprintf(fileAssembler, "    shl ax,1\n");
+    fprintf(fileAssembler, "    xchg al,ah\n");
+    fprintf(fileAssembler, "    and ax,000FFh\n");
+    fprintf(fileAssembler, "    add eax,0FF81h ; bug del TASM, no genera sub ax,07Fh!!!\n");
+    fprintf(fileAssembler, "    ret\n");
+    fprintf(fileAssembler, "getMantisa:\n");
+    fprintf(fileAssembler, "    mov eax,[si]\n");
+    fprintf(fileAssembler, "    and eax,007FFFFFh\n");
+    fprintf(fileAssembler, "    or eax,00800000h\n");
+    fprintf(fileAssembler, "    mov cx,13d\n");
+    fprintf(fileAssembler, "    sub cx,bx\n");
+    fprintf(fileAssembler, "    jns gM01\n");
+    fprintf(fileAssembler, "    neg cx\n");
+    fprintf(fileAssembler, "    shl eax,cl\n");
+    fprintf(fileAssembler, "    jmp gMend\n");
+    fprintf(fileAssembler, "gM01:\n");
+    fprintf(fileAssembler, "    clc\n");
+    fprintf(fileAssembler, "    shr eax,cl\n");
+    fprintf(fileAssembler, "gMend:\n");
+    fprintf(fileAssembler, "    ret\n");
+    fprintf(fileAssembler, "formatear:\n");
+    fprintf(fileAssembler, "format9:\n");
+    fprintf(fileAssembler, "    mov edx,eax\n");
+    fprintf(fileAssembler, "    mov cl,16\n");
+    fprintf(fileAssembler, "    shr edx,cl ; genero DX:AX\n");
+    fprintf(fileAssembler, "    mov bx,10000\n");
+    fprintf(fileAssembler, "    div bx ; ax resultado, dx, reminder\n");
+    fprintf(fileAssembler, "    push ax\n");
+    fprintf(fileAssembler, "    mov bx,10\n");
+    fprintf(fileAssembler, "    mov ax,dx\n");
+    fprintf(fileAssembler, "    mov cl,4\n");
+    fprintf(fileAssembler, "    fCiclo01:\n");
+    fprintf(fileAssembler, "    xor dx,dx\n");
+    fprintf(fileAssembler, "    idiv bx\n");
+    fprintf(fileAssembler, "    add dl,'0'\n");
+    fprintf(fileAssembler, "    mov es:[di],dl\n");
+    fprintf(fileAssembler, "    sub di,1\n");
+    fprintf(fileAssembler, "    sub cl,1\n");
+    fprintf(fileAssembler, "    jne fCiclo01\n");
+    fprintf(fileAssembler, "    pop ax\n");
+    fprintf(fileAssembler, "    mov cl,3\n");
+    fprintf(fileAssembler, "formatX:\n");
+    fprintf(fileAssembler, "    mov bx,10\n");
+    fprintf(fileAssembler, "fCiclo02:\n");
+    fprintf(fileAssembler, "    xor dx,dx\n");
+    fprintf(fileAssembler, "    idiv bx\n");
+    fprintf(fileAssembler, "    add dl,'0'\n");
+    fprintf(fileAssembler, "    mov es:[di],dl\n");
+    fprintf(fileAssembler, "    sub di,1\n");
+    fprintf(fileAssembler, "    sub cl,1\n");
+    fprintf(fileAssembler, "    jnz fCiclo02\n");
+    fprintf(fileAssembler, "    ret\n");
+    fprintf(fileAssembler, "numeros dw 500,250,125,62,31,15,8,4,2,1\n");
+    fprintf(fileAssembler, "convDecimal:\n");
+    fprintf(fileAssembler, "    mov cx,09\n");
+    fprintf(fileAssembler, "    xor bx,bx\n");
+    fprintf(fileAssembler, "    xor dx,dx\n");
+    fprintf(fileAssembler, "    clc\n");
+    fprintf(fileAssembler, "cvCiclo:\n");
+    fprintf(fileAssembler, "    shr ax,1\n");
+    fprintf(fileAssembler, "    jnc cvCiclo01\n");
+    fprintf(fileAssembler, "    mov bx,cx\n");
+    fprintf(fileAssembler, "    shl bx,1\n");
+    fprintf(fileAssembler, "    add bx,offset numeros\n");
+    fprintf(fileAssembler, "    mov bx,cs:[bx]\n");
+    fprintf(fileAssembler, "    add bx,dx\n");
+    fprintf(fileAssembler, "    mov dx,bx\n");
+    fprintf(fileAssembler, "cvCiclo01:\n");
+    fprintf(fileAssembler, "    sub cx,1\n");
+    fprintf(fileAssembler, "    jns cvCiclo\n");
+    fprintf(fileAssembler, "    mov ax,dx\n");
+    fprintf(fileAssembler, "    add ax,1\n");
+    fprintf(fileAssembler, "	ret\n");
 
 }
