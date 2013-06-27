@@ -2,7 +2,6 @@ VAR
 	[a,b,resultado]:[int,int,int]
 ENDVAR
 
-a=15;
-b=5;
-resultado=a+b;
+
+WPRINT(6.0);
 
