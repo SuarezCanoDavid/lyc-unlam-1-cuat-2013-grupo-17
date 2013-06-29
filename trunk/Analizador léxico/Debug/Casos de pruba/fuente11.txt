@@ -1,7 +1,7 @@
 VAR
-	[a,b,resultado]:[int,int,int]
+	[a,b,resultado]:[float,int,int]
 ENDVAR
 
-a = 10;
+a = 10.35;
 b = 5;
 resultado = a + b;
