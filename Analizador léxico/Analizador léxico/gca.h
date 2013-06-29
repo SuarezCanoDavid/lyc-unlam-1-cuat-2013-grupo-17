@@ -9,8 +9,8 @@ void GenerarEncabezado();
 void DeclararVariables();
 void GeneracionCodigo();
 void GenerarCodigoString();
-void GenerarAssemblerByTerceto();
-void TercetoTokes(int);
+int GenerarAssemblerByTerceto();
+int TercetoTokes(int);
 void LlenarPilaEtiquetas();
 void asmSuma();
 void asmResta();
@@ -28,4 +28,5 @@ void asmAnd(int);
 void asmOr(int);
 void asmNot(int);
 void asmWprint(int);
+void asmConcatenacion(int);
 #endif
