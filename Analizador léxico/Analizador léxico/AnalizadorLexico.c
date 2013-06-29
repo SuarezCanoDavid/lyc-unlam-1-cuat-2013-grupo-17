@@ -387,6 +387,14 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 						{
 							strcat_s(TS[i].valor,MAX_LONG_TOKEN,".0");
 						}
+
+						for(j = 0; nombreAux[j] != '\0'; ++j)
+						{
+							if(nombreAux[j] == '.')
+							{
+								nombreAux[j] = 'p';
+							}
+						}
 					}
 				}
 
