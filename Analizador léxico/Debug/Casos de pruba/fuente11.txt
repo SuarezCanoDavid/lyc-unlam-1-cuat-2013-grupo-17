@@ -1,7 +1,7 @@
 VAR
 	[a,b,resultado]:[float,int,int]
+	[mensaje]:[string]
 ENDVAR
-
-a = 10.35;
-b = 5;
-resultado = a + b;
+a = b = mensaje;
+mensaje = "hola mundo";
+mensaje = "pepe" ++ "mundo";

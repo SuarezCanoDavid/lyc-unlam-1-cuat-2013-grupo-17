@@ -1,5 +1,8 @@
 0  a                                                 PR_FLOAT                                                         0         
 1  b                                                 PR_INT                                                           0         
 2  resultado                                         PR_INT                                                           0         
-3  _10p35                                            CTE_REAL       10.35                                             0         
-4  _5                                                CTE_ENTERA     5.0                                               0         
+3  mensaje                                           PR_STRING                                                        0         
+4  _10p35                                            CTE_REAL       10.35                                             0         
+5  _hola_mundo                                       CTE_STRING     hola mundo                                        10        
+6  _pepe                                             CTE_STRING     pepe                                              4         
+7  _mundo                                            CTE_STRING     mundo                                             5         

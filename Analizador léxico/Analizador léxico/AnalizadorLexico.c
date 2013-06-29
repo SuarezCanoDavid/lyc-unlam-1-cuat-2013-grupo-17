@@ -10,9 +10,6 @@ FILE *archivoFuente;
 /*Archivo de tokens identificados*/
 FILE *archivoDeTokens;
 
-/*Archivo de salida del analizador sintactico*/
-extern FILE *salidaAS;
-
 /*Matriz de Nuevo Estado*/
 int nuevoEstado[ESTADO_FINAL][CANT_COLUMNAS];
 
@@ -73,28 +70,28 @@ void inicializarAL(FILE *fuente)
 	}
 
 	error[ERROR_CTE_STRING_ABIERTA].estado = FALSE;
-	strcpy_s(error[ERROR_CTE_STRING_ABIERTA].descripcion,LONG_DESC_ERROR,"CONSTANTE STRING ABIERTA");
+	strcpy_s(error[ERROR_CTE_STRING_ABIERTA].descripcion,LONG_DESC_ERROR,"Constante STRING abierta");
 	
 	error[ERROR_COMENTARIO_ABIERTO].estado = FALSE;
-	strcpy_s(error[ERROR_COMENTARIO_ABIERTO].descripcion,LONG_DESC_ERROR,"COMENTARIO ABIERTO");
+	strcpy_s(error[ERROR_COMENTARIO_ABIERTO].descripcion,LONG_DESC_ERROR,"Comentario abierto");
 
 	error[ERROR_CTE_STRING_SUPERA_30].estado = FALSE;
-	strcpy_s(error[ERROR_CTE_STRING_SUPERA_30].descripcion,LONG_DESC_ERROR,"CONSTANTE STRING SUPERA LOS 30 CARACTERES");
+	strcpy_s(error[ERROR_CTE_STRING_SUPERA_30].descripcion,LONG_DESC_ERROR,"Constante STRING supera los 30 caracteres");
 	
 	error[ERROR_CTE_ENTERA_FUERA_DE_RANGO].estado = FALSE;
-	strcpy_s(error[ERROR_CTE_ENTERA_FUERA_DE_RANGO].descripcion,LONG_DESC_ERROR,"CONSTANTE ENTERA FUERA DE RANGO DE REPRESENTACION");
+	strcpy_s(error[ERROR_CTE_ENTERA_FUERA_DE_RANGO].descripcion,LONG_DESC_ERROR,"Constante entera fuera de rango de representacion");
 
 	error[ERROR_CTE_REAL_FUERA_DE_RANGO].estado = FALSE;
-	strcpy_s(error[ERROR_CTE_REAL_FUERA_DE_RANGO].descripcion,LONG_DESC_ERROR,"CONSTANTE REAL FUERA DE RANGO DE REPRESENTACION");
+	strcpy_s(error[ERROR_CTE_REAL_FUERA_DE_RANGO].descripcion,LONG_DESC_ERROR,"Constante real fuera de rango de representacion");
 
 	error[ERROR_FORMATO_NUMERICO_INVALIDO].estado = FALSE;
-	strcpy_s(error[ERROR_FORMATO_NUMERICO_INVALIDO].descripcion,LONG_DESC_ERROR,"FORMATO NUMERICO INVALIDO");
+	strcpy_s(error[ERROR_FORMATO_NUMERICO_INVALIDO].descripcion,LONG_DESC_ERROR,"Formato numerico invalido");
 
 	error[ERROR_OP_DISTINTO_NO_FINALIZADO].estado = FALSE;
 	strcpy_s(error[ERROR_OP_DISTINTO_NO_FINALIZADO].descripcion,LONG_DESC_ERROR,"OPERADOR DISTINTO NO FINALIZADO");
 
 	error[ERROR_CARACTER_NO_VALIDO].estado = FALSE;
-	strcpy_s(error[ERROR_CARACTER_NO_VALIDO].descripcion,LONG_DESC_ERROR,"CARACTER NO VALIDO");
+	strcpy_s(error[ERROR_CARACTER_NO_VALIDO].descripcion,LONG_DESC_ERROR,"Caracter no valido");
 }
 
 int yylex()
@@ -907,7 +904,7 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 	int i;
 
 	/*Indico el error de sintáxis e imprimo el último token*/
-	fprintf(archivoDeTokens,"\nSYNTAX ERROR\nTOKEN ACTUAL: %s\nDESCRIPCION: ",tokenActual->token);
+	printf("\nERROR\nLINEA: %d\nTOKEN ACTUAL: %s\nDESCRIPCION: ",lineaActual,tokenActual->token);
 
 	/*Busco cual es el error*/
 	for(i = 0; i < CANT_ERRORES; ++i)
@@ -915,7 +912,7 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 		if(error[i].estado == TRUE)
 		{
 			/*Escribo el error en el archivo de tokens identificados*/
-			fprintf(archivoDeTokens,"%s",error[i].descripcion);
+			printf("%s",error[i].descripcion);
 		}
 	}
 
@@ -924,9 +921,6 @@ void syntaxError(tokenAAnalizar *tokenActual, char caracter)
 	
 	/*Cierro el archivo de tokens identificados*/
 	fclose(archivoDeTokens);
-
-	/*Cierro el archivo de salida del analizador sintactico*/
-	fclose(salidaAS);
 
 	/*Termino el programa*/
 	exit(1);
