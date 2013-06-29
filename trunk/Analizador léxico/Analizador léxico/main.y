@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-FILE *salidaAS;
 FILE *archivo;
 extern FILE *archivoDeTokens;
 
@@ -434,6 +433,28 @@ asignacion: ID OP_ASIGNACION asignacion
 
 asignacion: ID OP_ASIGNACION expresion
 			{
+				verificarDeclaracion($1);
+
+				if(TS[$1].tipo == PR_INT && $3 == PR_STRING)
+				{
+					lanzarError("No se puede asignar un tipo STRING a un tipo INT");
+				}
+
+				if(TS[$1].tipo == PR_FLOAT && $3 == PR_STRING)
+				{
+					lanzarError("No se puede asignar un tipo STRING a un tipo FLOAT");
+				}
+
+				if(TS[$1].tipo == PR_STRING && $3 == PR_INT)
+				{
+					lanzarError("No se puede asignar un tipo INT a un tipo STRING");
+				}
+
+				if(TS[$1].tipo == PR_STRING && $3 == PR_FLOAT)
+				{
+					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -448,6 +469,18 @@ asignacion: ID OP_ASIGNACION expresion
 
 asignacion: ID OP_ASIGNACION CTE_STRING
 			{
+				verificarDeclaracion($1);
+
+				if(TS[$1].tipo == PR_INT)
+				{
+					lanzarError("No puede asignar un tipo STRING a un tipo INT");
+				}
+
+				if(TS[$1].tipo == PR_FLOAT)
+				{
+					lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -483,7 +516,7 @@ asignacion: ID OP_ASIGNACION concatenacion
 				tercetoAux.tipoDeZ = NRO_TERCETO;
 				crearTerceto(&tercetoAux);
 
-				$$ = TS[$1].tipo;
+				$$ = $1;
 			};
 
 concatenacion:	concatenacion_parte_extrema OP_CONCATENACION concatenacion_parte_extrema
@@ -506,14 +539,9 @@ concatenacion_parte_extrema:	ID
 									{
 										lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
 									}
-
-									$$ = TS[$1].tipo;
 								};
 
-concatenacion_parte_extrema:	CTE_STRING
-								{
-									$$ = PR_STRING;
-								};
+concatenacion_parte_extrema:	CTE_STRING;
 
 
 condicion:	proposicion
@@ -597,6 +625,11 @@ condicion:	PR_NOT PAR_ABRE proposicion PAR_CIERRA
 
 proposicion:	expresion OP_MAYOR expresion
 				{
+					if($1 == PR_STRING || $3 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroBHUsado == FALSE)
 					{
 						auy = BH;
@@ -642,6 +675,11 @@ proposicion:	expresion OP_MAYOR expresion
 
 proposicion:	expresion OP_MAYOR_IGUAL expresion
 				{
+					if($1 == PR_STRING || $3 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroBHUsado == FALSE)
 					{
 						auy = BH;
@@ -687,6 +725,11 @@ proposicion:	expresion OP_MAYOR_IGUAL expresion
 
 proposicion:	expresion OP_MENOR expresion
 				{
+					if($1 == PR_STRING || $3 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroBHUsado == FALSE)
 					{
 						auy = BH;
@@ -732,6 +775,11 @@ proposicion:	expresion OP_MENOR expresion
 
 proposicion:	expresion OP_MENOR_IGUAL expresion
 				{
+					if($1 == PR_STRING || $3 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroBHUsado == FALSE)
 					{
 						auy = BH;
@@ -777,6 +825,11 @@ proposicion:	expresion OP_MENOR_IGUAL expresion
 
 proposicion:	expresion OP_IGUAL expresion
 				{
+					if($1 == PR_STRING || $3 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroBHUsado == FALSE)
 					{
 						auy = BH;
@@ -822,6 +875,11 @@ proposicion:	expresion OP_IGUAL expresion
 
 proposicion:	expresion OP_DISTINTO expresion
 				{
+					if($1 == PR_STRING || $3 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroBHUsado == FALSE)
 					{
 						auy = BH;
@@ -868,6 +926,11 @@ proposicion:	expresion OP_DISTINTO expresion
 
 expresion:	expresion OP_SUMA termino
 			{
+				if($1 == PR_STRING || $3 == PR_STRING)
+				{
+					lanzarError("No se puede usar un tipo STRING en una expresion");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_SUMA;
 				tercetoAux.tipoDeX = TOKEN;
@@ -883,6 +946,11 @@ expresion:	expresion OP_SUMA termino
 
 expresion:	expresion OP_RESTA termino
 			{
+				if($1 == PR_STRING || $3 == PR_STRING)
+				{
+					lanzarError("No se puede usar un tipo STRING en una expresion");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_RESTA;
 				tercetoAux.tipoDeX = TOKEN;
@@ -904,6 +972,11 @@ expresion:	termino
 
 termino:	termino OP_MULTIPLICACION factor
 			{
+				if($1 == PR_STRING || $3 == PR_STRING)
+				{
+					lanzarError("No se puede usar un tipo STRING en una expresion");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_MULTIPLICACION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -919,6 +992,11 @@ termino:	termino OP_MULTIPLICACION factor
 
 termino:	termino OP_DIVISION factor
 			{
+				if($1 == PR_STRING || $3 == PR_STRING)
+				{
+					lanzarError("No se puede usar un tipo STRING en una expresion");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_DIVISION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -941,11 +1019,6 @@ termino:	factor
 factor:	ID
 		{
 			verificarDeclaracion($1);
-
-			if(TS[$1].tipo == PR_STRING)
-			{
-				lanzarError("No se puede usar un tipo STRING en una expresion");
-			}
 
 			borrarTerceto(&tercetoAux);
 			tercetoAux.x = $1;
@@ -1796,11 +1869,10 @@ int main(int argc, char *argv[])
 	}
 
     fopen_s(&archivo,argv[1],"r");
-	fopen_s(&salidaAS,"reglas_aplicadas.txt","w");
 	
-    if(archivo == NULL || salidaAS == NULL)
+    if(archivo == NULL)
     {
-        printf("No se pudo abrir archivos");
+        printf("No se pudo abrir el archivo fuente");
     }
     else
     {
@@ -1809,31 +1881,19 @@ int main(int argc, char *argv[])
 		yyparse();
 		
         fclose(archivo);
-		fclose(salidaAS);
     }
 
 	imprimirTercetos();
-
-	for(i = pilaExpresiones->tope-1; i >= 0; --i)
-	{
-		printf("%d\n",pilaExpresiones->contenedor[i]);
-	}
-	/*
-	printf("%d\n",pilaExpresiones.tope);
-	printf("%d\n",pilaCondiciones.tope);
-	printf("%d\n",pilaColasIncrementos.tope);
-	printf("%d\n",pilaDesplazamientos.tope);
-	*/
+	
     return 0;
 }
 
 int yyerror(char *mensaje)
 {
-	printf("\nLinea %d: %s",lineaActual,mensaje);
+	printf("\nERROR\nLINEA: %d\nDESCRIPCION: %s\n",lineaActual,mensaje);
 	
 	fclose(archivo);
 	fclose(archivoDeTokens);
-	fclose(salidaAS);
 	
 	return 1;
 }
@@ -1863,11 +1923,10 @@ void asignarTipoDeDato()
 
 void lanzarError(char *mensaje)
 {
-	printf("\nLinea %d: %s",lineaActual,mensaje);
+	printf("\nERROR\nLINEA: %d\nDESCRIPCION: %s\n",lineaActual,mensaje);
 		
 	fclose(archivo);
 	fclose(archivoDeTokens);
-	fclose(salidaAS);
 
 	exit(1);
 }
