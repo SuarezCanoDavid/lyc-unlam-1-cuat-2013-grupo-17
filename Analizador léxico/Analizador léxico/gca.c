@@ -423,7 +423,7 @@ void asmDividir()
 
 void asmAsignacion(int idTerceto)
 {
-
+	/*
 	if(listaDeTercetos[idTerceto].tipoDeY==BH 	&& listaDeTercetos[idTerceto].tipoDeZ==VALOR && listaDeTercetos[idTerceto].z==1)
 	{
 		fprintf(fileAssembler,"MOV BH , 0ffh\n");
@@ -467,12 +467,61 @@ void asmAsignacion(int idTerceto)
 		fprintf(fileAssembler,"mov edi,OFFSET %s \n",TS[listaDeTercetos[idTerceto].y].nombre);
 		fprintf(fileAssembler,"mov ecx, eax \n");
 		fprintf(fileAssembler,"rep movsb	\n");
-
-	
-	
 	}
-	
-	
+	*/
+	switch(listaDeTercetos[idTerceto].tipoDeY)
+	{
+		case BH: switch(listaDeTercetos[idTerceto].z)
+				 {
+					case 0: fprintf(fileAssembler,"\tmov bh, 000h\n");
+							break;
+					case 1: fprintf(fileAssembler,"\tmov bh, 0ffh\n");
+							break;
+				 }
+				 break;
+		case BL: switch(listaDeTercetos[idTerceto].z)
+				 {
+					case 0: fprintf(fileAssembler,"\tmov bl, 000h\n");
+							break;
+					case 1: fprintf(fileAssembler,"\tmov bl, 0ffh\n");
+							break;
+				 }
+				 break;
+		case CH: switch(listaDeTercetos[idTerceto].z)
+				 {
+					case 0: fprintf(fileAssembler,"\tmov ch, 000h\n");
+							break;
+					case 1: fprintf(fileAssembler,"\tmov ch, 0ffh\n");
+							break;
+				 }
+				 break;
+		case CL: switch(listaDeTercetos[idTerceto].z)
+				 {
+					case 0: fprintf(fileAssembler,"\tmov cl, 000h\n");
+							break;
+					case 1: fprintf(fileAssembler,"\tmov cl, 0ffh\n");
+							break;
+				 }
+				 break;
+		case INDICE_TS: switch(TS[listaDeTercetos[idTerceto].y].tipo)
+						{
+							case PR_INT:
+							case CTE_REAL:
+							case PR_FLOAT:
+							case CTE_ENTERA: fprintf(fileAssembler,"\tfstp %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+											 break;
+							case PR_STRING:
+							case CTE_STRING: fprintf(fileAssembler,"\tmov eax, %s_long\n",TS[listaDeTercetos[idTerceto].z].nombre);
+											 fprintf(fileAssembler,"\tmov %s_long, eax\n", TS[listaDeTercetos[idTerceto].y].nombre);
+											 fprintf(fileAssembler,"\tcld\n");
+											 fprintf(fileAssembler,"\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
+											 fprintf(fileAssembler,"\tmov edi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+											 fprintf(fileAssembler,"\tmov ecx, eax\n");
+											 fprintf(fileAssembler,"\trep movsb\n");
+											 break;
+						}
+						break;
+	}
 	
 }
 

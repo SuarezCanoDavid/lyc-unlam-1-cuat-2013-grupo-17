@@ -1,13 +1,9 @@
 VAR
-	[a,b,resultado]:[int,int,int]
+	[a,b,resultado]:[float,int,int]
 	[mensaje]:[string]
 ENDVAR
 
-a = 5;
+a = 5.65;
+b = 23;
 
-if(a > 0)
-	wprint("a = ");
-	wprint(a);
-else
-	wprint("Error");
-fi;
+wprint(b);
