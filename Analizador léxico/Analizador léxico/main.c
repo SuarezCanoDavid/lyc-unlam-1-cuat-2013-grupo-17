@@ -663,7 +663,7 @@ yyparse()
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_WPRINT;
       				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.y = yypvt[-2];
+      				tercetoAux.y = yypvt[-1];
       				tercetoAux.tipoDeY = INDICE_TS;
       				crearTerceto(&tercetoAux);
       			} break;
@@ -673,7 +673,7 @@ yyparse()
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_WPRINT;
       				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.y = yypvt[-2];
+      				tercetoAux.y = yypvt[-1];
       				tercetoAux.tipoDeY = INDICE_TS;
       				crearTerceto(&tercetoAux);
       			} break;
@@ -685,7 +685,7 @@ yyparse()
 				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_WPRINT;
       				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.y = yypvt[-2];
+      				tercetoAux.y = yypvt[-1];
       				tercetoAux.tipoDeY = INDICE_TS;
       				crearTerceto(&tercetoAux);
       			} break;
