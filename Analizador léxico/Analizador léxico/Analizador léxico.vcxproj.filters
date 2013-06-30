@@ -118,5 +118,8 @@
     <None Include="..\Debug\Casos de pruba\fuente7.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
+    <None Include="..\Debug\Casos de pruba\fuente2.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
   </ItemGroup>
 </Project>

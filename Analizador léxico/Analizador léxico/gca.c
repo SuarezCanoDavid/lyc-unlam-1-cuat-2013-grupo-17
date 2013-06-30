@@ -274,26 +274,24 @@ int TercetoTokes(int token, int idTerceto)
 
 void asmConcatenacion(int idTerceto)
 {
-	//;verifico que se pueda realizar la concatenacion
-fprintf(fileAssembler, "mov eax, %s_long \n",TS[listaDeTercetos[idTerceto].z].nombre);//           ;Cargo la longitud de cadena1 en ax
-fprintf(fileAssembler, "add eax, %s_long \n",TS[listaDeTercetos[idTerceto].y].nombre);//            ;Le sumo a ax la longitud de cadena2
-fprintf(fileAssembler, "sub ax, 1 \n");//                       ;Le resto 1 porque antes contabilicé dos veces el símbolo $
-fprintf(fileAssembler, "cmp ax, MAXTEXTSIZE  \n"); //            ;Comparo
-fprintf(fileAssembler, "jg  ERROR  \n");//                      ;Si (_cadena1_long+_cadena2_long-1) > MAXTEXTSIZE, salto a ERROR o termino
+	//verifico que se pueda realizar la concatenacion
+	fprintf(fileAssembler, "\tmov eax, %s_long\n",TS[listaDeTercetos[idTerceto].z].nombre);
+	fprintf(fileAssembler, "\tadd eax, %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
+	fprintf(fileAssembler, "\tsub eax, 1\n");
+	fprintf(fileAssembler, "\tcmp eax, MAXTEXTSIZE\n");
+	fprintf(fileAssembler, "\tjg  ERROR\n");
 
-//;comienzo la concatenacion
-fprintf(fileAssembler, "mov %s_long , eax  \n",TS[listaDeTercetos[idTerceto+1].y].nombre);//			;Guardo el tamaño final que tendra cadenaAux
-fprintf(fileAssembler, "mov eax, %s_long  \n",TS[listaDeTercetos[idTerceto].y].nombre);// ;Guardo el tamaño de cadena1 en ax
-fprintf(fileAssembler, "sub ax, 1 \n");//   ;Resto 1 de ax (no voy a guardar el simbolo $ de cadena1)
-fprintf(fileAssembler, "cld     \n");//     ;Indico que el incremento sea positivo
-fprintf(fileAssembler, "mov esi,OFFSET %s \n",TS[listaDeTercetos[idTerceto].y].nombre);//;apunto esi al inicio de cadena1
-fprintf(fileAssembler, "mov edi, OFFSET %s \n",TS[listaDeTercetos[idTerceto+1].y].nombre);//;apunto edi al inicio de cadenaAux
-fprintf(fileAssembler, "mov ecx, eax \n");//   ;Indico que va a tener que repetir ax veces
-fprintf(fileAssembler, "rep movsb \n");//  ;copio los caracteres de cadena1 a cadenaAux (byte a byte)
-fprintf(fileAssembler, "mov esi,OFFSET %s \n",TS[listaDeTercetos[idTerceto].z].nombre);//;apunto esi al inicio de cadena2
-fprintf(fileAssembler, "mov ecx, %s_long \n", TS[listaDeTercetos[idTerceto].y].nombre);// ;Indico que va a tener que repetir _cadena2_long veces
-fprintf(fileAssembler, "rep movsb   \n"); //                    ;concateno los caracteres de cadena2 a cadenaAux (byte a byte)
-	
+	//comienzo la concatenacion
+	fprintf(fileAssembler, "\tmov %s_long , eax\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
+	fprintf(fileAssembler, "\tcld\n");
+	fprintf(fileAssembler, "\tmov esi, OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+	fprintf(fileAssembler, "\tmov edi, OFFSET %s\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
+	fprintf(fileAssembler, "\tmov ecx, %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
+	fprintf(fileAssembler, "\tsub ecx, 1\n");
+	fprintf(fileAssembler, "\trep movsb\n");
+	fprintf(fileAssembler, "\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
+	fprintf(fileAssembler, "\tmov ecx, %s_long\n", TS[listaDeTercetos[idTerceto].z].nombre);
+	fprintf(fileAssembler, "\trep movsb\n");
 }
 
 void asmWprint(int idTerceto)
@@ -560,7 +558,10 @@ void GenerarCodigoString()
     fprintf(fileAssembler, "\n\tmov [__ENTER+bx], '.'\n");
     fprintf(fileAssembler, "\tinc bx\n");
     
+	fprintf(fileAssembler, "\n\tmov cl, 60\n");
+	fprintf(fileAssembler, "\tsub cl, bl\n");
 
+	fprintf(fileAssembler, "\tmov ch, 0ffh\n");
 	fprintf(fileAssembler, "\net3:\n");
     fprintf(fileAssembler, "\tfld _parteFrac\n");
     fprintf(fileAssembler, "\tfmul _mul_10\n");
@@ -570,6 +571,7 @@ void GenerarCodigoString()
     fprintf(fileAssembler, "\tadd dl, 030h\n");
     fprintf(fileAssembler, "\tmov [__ENTER+bx], dl\n");
     fprintf(fileAssembler, "\tinc bx\n");
+	fprintf(fileAssembler, "\tdec cl\n");
     fprintf(fileAssembler, "\tfld _parteFrac\n");
     fprintf(fileAssembler, "\tfild _parteEntera\n");
     fprintf(fileAssembler, "\tfsubp\n");
@@ -578,7 +580,11 @@ void GenerarCodigoString()
     fprintf(fileAssembler, "\tfcompp\n");
     fprintf(fileAssembler, "\tfstsw ax\n");
     fprintf(fileAssembler, "\tsahf\n");
-    fprintf(fileAssembler, "\tje fin\n");
+    fprintf(fileAssembler, "\tjne et4\n");
+	fprintf(fileAssembler, "\tmov ch, 000h\n");
+	fprintf(fileAssembler, "et4:\n");
+	fprintf(fileAssembler, "\tand ch, cl\n");
+	fprintf(fileAssembler, "\tjz fin\n");
     fprintf(fileAssembler, "\tjmp et3\n");
 
 
