@@ -130,7 +130,10 @@ programa:	bloque_declaracion bloque_ejecucion
 				GenerarAssembler();
 			};
 
-programa:	lista_wprints_cte;
+programa:	lista_wprints_cte
+			{
+				GenerarAssembler();
+			};
 
 
 bloque_declaracion: PR_VAR declaracion PR_ENDVAR;
