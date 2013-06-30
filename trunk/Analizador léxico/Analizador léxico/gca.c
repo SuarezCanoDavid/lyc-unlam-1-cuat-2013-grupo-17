@@ -40,43 +40,39 @@ void DeclararVariables()
 {
 	int i;
 	fprintf(fileAssembler,".DATA\n");
+
+	fprintf(fileAssembler,"MAXTEXTSIZE equ 61\n");
+
 	for(i=0;i<cantTokensEnTS;i++)
 	{
 		switch(TS[i].tipo)
 		{
-		case PR_INT:
-		case PR_FLOAT:
-			fprintf(fileAssembler, "%s dd ?\n",TS[i].nombre);
-			break;
-			case PR_STRING:
-				fprintf(fileAssembler, "%s db '$' , 60 dup (?)\n", TS[i].nombre);    
-				fprintf(fileAssembler, "%s_long dd 1 \n", TS[i].nombre); 
-			break;
-			case  CTE_ENTERA:
-			case  CTE_REAL:
-					fprintf(fileAssembler, "%s dd %s\n", TS[i].nombre, TS[i].valor);
+			case PR_INT:
+			case PR_FLOAT: fprintf(fileAssembler, "%s dd ?\n",TS[i].nombre);
+						   break;
 
-			break;
-			case CTE_STRING:
-				fprintf(fileAssembler, "%s db \"%s\",'$', %d dup (?)\n", TS[i].nombre,  TS[i].valor, MAX_LONG_CTE_STRING-TS[i].longitud-1);
-				fprintf(fileAssembler, "%s_long dd %d \n", TS[i].nombre,  TS[i].longitud+1);
-			break;
+			case PR_STRING:	fprintf(fileAssembler, "%s db '$',60 dup(?)\n", TS[i].nombre);    
+							fprintf(fileAssembler, "%s_long dd 1\n", TS[i].nombre); 
+							break;
 
+			case  CTE_REAL:	
+			case  CTE_ENTERA: fprintf(fileAssembler, "%s dd %s\n", TS[i].nombre, TS[i].valor);
+							  break;
+
+			case CTE_STRING: fprintf(fileAssembler, "%s db \"%s\",'$',%d dup(?)\n", TS[i].nombre,  TS[i].valor, MAX_LONG_CTE_STRING-TS[i].longitud-1);
+							 fprintf(fileAssembler, "%s_long dd %d\n", TS[i].nombre,  TS[i].longitud+1);
+							 break;
 		}
 	}
 	
-	fprintf(fileAssembler, "_VAR_FILTERC dd 0.0 \n");
-	fprintf(fileAssembler,"MAXTEXTSIZE equ 50\n");
-	fprintf(fileAssembler,  "__MENSAJE db  '$', %d dup (?)\n",MAX_LONG_CTE_STRING);
-	fprintf(fileAssembler,"__ENTER	db \"HOLA MUNDO\" ,'$'\n");
-	fprintf(fileAssembler,"_AUXPrintReal db 14 dup (?), '$'\n");
-	//
-	fprintf(fileAssembler,"_PARTEFRAC dd  ?                   ;Parte Fraccionaria del numero a imprimir. Almacena un float\n");
-	fprintf(fileAssembler,"_parteEntera    dd  ?                   ;Parte Entera del numero a imprimir. Almacena un int\n");
-	fprintf(fileAssembler,"_mul_10         dd  10.0                ;Valor necesario para separar cada dígito de la parte fraccionaria\n");
-fprintf(fileAssembler,"_x87_round      dw  077fh               ;Palabra de estado del coprocesador para redondear hacia abajo\n");
-
-
+	//fprintf(fileAssembler,"__MENSAJE     db '$', %d dup (?)\n",MAX_LONG_CTE_STRING);
+	fprintf(fileAssembler,"__ENTER       db MAXTEXTSIZE dup(?)\n");
+	fprintf(fileAssembler,"__NEW_LINE    db 0Dh,0Ah,'$'\n");
+	//fprintf(fileAssembler,"_AUXPrintReal db 14 dup (?), '$'\n");
+	fprintf(fileAssembler,"_parteFrac    dd ?\n");
+	fprintf(fileAssembler,"_parteEntera  dd ?\n");
+	fprintf(fileAssembler,"_mul_10       dd 10.0\n");
+	fprintf(fileAssembler,"_x87_round    dw 077fh\n");
 }
 
 void GeneracionCodigo()
@@ -119,9 +115,6 @@ void GeneracionCodigo()
 	}
 
 	fprintf(fileAssembler, "etiqueta_%d:\n",cantTercetos);
-
-
-
 
 	//Finalizar
 	fprintf(fileAssembler,"ERROR:\n");
@@ -175,12 +168,8 @@ int GenerarAssemblerByTerceto(int idTerceto)
 	//VAMOS CON EL QUERIADO FILTERC
 	if(listaDeTercetos[idTerceto].tipoDeX==VAR_FILTERC)
 	{
-		fprintf(fileAssembler,"_VAR_FILTERC \n");
+		fprintf(fileAssembler,"\tfldz\n");
 	}
-
-
-
-
 
 	return valorDevuelto;
 }
@@ -254,6 +243,10 @@ int TercetoTokes(int token, int idTerceto)
 		break;
 
 	case OP_SUMA:
+		if(listaDeTercetos[idTerceto].tipoDeY = VAR_FILTERC)
+		{
+			fprintf(fileAssembler,"\tfld1\n");
+		}
 		asmSuma();
 		break;
 	
@@ -517,6 +510,9 @@ void GenerarCodigoString()
 	//Rutina de salida a pantalla
     fprintf(fileAssembler, "\nIMPRIMIR:\n");
     fprintf(fileAssembler, "\tmov dx, OFFSET __ENTER\n");
+    fprintf(fileAssembler, "\tmov ah, 9\n");
+    fprintf(fileAssembler, "\tint 21h\n");
+	fprintf(fileAssembler, "\tmov dx, OFFSET __NEW_LINE\n");
     fprintf(fileAssembler, "\tmov ah, 9\n");
     fprintf(fileAssembler, "\tint 21h\n");
     fprintf(fileAssembler, "\tret\n");
