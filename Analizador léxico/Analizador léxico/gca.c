@@ -86,10 +86,10 @@ void GeneracionCodigo()
 	 
 	//Inicio de la generacion del codigo
 	fprintf(fileAssembler,"\n.CODE\n");
-	fprintf(fileAssembler,"mov AX, @DATA\n");
-	fprintf(fileAssembler,"mov DS, AX\n");
-	fprintf(fileAssembler,"mov ES, AX\n");
-	fprintf(fileAssembler,"finit\n\n");
+	fprintf(fileAssembler,"\tmov AX, @DATA\n");
+	fprintf(fileAssembler,"\tmov DS, AX\n");
+	fprintf(fileAssembler,"\tmov ES, AX\n");
+	fprintf(fileAssembler,"\tfinit\n\n");
 	
 	
 	//Inicio del codigo assembles del programa fuente
@@ -124,9 +124,9 @@ void GeneracionCodigo()
 
 
 	//Finalizar
-	fprintf(fileAssembler, "ERROR:\n");
-	fprintf(fileAssembler,"mov AX, 4C00h\n");
-	fprintf(fileAssembler,"int 21h\n");
+	fprintf(fileAssembler,"ERROR:\n");
+	fprintf(fileAssembler,"\tmov AX, 4C00h\n");
+	fprintf(fileAssembler,"\tint 21h\n");
 
 }
 
@@ -152,7 +152,7 @@ int GenerarAssemblerByTerceto(int idTerceto)
 	if(listaDeTercetos[idTerceto].tipoDeX==INDICE_TS)
 	{
 		//ej. [2](a,_,_) -> subo el valor a el coprocesador
-		fprintf(fileAssembler,"FLD %s \n", TS[listaDeTercetos[idTerceto].x].nombre);
+		fprintf(fileAssembler,"\tfld %s\n", TS[listaDeTercetos[idTerceto].x].nombre);
 	}
 	//VAMOS CON LOS TOKENS!!!!!
 	if(listaDeTercetos[idTerceto].tipoDeX==TOKEN)
@@ -183,30 +183,30 @@ int GenerarAssemblerByTerceto(int idTerceto)
 
 
 	return valorDevuelto;
-	}
+}
 
 void asmSalto(int idTerceto)
 {
 	
 	switch(listaDeTercetos[idTerceto].tipoDeX)
 	{
-		case JMP:			fprintf(fileAssembler, "JMP etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JMP:			fprintf(fileAssembler,"\tjmp etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JZ:			fprintf(fileAssembler,"JZ etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JZ:			fprintf(fileAssembler,"\tjz etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JNZ:			fprintf(fileAssembler,"JNZ etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JNZ:			fprintf(fileAssembler,"\tjnz etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JG:			fprintf(fileAssembler,"JG etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JG:			fprintf(fileAssembler,"\tjg etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JGE:			fprintf(fileAssembler,"JGE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JGE:			fprintf(fileAssembler,"\tjge etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JL:			fprintf(fileAssembler,"JL etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JL:			fprintf(fileAssembler,"\tjl etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JLE:			fprintf(fileAssembler,"JLE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JLE:			fprintf(fileAssembler,"\tjle etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JE:			fprintf(fileAssembler,"JE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JE:			fprintf(fileAssembler,"\tje etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JNE:			fprintf(fileAssembler,"JNE etiqueta_%d \n",listaDeTercetos[idTerceto].y);
+		case JNE:			fprintf(fileAssembler,"\tjne etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
 	}
 }
@@ -305,71 +305,59 @@ fprintf(fileAssembler, "rep movsb   \n"); //                    ;concateno los c
 
 void asmWprint(int idTerceto)
 {
-
 	if(TS[listaDeTercetos[idTerceto].y].tipo== PR_STRING ||TS[listaDeTercetos[idTerceto].y].tipo== CTE_STRING )
 	{
-	fprintf(fileAssembler, "mov eax,  %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
-	fprintf(fileAssembler, "cld\n");
-	fprintf(fileAssembler, "mov esi , OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
-	fprintf(fileAssembler, "mov edi , OFFSET __ENTER\n");
-	fprintf(fileAssembler, " mov ecx, eax \n");
-	fprintf(fileAssembler, " rep movsb \n");
-	fprintf(fileAssembler, "call IMPRIMIR\n\n");
+		fprintf(fileAssembler, "\tcld\n");
+		fprintf(fileAssembler, "\tmov esi, OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+		fprintf(fileAssembler, "\tmov edi, OFFSET __ENTER\n");
+		fprintf(fileAssembler, "\tmov ecx, %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
+		fprintf(fileAssembler, "\trep movsb\n");
+		fprintf(fileAssembler, "\tcall IMPRIMIR\n");
 	}
 	else
 	{
-		fprintf(fileAssembler, "mov eax, %s \n",TS[listaDeTercetos[idTerceto].y].nombre);
-		fprintf(fileAssembler, " mov _parteFrac, eax \n");
-    fprintf(fileAssembler, "call imprimirNumero\n");
-	
-
+		fprintf(fileAssembler, "\tmov eax, %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+		fprintf(fileAssembler, "\tmov _parteFrac, eax\n");
+		fprintf(fileAssembler, "\tcall IMPRIMIRNUMERO\n");
 	}
-
-
- //
-
 }
 
 void asmNot(int idTerceto)
 {
 	if(listaDeTercetos[idTerceto].tipoDeY==BH)
-		fprintf(fileAssembler,"NOT BH \n");
+	{
+		fprintf(fileAssembler,"\tnot bh\n");
+	}
 
 	if(listaDeTercetos[idTerceto].tipoDeY==CH)
-		fprintf(fileAssembler,"NOT CH \n");
-}
+	{
+		fprintf(fileAssembler,"\tnot ch\n");
+	}
+}	
 
 void asmOr(int idTerceto)
 {
-	if(listaDeTercetos[idTerceto].tipoDeY==BH
-		&& listaDeTercetos[idTerceto].tipoDeZ==BL
-		)
+	if(listaDeTercetos[idTerceto].tipoDeY==BH)
 	{
-		fprintf(fileAssembler,"OR BH , BL \n");
+		fprintf(fileAssembler,"\tor bh, bl\n");
 	}
 
-	if(listaDeTercetos[idTerceto].tipoDeY==CH
-		&& listaDeTercetos[idTerceto].tipoDeZ==CL
-		)
+	if(listaDeTercetos[idTerceto].tipoDeY==CH)
 	{
-		fprintf(fileAssembler,"OR CH , CL \n");
+		fprintf(fileAssembler,"\tor ch, cl\n");
 	}
 }
 
 void asmAnd(int idTerceto)
 {
-	if(listaDeTercetos[idTerceto].tipoDeY==BH
-		&& listaDeTercetos[idTerceto].tipoDeZ==BL
-		)
+	if(listaDeTercetos[idTerceto].tipoDeY==BH)
 	{
-		fprintf(fileAssembler,"ADD BH , BL \n");
+		fprintf(fileAssembler,"\tand bh, bl\n");
 	}
 
-	if(listaDeTercetos[idTerceto].tipoDeY==CH
-		&& listaDeTercetos[idTerceto].tipoDeZ==CL
-		)
+	if(listaDeTercetos[idTerceto].tipoDeY==CH)
 	{
-		fprintf(fileAssembler,"ADD CH , CL \n");
+		fprintf(fileAssembler,"\tand ch, cl\n");
 	}
 }
 
@@ -402,73 +390,26 @@ void LlenarPilaEtiquetas()
 
 void asmSuma()
 {
-	fprintf(fileAssembler,"FADDP \n");
-
+	fprintf(fileAssembler,"\tfaddp\n");
 }
 
 void asmResta()
 {
-	fprintf(fileAssembler,"FSUBP \n");
+	fprintf(fileAssembler,"\tfsubp\n");
 }
 
 void asmMultiplicar()
 {
-	fprintf(fileAssembler,"FMULP \n");
+	fprintf(fileAssembler,"\tfmulp\n");
 }
 
 void asmDividir()
 {
-	fprintf(fileAssembler,"FDIVP \n");
+	fprintf(fileAssembler,"\tfdivp\n");
 }
 
 void asmAsignacion(int idTerceto)
 {
-	/*
-	if(listaDeTercetos[idTerceto].tipoDeY==BH 	&& listaDeTercetos[idTerceto].tipoDeZ==VALOR && listaDeTercetos[idTerceto].z==1)
-	{
-		fprintf(fileAssembler,"MOV BH , 0ffh\n");
-	}
-
-	if(listaDeTercetos[idTerceto].tipoDeY==BH 	&& listaDeTercetos[idTerceto].tipoDeZ==VALOR && listaDeTercetos[idTerceto].z==0)
-	{
-		fprintf(fileAssembler,"MOV BH , 00h\n");
-	}
-
-	if(listaDeTercetos[idTerceto].tipoDeY==BL && listaDeTercetos[idTerceto].tipoDeZ==VALOR 	&& listaDeTercetos[idTerceto].z==1)
-	{
-		fprintf(fileAssembler,"MOV BL , 0ffh\n");
-	}
-	
-	if(listaDeTercetos[idTerceto].tipoDeY==BL  && listaDeTercetos[idTerceto].tipoDeZ==VALOR && listaDeTercetos[idTerceto].z==0)
-	{
-		fprintf(fileAssembler,"MOV BL , 00h\n");
-	}
-
-	if(listaDeTercetos[idTerceto].tipoDeY==BL && listaDeTercetos[idTerceto].tipoDeZ==VALOR 	&& listaDeTercetos[idTerceto].z==0)
-	{
-		fprintf(fileAssembler,"MOV BL , 00h\n");
-	}
-	if(   TS[listaDeTercetos[idTerceto].y].tipo==PR_FLOAT 	|| TS[listaDeTercetos[idTerceto].y].tipo==PR_INT || TS[listaDeTercetos[idTerceto].y].tipo==CTE_ENTERA || TS[listaDeTercetos[idTerceto].y].tipo==CTE_REAL)
-	{
-		fprintf(fileAssembler,"FSTP %s \n", TS[listaDeTercetos[idTerceto].y].nombre);
-	}
-
-	//Asignacion de cadenas
-	if(TS[listaDeTercetos[idTerceto].y].tipo==PR_STRING
-		|| TS[listaDeTercetos[idTerceto].y].tipo==CTE_STRING)
-	{
-
-		//;asignacion
-	
-		fprintf(fileAssembler,"mov eax, %s_long \n",TS[listaDeTercetos[idTerceto].z].nombre);
-		fprintf(fileAssembler,"mov %s_long, eax \n", TS[listaDeTercetos[idTerceto].y].nombre);
-		fprintf(fileAssembler,"cld \n");
-		fprintf(fileAssembler,"mov esi,OFFSET %s \n",TS[listaDeTercetos[idTerceto].z].nombre);
-		fprintf(fileAssembler,"mov edi,OFFSET %s \n",TS[listaDeTercetos[idTerceto].y].nombre);
-		fprintf(fileAssembler,"mov ecx, eax \n");
-		fprintf(fileAssembler,"rep movsb	\n");
-	}
-	*/
 	switch(listaDeTercetos[idTerceto].tipoDeY)
 	{
 		case BH: switch(listaDeTercetos[idTerceto].z)
@@ -522,124 +463,131 @@ void asmAsignacion(int idTerceto)
 						}
 						break;
 	}
-	
 }
 
 void asmDistinto()
 {
-	fprintf(fileAssembler,"FCOMPP \n");
+	fprintf(fileAssembler,"\tfcompp\n");
+	fprintf(fileAssembler,"\tfstsw ax\n");
+	fprintf(fileAssembler,"\tsahf\n");
 }
 
 void asmIgual()
 {
-	fprintf(fileAssembler,"FCOMPP \n");
+	fprintf(fileAssembler,"\tfcompp\n");
+	fprintf(fileAssembler,"\tfstsw ax\n");
+	fprintf(fileAssembler,"\tsahf\n");
 }
 
 void asmMayor()
 {
-	fprintf(fileAssembler,"FXCH \n");
-	fprintf(fileAssembler,"FCOMPP \n");
+	fprintf(fileAssembler,"\tfxch\n");
+	fprintf(fileAssembler,"\tfcompp\n");
+	fprintf(fileAssembler,"\tfstsw ax\n");
+	fprintf(fileAssembler,"\tsahf\n");
 }
 
 void asmMayorIgual()
 {
-	fprintf(fileAssembler,"FXCH \n");
-	fprintf(fileAssembler,"FCOMPP \n");
+	fprintf(fileAssembler,"\tfxch\n");
+	fprintf(fileAssembler,"\tfcompp\n");
+	fprintf(fileAssembler,"\tfstsw ax\n");
+	fprintf(fileAssembler,"\tsahf\n");
 }
 
 void asmMenor()
 {
-	fprintf(fileAssembler,"FXCH \n");
-	fprintf(fileAssembler,"FCOMPP \n");
+	fprintf(fileAssembler,"\tfxch\n");
+	fprintf(fileAssembler,"\tfcompp\n");
+	fprintf(fileAssembler,"\tfstsw ax\n");
+	fprintf(fileAssembler,"\tsahf\n");
 }
 
 void asmMenorIgual()
 {
-	fprintf(fileAssembler,"FXCH \n");
-	fprintf(fileAssembler,"FCOMPP \n");
+	fprintf(fileAssembler,"\tfxch\n");
+	fprintf(fileAssembler,"\tfcompp\n");
+	fprintf(fileAssembler,"\tfstsw ax\n");
+	fprintf(fileAssembler,"\tsahf\n");
 }
 
 void GenerarCodigoString()
 {
 	
 	//Rutina de salida a pantalla
-    fprintf(fileAssembler, "IMPRIMIR : \n");
-   
-    fprintf(fileAssembler, "	mov DX, OFFSET __ENTER\n");
-    fprintf(fileAssembler, "	mov AH, 9\n");
-    fprintf(fileAssembler, "	int 21h\n");
-    fprintf(fileAssembler, "	ret\n");
+    fprintf(fileAssembler, "\nIMPRIMIR:\n");
+    fprintf(fileAssembler, "\tmov dx, OFFSET __ENTER\n");
+    fprintf(fileAssembler, "\tmov ah, 9\n");
+    fprintf(fileAssembler, "\tint 21h\n");
+    fprintf(fileAssembler, "\tret\n");
      
 	
-fprintf(fileAssembler, "imprimirNumero:\n");
-    fprintf(fileAssembler, "	fclex                       ;Limpio los flags\n");
-    fprintf(fileAssembler, "	fldcw _x87_round            ;Le indico al coprocesador que redondee para abajo\n");
-    fprintf(fileAssembler, "	fld _parteFrac              ;Cargo la variable a imprimir. ST(0) = _parteFrac = idReal\n");
-    fprintf(fileAssembler, "	fistp _parteEntera          ;Convierto a entero, redondendo hacia abajo, la guardo en _parteEntera y pop ST(0)   \n");
-    fprintf(fileAssembler, "	fld _parteFrac              ;Vuelvo a cargar la variable a imprimir. ST(0) = _parteFrac = idReal\n");
-    fprintf(fileAssembler, "	fild _parteEntera           ;Cargo la parte entera. ST(0) = _parteEntera, ST(1) = _parteFrac = idReal\n");
-    fprintf(fileAssembler, "	fsubp                       ;Obtengo la parte fraccionaria. ST(1) = ST(1) - ST(0) = idReal - _parteEntera. Pop ST(0)\n");
-    fprintf(fileAssembler, "	fstp _parteFrac             ;Guardo la parte fraccionaria y pop ST(0)\n");
+	fprintf(fileAssembler, "\nIMPRIMIRNUMERO:\n");
+    fprintf(fileAssembler, "\tfclex\n");
+    fprintf(fileAssembler, "\tfldcw _x87_round\n");
+    fprintf(fileAssembler, "\tfld _parteFrac\n");
+    fprintf(fileAssembler, "\tfistp _parteEntera\n");
+    fprintf(fileAssembler, "\tfld _parteFrac\n");
+    fprintf(fileAssembler, "\tfild _parteEntera\n");
+    fprintf(fileAssembler, "\tfsubp\n");
+    fprintf(fileAssembler, "\tfstp _parteFrac\n");
 
 
-    fprintf(fileAssembler, "	mov ecx, 0                  ;Inicializo ecx para que sirva como contador de digitos\n");
-    fprintf(fileAssembler, "	mov ebx, 10                 ;Cargo el divisor en ebx\n");
-    fprintf(fileAssembler, "	mov eax, _parteEntera       ;Cargo la parte baja del dividendo\n");
-fprintf(fileAssembler, "et1:\n");
-    fprintf(fileAssembler, "	mov edx, 0                  ;Cargo la parte alta del dividendo\n");
-    fprintf(fileAssembler, "	div ebx                     ;Divido la parte entera (luego será el cociente) por 10\n");
-    fprintf(fileAssembler, "	push dx                     ;Guardo en la pila la parte baja del resto\n");
-    fprintf(fileAssembler, "	inc ecx                     ;Incremento ecx\n");
-    fprintf(fileAssembler, "	cmp eax, 0                  ;Comparo el cociente con 0\n");
-    fprintf(fileAssembler, "	jne et1                     ;Si el cociente no es 0 debo seguir sacando digitos\n");
+    fprintf(fileAssembler, "\n\tmov ecx, 0\n");
+    fprintf(fileAssembler, "\tmov ebx, 10\n");
+    fprintf(fileAssembler, "\tmov eax, _parteEntera\n");
+	fprintf(fileAssembler, "et1:\n");
+    fprintf(fileAssembler, "\tmov edx, 0\n");
+    fprintf(fileAssembler, "\tdiv ebx\n");
+    fprintf(fileAssembler, "\tpush dx\n");
+    fprintf(fileAssembler, "\tinc ecx\n");
+    fprintf(fileAssembler, "\tcmp eax, 0\n");
+    fprintf(fileAssembler, "\tjne et1\n");
 
 
-    fprintf(fileAssembler, "	mov bx, 0                   ;Inicializo bx (indice de __ENTER)\n");
-fprintf(fileAssembler, "et2:\n");
-    fprintf(fileAssembler, "	pop dx                      ;Saco de la pila el primer numero de la parte entera\n");
-    fprintf(fileAssembler, "	add dl, 030h                ;Ajusto para que sea un caracter ascii\n");
-    fprintf(fileAssembler, "	mov [__ENTER+bx], dl        ;Almaceno el caracter ascii en __ENTER[bx]\n");
-    fprintf(fileAssembler, "	inc bx                      ;Incremento bx (indice de __ENTER)\n");
-    fprintf(fileAssembler, "	loop et2                    ;Itero hasta que ecx == 0 (con cada pasada se autodecrementa)\n");
+    fprintf(fileAssembler, "\n\tmov bx, 0\n");
+	fprintf(fileAssembler, "et2:\n");
+    fprintf(fileAssembler, "\tpop dx\n");
+    fprintf(fileAssembler, "\tadd dl, 030h\n");
+    fprintf(fileAssembler, "\tmov [__ENTER+bx], dl\n");
+    fprintf(fileAssembler, "\tinc bx\n");
+    fprintf(fileAssembler, "\tloop et2\n");
 
     
-    fprintf(fileAssembler, "	fld _parteFrac              ;Cargo _parteFrac en ST(0)\n");
-    fprintf(fileAssembler, "	fldz                        ;Cargo 0.0 en ST(0), ST(1) = _parteFrac\n");
-    fprintf(fileAssembler, "	fcompp                      ;Comparo y pop ST(0) y ST(1)\n");
-    fprintf(fileAssembler, "	fstsw ax                    ;Almaceno el registro de estado del coprocesador en ax\n");
-    fprintf(fileAssembler, "	sahf                        ;Cargo el registro de estado de la cpu\n");
-    fprintf(fileAssembler, "	je fin                      ;Finalizo porque se trata de un numero entero\n");
+    fprintf(fileAssembler, "\n\tfld _parteFrac\n");
+    fprintf(fileAssembler, "\tfldz\n");
+    fprintf(fileAssembler, "\tfcompp\n");
+    fprintf(fileAssembler, "\tfstsw ax\n");
+    fprintf(fileAssembler, "\tsahf\n");
+    fprintf(fileAssembler, "\tje fin\n");
 
-    fprintf(fileAssembler, "	mov [__ENTER+bx], '.'       ;Como se trata de un numero real le agrego el punto\n");
-    fprintf(fileAssembler, "	inc bx                      ;Incremento bx (indice de __ENTER)\n");
+    fprintf(fileAssembler, "\n\tmov [__ENTER+bx], '.'\n");
+    fprintf(fileAssembler, "\tinc bx\n");
     
 
-fprintf(fileAssembler, "et3:\n");
-    fprintf(fileAssembler, "	fld _parteFrac              ;Cargo la parte fraccionaria en ST(0)\n");
-    fprintf(fileAssembler, "	fmul _mul_10                ;Multipilo ST(0) * _mul_10 y guardo en ST(0)\n");
-    fprintf(fileAssembler, "	fst _parteFrac              ;Guardo la multiplicación anterior. _parteFrac quedaría con un número mayor a 1.0\n");
-    fprintf(fileAssembler, "	fistp _parteEntera          ;Trunco la parte entera, la guardo en _parteEntera y pop ST(0)\n");
-    fprintf(fileAssembler, "	mov edx, _parteEntera       ;Almaceno _parteEntera en edx\n");
-    fprintf(fileAssembler, "	add dl, 030h                ;Ajusto para que sea un caracter ascii\n");
-    fprintf(fileAssembler, "	mov [__ENTER+bx], dl        ;Almaceno el caracter ascii en __ENTER[bx]\n");
-    fprintf(fileAssembler, "	inc bx                      ;Incremento bx (indice de __ENTER)\n");
-    fprintf(fileAssembler, "	fld _parteFrac              ;Cargo la parte fraccionaria en ST(0)\n");
-    fprintf(fileAssembler, "	fild _parteEntera           ;Cargo la parte entera en ST(0). ST(1) = _parteFrac\n");
-    fprintf(fileAssembler, "	fsubp                       ;Resto _parteFrac menos _parteEntera y pop. Sería, por ejemlo, 1.53-1.0. ST(1) = 0.53\n");
-    fprintf(fileAssembler, "	fst _parteFrac              ;Guardo la parte fraccionaria\n");
-    fprintf(fileAssembler, "	fldz                        ;Cargo 0.0 en ST(0), ST(1) = _parteFrac\n");
-    fprintf(fileAssembler, "	fcompp                      ;Comparo y pop ST(0) y ST(1)\n");
-    fprintf(fileAssembler, "	fstsw ax                    ;Almaceno el registro de estado del coprocesador en ax\n");
-    fprintf(fileAssembler, "	sahf                        ;Cargo el registro de estado de la cpu\n");
-    fprintf(fileAssembler, "	je fin                      ;Finalizo porque ya no quedan más dígitos\n");
-    fprintf(fileAssembler, "	jmp et3                     ;Salto a et3\n");
+	fprintf(fileAssembler, "\net3:\n");
+    fprintf(fileAssembler, "\tfld _parteFrac\n");
+    fprintf(fileAssembler, "\tfmul _mul_10\n");
+    fprintf(fileAssembler, "\tfst _parteFrac\n");
+    fprintf(fileAssembler, "\tfistp _parteEntera\n");
+    fprintf(fileAssembler, "\tmov edx, _parteEntera\n");
+    fprintf(fileAssembler, "\tadd dl, 030h\n");
+    fprintf(fileAssembler, "\tmov [__ENTER+bx], dl\n");
+    fprintf(fileAssembler, "\tinc bx\n");
+    fprintf(fileAssembler, "\tfld _parteFrac\n");
+    fprintf(fileAssembler, "\tfild _parteEntera\n");
+    fprintf(fileAssembler, "\tfsubp\n");
+    fprintf(fileAssembler, "\tfst _parteFrac\n");
+    fprintf(fileAssembler, "\tfldz\n");
+    fprintf(fileAssembler, "\tfcompp\n");
+    fprintf(fileAssembler, "\tfstsw ax\n");
+    fprintf(fileAssembler, "\tsahf\n");
+    fprintf(fileAssembler, "\tje fin\n");
+    fprintf(fileAssembler, "\tjmp et3\n");
 
 
-fprintf(fileAssembler, "fin:\n");
-    fprintf(fileAssembler, "	mov [__ENTER+bx], '$'       ;Termino la cadena\n");
-    fprintf(fileAssembler, "	call IMPRIMIR                 ;Llamo a imprimir el número\n");
-    fprintf(fileAssembler, "	ret                         ;Retorno\n");
-
-
-
+	fprintf(fileAssembler, "\nfin:\n");
+    fprintf(fileAssembler, "\tmov [__ENTER+bx], '$'\n");
+    fprintf(fileAssembler, "\tcall IMPRIMIR\n");
+    fprintf(fileAssembler, "\tret\n");
 }
