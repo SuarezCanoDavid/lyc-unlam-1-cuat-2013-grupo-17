@@ -196,13 +196,13 @@ void asmSalto(int idTerceto)
 							break;
 		case JNZ:			fprintf(fileAssembler,"\tjnz etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JG:			fprintf(fileAssembler,"\tjg etiqueta_%d\n",listaDeTercetos[idTerceto].y);
+		case JG:			fprintf(fileAssembler,"\tja etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JGE:			fprintf(fileAssembler,"\tjge etiqueta_%d\n",listaDeTercetos[idTerceto].y);
+		case JGE:			fprintf(fileAssembler,"\tjae etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JL:			fprintf(fileAssembler,"\tjl etiqueta_%d\n",listaDeTercetos[idTerceto].y);
+		case JL:			fprintf(fileAssembler,"\tjb etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
-		case JLE:			fprintf(fileAssembler,"\tjle etiqueta_%d\n",listaDeTercetos[idTerceto].y);
+		case JLE:			fprintf(fileAssembler,"\tjbe etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
 		case JE:			fprintf(fileAssembler,"\tje etiqueta_%d\n",listaDeTercetos[idTerceto].y);
 							break;
