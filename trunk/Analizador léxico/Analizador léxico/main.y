@@ -229,7 +229,7 @@ wprint_cte:	PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_WPRINT;
 				tercetoAux.tipoDeX = TOKEN;
-				tercetoAux.y = $2;
+				tercetoAux.y = $3;
 				tercetoAux.tipoDeY = INDICE_TS;
 				crearTerceto(&tercetoAux);
 			};
@@ -239,7 +239,7 @@ wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_WPRINT;
 				tercetoAux.tipoDeX = TOKEN;
-				tercetoAux.y = $2;
+				tercetoAux.y = $3;
 				tercetoAux.tipoDeY = INDICE_TS;
 				crearTerceto(&tercetoAux);
 			};
@@ -252,7 +252,7 @@ wprint_id:	PR_WPRINT PAR_ABRE ID PAR_CIERRA
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_WPRINT;
 				tercetoAux.tipoDeX = TOKEN;
-				tercetoAux.y = $2;
+				tercetoAux.y = $3;
 				tercetoAux.tipoDeY = INDICE_TS;
 				crearTerceto(&tercetoAux);
 			};
