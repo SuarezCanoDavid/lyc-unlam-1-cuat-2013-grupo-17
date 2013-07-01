@@ -29,4 +29,5 @@ void asmOr(int);
 void asmNot(int);
 void asmWprint(int);
 void asmConcatenacion(int);
+void adecuarTS();
 #endif
