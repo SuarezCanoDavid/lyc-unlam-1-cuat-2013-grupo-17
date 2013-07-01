@@ -25,7 +25,7 @@ void GenerarAssembler()
 	
 	GeneracionCodigo();
 	GenerarCodigoString();
-	fprintf(fileAssembler,"\nEND;");
+	fprintf(fileAssembler,"\nEND");
 }
 
 void GenerarEncabezado()
@@ -60,7 +60,7 @@ void DeclararVariables()
 			case  CTE_ENTERA: fprintf(fileAssembler, "%s dd %s\n", TS[i].nombre, TS[i].valor);
 							  break;
 
-			case CTE_STRING: fprintf(fileAssembler, "%s db \"%s\",'$',%d dup(?)\n", TS[i].nombre,  TS[i].valor, MAX_LONG_CTE_STRING-TS[i].longitud-1);
+			case CTE_STRING: fprintf(fileAssembler, "%s db \"%s\",'$',%d dup(?)\n", TS[i].nombre,  TS[i].valor, MAX_LONG_CTE_STRING-TS[i].longitud);
 							 fprintf(fileAssembler, "%s_long dd %d\n", TS[i].nombre,  TS[i].longitud+1);
 							 break;
 		}
@@ -79,7 +79,7 @@ void DeclararVariables()
 void GeneracionCodigo()
 {
 	
-	int i,r;
+	int i;
 	 
 	//Inicio de la generacion del codigo
 	fprintf(fileAssembler,"\n.CODE\n");
@@ -438,13 +438,17 @@ void asmAsignacion(int idTerceto)
 				 break;
 		case INDICE_TS: switch(TS[listaDeTercetos[idTerceto].y].tipo)
 						{
-							case PR_INT:
-							case CTE_REAL:
-							case PR_FLOAT:
-							case CTE_ENTERA: fprintf(fileAssembler,"\tfstp %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+							case PR_INT:	 
+							//case CTE_REAL:
+							//case CTE_ENTERA:
+							case PR_FLOAT:	 if(listaDeTercetos[idTerceto].tipoDeZ == INDICE_TS)
+											 {
+												 fprintf(fileAssembler,"\tfld %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
+											 }
+											 fprintf(fileAssembler,"\tfstp %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
 											 break;
-							case PR_STRING:
-							case CTE_STRING: fprintf(fileAssembler,"\tmov eax, %s_long\n",TS[listaDeTercetos[idTerceto].z].nombre);
+							//case CTE_STRING:
+							case PR_STRING:  fprintf(fileAssembler,"\tmov eax, %s_long\n",TS[listaDeTercetos[idTerceto].z].nombre);
 											 fprintf(fileAssembler,"\tmov %s_long, eax\n", TS[listaDeTercetos[idTerceto].y].nombre);
 											 fprintf(fileAssembler,"\tcld\n");
 											 fprintf(fileAssembler,"\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);

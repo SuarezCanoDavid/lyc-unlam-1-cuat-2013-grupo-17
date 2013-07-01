@@ -120,7 +120,7 @@ int registroBHUsado;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 1860 "main.y"
+# line 1900 "main.y"
 
 
 
@@ -1522,7 +1522,12 @@ yyparse()
       case 79:
 # line 1149 "main.y"
       {
-      					if(registroCHUsado == FALSE)
+      					if(yypvt[-0] == PR_STRING)
+      					{
+      						lanzarError("No se puede usar un tipo STRING en una comparacion");
+      					}
+      
+					if(registroCHUsado == FALSE)
       					{
       						auy = CH;
       					}
@@ -1583,7 +1588,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 80:
-# line 1214 "main.y"
+# line 1219 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1595,9 +1600,14 @@ yyparse()
       					}
       				} break;
       case 81:
-# line 1226 "main.y"
+# line 1231 "main.y"
       {
-      					if(registroCHUsado == FALSE)
+      					if(yypvt[-0] == PR_STRING)
+      					{
+      						lanzarError("No se puede usar un tipo STRING en una comparacion");
+      					}
+      
+					if(registroCHUsado == FALSE)
       					{
       						auy = CH;
       					}
@@ -1658,7 +1668,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 82:
-# line 1291 "main.y"
+# line 1301 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1670,9 +1680,14 @@ yyparse()
       					}
       				} break;
       case 83:
-# line 1303 "main.y"
+# line 1313 "main.y"
       {
-      					if(registroCHUsado == FALSE)
+      					if(yypvt[-0] == PR_STRING)
+      					{
+      						lanzarError("No se puede usar un tipo STRING en una comparacion");
+      					}
+      
+					if(registroCHUsado == FALSE)
       					{
       						auy = CH;
       					}
@@ -1733,7 +1748,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 84:
-# line 1368 "main.y"
+# line 1383 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1745,9 +1760,14 @@ yyparse()
       					}
       				} break;
       case 85:
-# line 1380 "main.y"
+# line 1395 "main.y"
       {
-      					if(registroCHUsado == FALSE)
+      					if(yypvt[-0] == PR_STRING)
+      					{
+      						lanzarError("No se puede usar un tipo STRING en una comparacion");
+      					}
+      
+					if(registroCHUsado == FALSE)
       					{
       						auy = CH;
       					}
@@ -1808,7 +1828,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 86:
-# line 1445 "main.y"
+# line 1465 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1820,9 +1840,14 @@ yyparse()
       					}
       				} break;
       case 87:
-# line 1457 "main.y"
+# line 1477 "main.y"
       {
-      					if(registroCHUsado == FALSE)
+      					if(yypvt[-0] == PR_STRING)
+      					{
+      						lanzarError("No se puede usar un tipo STRING en una comparacion");
+      					}
+      
+					if(registroCHUsado == FALSE)
       					{
       						auy = CH;
       					}
@@ -1883,7 +1908,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 88:
-# line 1522 "main.y"
+# line 1547 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1895,9 +1920,14 @@ yyparse()
       					}
       				} break;
       case 89:
-# line 1534 "main.y"
+# line 1559 "main.y"
       {
-      					if(registroCHUsado == FALSE)
+      					if(yypvt[-0] == PR_STRING)
+      					{
+      						lanzarError("No se puede usar un tipo STRING en una comparacion");
+      					}
+      
+					if(registroCHUsado == FALSE)
       					{
       						auy = CH;
       					}
@@ -1958,9 +1988,14 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 90:
-# line 1598 "main.y"
+# line 1628 "main.y"
       {
-      						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
+      						if(yypvt[-0] == PR_STRING)
+      						{
+      							lanzarError("No se puede usar un tipo STRING en una comparacion");
+      						}
+      
+						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
       					
       						for(aux = tercetosInicialesFilterc[0]; aux < cantTercetos; ++aux)
       						{
@@ -2086,14 +2121,19 @@ yyparse()
       						crearTerceto(&tercetoAux);
       					} break;
       case 91:
-# line 1726 "main.y"
+# line 1761 "main.y"
       {
       						tercetosInicialesFilterc[0] = cantTercetos;
       					} break;
       case 93:
-# line 1733 "main.y"
+# line 1768 "main.y"
       {
-      						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
+      						if(yypvt[-0] == PR_STRING)
+      						{
+      							lanzarError("No se puede usar un tipo STRING en una comparacion");
+      						}
+      
+						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
       					
       						for(aux = tercetosInicialesFilterc[0]; aux < cantTercetos; ++aux)
       						{
