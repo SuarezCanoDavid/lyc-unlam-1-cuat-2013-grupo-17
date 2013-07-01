@@ -425,6 +425,11 @@ asignacion: ID OP_ASIGNACION asignacion
 					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
 				}
 
+				if(TS[$1].tipo == PR_INT && TS[$3].tipo == PR_FLOAT)
+				{
+					printf("\nADVERTENCIA\nLINEA: %d\nDESCRIPCION: Asignacion de tipo FLOAT a tipo INT con posible perdida de precision\n",lineaActual);
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -459,6 +464,11 @@ asignacion: ID OP_ASIGNACION expresion
 				if(TS[$1].tipo == PR_STRING && $3 == PR_FLOAT)
 				{
 					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
+				}
+
+				if(TS[$1].tipo == PR_INT && $3 == PR_FLOAT)
+				{
+					printf("\nADVERTENCIA\nLINEA: %d\nDESCRIPCION: Asignacion de tipo FLOAT a tipo INT con posible perdida de precision\n",lineaActual);
 				}
 
 				borrarTerceto(&tercetoAux);
@@ -947,7 +957,14 @@ expresion:	expresion OP_SUMA termino
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
 
-				$$ = $1;
+				if($1 == PR_FLOAT || $3 == PR_FLOAT)
+				{
+					$$ = PR_FLOAT;
+				}
+				else
+				{
+					$$ = PR_INT;
+				}
 			};
 
 expresion:	expresion OP_RESTA termino
@@ -967,7 +984,14 @@ expresion:	expresion OP_RESTA termino
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
 
-				$$ = $1;
+				if($1 == PR_FLOAT || $3 == PR_FLOAT)
+				{
+					$$ = PR_FLOAT;
+				}
+				else
+				{
+					$$ = PR_INT;
+				}
 			};
 
 expresion:	termino
@@ -993,7 +1017,14 @@ termino:	termino OP_MULTIPLICACION factor
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
 
-				$$ = $1;
+				if($1 == PR_FLOAT || $3 == PR_FLOAT)
+				{
+					$$ = PR_FLOAT;
+				}
+				else
+				{
+					$$ = PR_INT;
+				}
 			};
 
 termino:	termino OP_DIVISION factor
@@ -1013,7 +1044,14 @@ termino:	termino OP_DIVISION factor
 
 				pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
 
-				$$ = $1;
+				if($1 == PR_FLOAT || $3 == PR_FLOAT)
+				{
+					$$ = PR_FLOAT;
+				}
+				else
+				{
+					$$ = PR_INT;
+				}
 			};
 
 termino:	factor
