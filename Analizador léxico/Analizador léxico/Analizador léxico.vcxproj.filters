@@ -91,9 +91,6 @@
     <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
-    <None Include="..\Debug\reglas_aplicadas.txt">
-      <Filter>Archivos de recursos\Archivos de salida</Filter>
-    </None>
     <None Include="..\Debug\Tabla_de_símbolos.txt">
       <Filter>Archivos de recursos\Archivos de salida</Filter>
     </None>

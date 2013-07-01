@@ -19,13 +19,13 @@ FILE *fileAssembler;
 
 void GenerarAssembler()
 {
-	
+	adecuarTS();
 	GenerarEncabezado();
-	 DeclararVariables();
+	DeclararVariables();
 	
-	 GeneracionCodigo();
-	 GenerarCodigoString();
-	 fprintf(fileAssembler,"\nEND;");
+	GeneracionCodigo();
+	GenerarCodigoString();
+	fprintf(fileAssembler,"\nEND;");
 }
 
 void GenerarEncabezado()
@@ -592,4 +592,18 @@ void GenerarCodigoString()
     fprintf(fileAssembler, "\tmov [__ENTER+bx], '$'\n");
     fprintf(fileAssembler, "\tcall IMPRIMIR\n");
     fprintf(fileAssembler, "\tret\n");
+}
+
+void adecuarTS()
+{
+	int contadorCte = 0;
+	int i;
+
+	for(i = 0; i < cantTokensEnTS; ++i)
+	{
+		if(TS[i].tipo == CTE_ENTERA || TS[i].tipo == CTE_REAL || TS[i].tipo == CTE_STRING)
+		{
+			sprintf_s(TS[i].nombre,MAX_LONG_TOKEN+1,"_cte%d",contadorCte++);
+		}
+	}
 }
