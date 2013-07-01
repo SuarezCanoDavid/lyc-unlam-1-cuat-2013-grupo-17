@@ -127,11 +127,13 @@ int registroBHUsado;
 %%
 programa:	bloque_declaracion bloque_ejecucion
 			{
+				imprimirTercetos();
 				GenerarAssembler();
 			};
 
 programa:	lista_wprints_cte
 			{
+				imprimirTercetos();
 				GenerarAssembler();
 			};
 
@@ -162,9 +164,9 @@ declaracion:	COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos
 				};
 
 
-lista_variables:	ID COMA lista_variables
+lista_variables:	lista_variables COMA ID
 					{
-						posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
+						posicionIDEnTS[cantIDsEnDeclaracion++] = $3;
 					};
 
 lista_variables:	ID
@@ -173,9 +175,9 @@ lista_variables:	ID
 					};
 
 
-lista_tipos:	tipo COMA lista_tipos
+lista_tipos:	lista_tipos COMA tipo
 				{
-					tipoDeID[cantTiposEnDeclaracion++] = $1;
+					tipoDeID[cantTiposEnDeclaracion++] = $3;
 				};
 
 lista_tipos:	tipo
@@ -404,6 +406,7 @@ asignacion: ID OP_ASIGNACION asignacion
 
 				if(TS[$1].tipo == PR_INT && TS[$3].tipo == PR_STRING)
 				{
+					printf("\n%d %d\n",TS[$1].tipo,TS[$3].tipo);
 					lanzarError("No se puede asignar un tipo STRING a un tipo INT");
 				}
 
@@ -1885,8 +1888,6 @@ int main(int argc, char *argv[])
 		
         fclose(archivo);
     }
-
-	imprimirTercetos();
 	
     return 0;
 }

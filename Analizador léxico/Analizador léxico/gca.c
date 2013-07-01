@@ -31,6 +31,7 @@ void GenerarAssembler()
 void GenerarEncabezado()
 {
 	fopen_s(&fileAssembler,"final.asm", "w");
+
 	fprintf(fileAssembler,".MODEL SMALL\n");
 	fprintf(fileAssembler,".386\n");
 	fprintf(fileAssembler,".STACK 200h\n\n");
@@ -82,9 +83,9 @@ void GeneracionCodigo()
 	 
 	//Inicio de la generacion del codigo
 	fprintf(fileAssembler,"\n.CODE\n");
-	fprintf(fileAssembler,"\tmov AX, @DATA\n");
-	fprintf(fileAssembler,"\tmov DS, AX\n");
-	fprintf(fileAssembler,"\tmov ES, AX\n");
+	fprintf(fileAssembler,"\tmov ax, @DATA\n");
+	fprintf(fileAssembler,"\tmov ds, ax\n");
+	fprintf(fileAssembler,"\tmov es, ax\n");
 	fprintf(fileAssembler,"\tfinit\n\n");
 	
 	
@@ -118,7 +119,7 @@ void GeneracionCodigo()
 
 	//Finalizar
 	fprintf(fileAssembler,"ERROR:\n");
-	fprintf(fileAssembler,"\tmov AX, 4C00h\n");
+	fprintf(fileAssembler,"\tmov ax, 4C00h\n");
 	fprintf(fileAssembler,"\tint 21h\n");
 
 }
@@ -243,7 +244,7 @@ int TercetoTokes(int token, int idTerceto)
 		break;
 
 	case OP_SUMA:
-		if(listaDeTercetos[idTerceto].tipoDeY = VAR_FILTERC)
+		if(listaDeTercetos[idTerceto].tipoDeY == VAR_FILTERC)
 		{
 			fprintf(fileAssembler,"\tfld1\n");
 		}
