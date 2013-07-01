@@ -10,7 +10,7 @@ void DeclararVariables();
 void GeneracionCodigo();
 void GenerarCodigoString();
 int GenerarAssemblerByTerceto();
-int TercetoTokes(int);
+int TercetoTokes(int,int);
 void LlenarPilaEtiquetas();
 void asmSuma();
 void asmResta();

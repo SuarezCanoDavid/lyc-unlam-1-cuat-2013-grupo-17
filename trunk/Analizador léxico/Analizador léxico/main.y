@@ -1147,6 +1147,11 @@ proposicion_f:	GUION_BAJO
 				
 				expresion
 				{
+					if($4 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroCHUsado == FALSE)
 					{
 						auy = CH;
@@ -1224,6 +1229,11 @@ proposicion_f:	GUION_BAJO
 				
 				expresion
 				{
+					if($4 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroCHUsado == FALSE)
 					{
 						auy = CH;
@@ -1301,6 +1311,11 @@ proposicion_f:	GUION_BAJO
 				
 				expresion
 				{
+					if($4 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroCHUsado == FALSE)
 					{
 						auy = CH;
@@ -1378,6 +1393,11 @@ proposicion_f:	GUION_BAJO
 				
 				expresion
 				{
+					if($4 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroCHUsado == FALSE)
 					{
 						auy = CH;
@@ -1455,6 +1475,11 @@ proposicion_f:	GUION_BAJO
 				
 				expresion
 				{
+					if($4 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroCHUsado == FALSE)
 					{
 						auy = CH;
@@ -1532,6 +1557,11 @@ proposicion_f:	GUION_BAJO
 				
 				expresion
 				{
+					if($4 == PR_STRING)
+					{
+						lanzarError("No se puede usar un tipo STRING en una comparacion");
+					}
+
 					if(registroCHUsado == FALSE)
 					{
 						auy = CH;
@@ -1596,6 +1626,11 @@ proposicion_f:	GUION_BAJO
 
 lista_expresiones:	expresion
 					{
+						if($1 == PR_STRING)
+						{
+							lanzarError("No se puede usar un tipo STRING en una comparacion");
+						}
+
 						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
 					
 						for(aux = tercetosInicialesFilterc[0]; aux < cantTercetos; ++aux)
@@ -1731,6 +1766,11 @@ lista_expresiones:	expresion
 
 lista_expresiones:	expresion
 					{
+						if($1 == PR_STRING)
+						{
+							lanzarError("No se puede usar un tipo STRING en una comparacion");
+						}
+
 						vaciarColaDeTercetos(&colasExpresionesFilterc[0]);
 					
 						for(aux = tercetosInicialesFilterc[0]; aux < cantTercetos; ++aux)
