@@ -1,5 +1,0 @@
-[0] (_10p35,_,_)
-[1] (OP_ASIGNACION,a,[0])
-[2] (OP_ASIGNACION,mensaje,_hola_mundo)
-[3] (OP_CONCATENACION,_pepe,_mundo)
-[4] (OP_ASIGNACION,mensaje,[3])

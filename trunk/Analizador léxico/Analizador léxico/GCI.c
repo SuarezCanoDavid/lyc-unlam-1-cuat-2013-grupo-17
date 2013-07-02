@@ -27,7 +27,7 @@ void imprimirTercetos()
 	int i;
 	FILE *archivoDeTercetos;
 
-	fopen_s(&archivoDeTercetos,"Tercetos.txt","w");
+	fopen_s(&archivoDeTercetos,"Intermedia.TXT","w");
 
 	for(i = 0; i < cantTercetos; ++i)
 	{

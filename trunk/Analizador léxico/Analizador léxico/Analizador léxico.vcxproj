@@ -105,9 +105,9 @@
     <None Include="..\Debug\Casos de pruba\programa_complejo.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt" />
-    <None Include="..\Debug\final.asm" />
+    <None Include="..\Debug\FINAL.ASM" />
+    <None Include="..\Debug\Intermedia.TXT" />
     <None Include="..\Debug\Tabla_de_símbolos.txt" />
-    <None Include="..\Debug\Tercetos.txt" />
     <None Include="..\Debug\tokens_identificados.txt" />
     <None Include="Lista de reglas.txt" />
     <None Include="main.y" />
