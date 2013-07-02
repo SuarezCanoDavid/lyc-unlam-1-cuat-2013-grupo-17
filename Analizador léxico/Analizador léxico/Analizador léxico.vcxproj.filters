@@ -100,23 +100,23 @@
     <None Include="Lista de reglas.txt">
       <Filter>Archivos de recursos</Filter>
     </None>
-    <None Include="..\Debug\Tercetos.txt">
-      <Filter>Archivos de recursos\Archivos de salida</Filter>
-    </None>
     <None Include="..\Debug\Casos de pruba\filterc.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
     <None Include="..\Debug\Casos de pruba\fuente6.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
-    <None Include="..\Debug\final.asm">
-      <Filter>Archivos de recursos\Archivos de salida</Filter>
-    </None>
     <None Include="..\Debug\Casos de pruba\fuente7.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
     <None Include="..\Debug\Casos de pruba\fuente2.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\FINAL.ASM">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="..\Debug\Intermedia.TXT">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
     </None>
   </ItemGroup>
 </Project>

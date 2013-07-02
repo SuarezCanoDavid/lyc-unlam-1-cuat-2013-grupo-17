@@ -30,7 +30,7 @@ void GenerarAssembler()
 
 void GenerarEncabezado()
 {
-	fopen_s(&fileAssembler,"final.asm", "w");
+	fopen_s(&fileAssembler,"FINAL.ASM", "w");
 
 	fprintf(fileAssembler,".MODEL SMALL\n");
 	fprintf(fileAssembler,".386\n");
