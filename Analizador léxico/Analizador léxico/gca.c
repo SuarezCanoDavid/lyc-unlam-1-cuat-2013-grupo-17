@@ -67,13 +67,15 @@ void DeclararVariables()
 	}
 	
 	//fprintf(fileAssembler,"__MENSAJE     db '$', %d dup (?)\n",MAX_LONG_CTE_STRING);
-	fprintf(fileAssembler,"__ENTER       db MAXTEXTSIZE dup(?)\n");
-	fprintf(fileAssembler,"__NEW_LINE    db 0Dh,0Ah,'$'\n");
+	fprintf(fileAssembler,"__ENTER          db MAXTEXTSIZE dup(?)\n");
+	fprintf(fileAssembler,"__NEW_LINE       db 0Dh,0Ah,'$'\n");
 	//fprintf(fileAssembler,"_AUXPrintReal db 14 dup (?), '$'\n");
-	fprintf(fileAssembler,"_parteFrac    dd ?\n");
-	fprintf(fileAssembler,"_parteEntera  dd ?\n");
-	fprintf(fileAssembler,"_mul_10       dd 10.0\n");
-	fprintf(fileAssembler,"_x87_round    dw 077fh\n");
+	fprintf(fileAssembler,"_parteFrac       dd ?\n");
+	fprintf(fileAssembler,"_parteEntera     dd ?\n");
+	fprintf(fileAssembler,"_mul_10          dd 10.0\n");
+	fprintf(fileAssembler,"_x87_round       dw 077fh\n");
+	fprintf(fileAssembler,"_cadenaAux		db MAXTEXTSIZE dup(?)\n");
+	fprintf(fileAssembler,"_cadenaAux_long  dd 0\n");
 }
 
 void GeneracionCodigo()
@@ -284,16 +286,24 @@ void asmConcatenacion(int idTerceto)
 	fprintf(fileAssembler, "\tjg  ERROR\n");
 
 	//comienzo la concatenacion
-	fprintf(fileAssembler, "\tmov %s_long , eax\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
+	fprintf(fileAssembler, "\tmov _cadenaAux_long , eax\n");
 	fprintf(fileAssembler, "\tcld\n");
 	fprintf(fileAssembler, "\tmov esi, OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
-	fprintf(fileAssembler, "\tmov edi, OFFSET %s\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
+	fprintf(fileAssembler, "\tmov edi, OFFSET _cadenaAux\n");
 	fprintf(fileAssembler, "\tmov ecx, %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
 	fprintf(fileAssembler, "\tsub ecx, 1\n");
 	fprintf(fileAssembler, "\trep movsb\n");
 	fprintf(fileAssembler, "\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
 	fprintf(fileAssembler, "\tmov ecx, %s_long\n", TS[listaDeTercetos[idTerceto].z].nombre);
 	fprintf(fileAssembler, "\trep movsb\n");
+
+	fprintf(fileAssembler,"\tmov eax, _cadenaAux_long\n");
+	fprintf(fileAssembler,"\tmov %s_long, eax\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
+	fprintf(fileAssembler,"\tcld\n");
+	fprintf(fileAssembler,"\tmov esi,OFFSET _cadenaAux\n");
+	fprintf(fileAssembler,"\tmov edi,OFFSET %s\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
+	fprintf(fileAssembler,"\tmov ecx, eax\n");
+	fprintf(fileAssembler,"\trep movsb\n");
 }
 
 void asmWprint(int idTerceto)
@@ -456,13 +466,16 @@ void asmAsignacion(int idTerceto)
 											 fprintf(fileAssembler,"\tfstp %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
 											 break;
 							//case CTE_STRING:
-							case PR_STRING:  fprintf(fileAssembler,"\tmov eax, %s_long\n",TS[listaDeTercetos[idTerceto].z].nombre);
-											 fprintf(fileAssembler,"\tmov %s_long, eax\n", TS[listaDeTercetos[idTerceto].y].nombre);
-											 fprintf(fileAssembler,"\tcld\n");
-											 fprintf(fileAssembler,"\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
-											 fprintf(fileAssembler,"\tmov edi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
-											 fprintf(fileAssembler,"\tmov ecx, eax\n");
-											 fprintf(fileAssembler,"\trep movsb\n");
+							case PR_STRING:  if(listaDeTercetos[idTerceto].tipoDeZ == INDICE_TS)
+											 {
+												 fprintf(fileAssembler,"\tmov eax, %s_long\n",TS[listaDeTercetos[idTerceto].z].nombre);
+												 fprintf(fileAssembler,"\tmov %s_long, eax\n", TS[listaDeTercetos[idTerceto].y].nombre);
+												 fprintf(fileAssembler,"\tcld\n");
+												 fprintf(fileAssembler,"\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
+												 fprintf(fileAssembler,"\tmov edi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+												 fprintf(fileAssembler,"\tmov ecx, eax\n");
+												 fprintf(fileAssembler,"\trep movsb\n");
+											 }
 											 break;
 						}
 						break;
