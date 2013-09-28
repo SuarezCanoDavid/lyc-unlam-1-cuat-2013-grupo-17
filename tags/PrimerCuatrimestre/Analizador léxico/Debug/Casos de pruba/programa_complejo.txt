@@ -1,0 +1,20 @@
+VAR
+	[contador]:[int]
+	[a,b,c]:[int,int,int]
+	[pi,mensaje]:[float,string]
+ENDVAR
+
+a = 1;
+pi = 3.14;
+
+DO
+	FOR(contador = 0; contador < 50 AND b != 0; contador = contador + 1)
+		IF(c == 25)
+			b = 0;
+			a = 0;
+		FI;
+	ROF;
+WHILE(a == 1);
+
+WPRINT("PI es mas o menos: ");
+WPRINT(pi);

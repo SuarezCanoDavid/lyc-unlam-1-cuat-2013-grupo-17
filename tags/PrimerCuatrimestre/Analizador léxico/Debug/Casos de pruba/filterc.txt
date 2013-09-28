@@ -1,0 +1,15 @@
+VAR
+	[a,b,c]:[int,int,int]
+	[resultado]:[int]
+ENDVAR
+
+if(a<b)
+	for(a = 0; a < 10; a = a + 1)
+		resultado = filterc(_>0 AND _<15,[a,b,c]);
+	rof;
+	resultado = filterc(NOT(_!=a),[b,c]);
+-/else
+	for(b = 10; b >= 0; b = b - 1)
+		resultado = filterc(_>0 OR _<15,[a,b,c]);
+	rof;/-
+fi;

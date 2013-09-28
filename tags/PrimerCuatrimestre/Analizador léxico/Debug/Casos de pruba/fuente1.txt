@@ -1,0 +1,14 @@
+VAR
+	[contador,mensaje,resultado]:[int,string,int]
+ENDVAR
+
+if(not(contador+5<=20))
+	if(resultado != contador or contador >= 56)
+		contador = 0;
+	fi;
+	resultado = 5;
+else
+	do
+		resultado = resultado + 1;
+	while(resultado < 20);
+fi;

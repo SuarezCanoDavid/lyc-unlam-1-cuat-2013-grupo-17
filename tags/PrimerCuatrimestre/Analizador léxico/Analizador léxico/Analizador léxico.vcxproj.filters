@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de código fuente">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Archivos de encabezado">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Archivos de recursos\Casos de prueba">
+      <UniqueIdentifier>{d10bc2c2-b11f-42e8-8c05-a133cc63e556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Archivos de salida">
+      <UniqueIdentifier>{cd6ede5d-7aec-4ebe-8c47-71f88ad3a205}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AnalizadorLexico.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="Pila.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="GCI.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="gca.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="Cola.c">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AnalizadorLexico.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="tokens.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Pila.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="GCI.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="gca.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Cola.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="main.y">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente1.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente11.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente3.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente4.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente5.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\if_anidados.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\programa_complejo.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Tabla_de_símbolos.txt">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="..\Debug\tokens_identificados.txt">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="Lista de reglas.txt">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\filterc.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente6.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente7.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\fuente2.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\FINAL.ASM">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+    <None Include="..\Debug\Intermedia.TXT">
+      <Filter>Archivos de recursos\Archivos de salida</Filter>
+    </None>
+  </ItemGroup>
+</Project>

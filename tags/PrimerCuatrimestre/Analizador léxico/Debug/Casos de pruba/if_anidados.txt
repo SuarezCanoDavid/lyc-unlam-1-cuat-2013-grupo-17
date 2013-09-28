@@ -1,0 +1,27 @@
+VAR
+	[a,b,c,d]:[int,int,int,int]
+	[cadena1,cadena2]:[string,string]
+	[e]:[float]
+ENDVAR
+
+a = 3;
+b = 4;
+c = d = 3;
+d = 6;
+a = filterc(_>=5,[a,b,d]);
+if(a != b and a != c)
+	if(c == d)
+		wprint("VERDADERO - VERDADERO");
+	else
+		wprint("VERDADERO - FALSO");
+	fi;
+else
+	if(a <= b)
+		wprint("FALSO - VERDADERO");
+	fi;
+fi;
+
+e = 15.999999;
+a = 5*20/5 + e;
+wprint(a);
+wprint(e);
