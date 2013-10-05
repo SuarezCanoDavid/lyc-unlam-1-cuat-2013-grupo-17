@@ -1,0 +1,9 @@
+VAR
+	[a,b,resultado]:[float,int,int]
+	[mensaje]:[string]
+ENDVAR
+
+a = 5.65;
+b = 23;
+
+wprint(b);

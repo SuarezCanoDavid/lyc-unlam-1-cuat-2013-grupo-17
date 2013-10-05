@@ -1,0 +1,7 @@
+VAR
+	[a,b,resultado]:[int,int,int]
+ENDVAR
+
+
+WPRINT(6.0);
+
