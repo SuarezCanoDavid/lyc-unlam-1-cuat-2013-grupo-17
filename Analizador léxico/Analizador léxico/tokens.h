@@ -43,4 +43,11 @@
 #define PR_FLOAT 296
 #define PR_STRING 297
 
+//Funciones
+#define PR_FUNCTION 298
+#define PR_MAIN 299
+#define PR_BEGINPROG 300
+#define PR_ENDPROG 301
+#define PR_RETURN 302
+
 #endif

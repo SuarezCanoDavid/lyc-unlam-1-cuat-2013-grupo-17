@@ -32,12 +32,19 @@ int cantTokensEnTS = 0;
 char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "ELSE", "FI", "WPRINT", "FILTERC", "DO", 
 										"WHILE", "AND", "OR", "NOT", "VAR", "ENDVAR", "INT", "FLOAT", "STRING" ,
 										 "for", "rof", "if", "else", "fi", "wprint", "filterc", "do", 
-										"while", "and", "or", "not", "var", "endvar", "int", "float", "string"}; 
+										"while", "and", "or", "not", "var", "endvar", "int", "float", "string"
+										//Funciones
+										,"FUNCTION","MAIN", "function","main","BEGINPROG","beginprog","ENDPROG","endprog", "RETURN","return"
+										};
+
 // Vector para las palabras reservadas
 int vPalabrasReservadasBis[CANT_PR] = { PR_FOR,PR_ROF,PR_IF,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
 										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING,
 										PR_FOR,PR_ROF,PR_IF,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
-										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING};
+										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING
+										//FUNCIONES
+										,PR_FUNCTION, PR_MAIN, PR_FUNCTION, PR_MAIN, PR_BEGINPROG,PR_ENDPROG,PR_RETURN
+										};
 
 /*Manejador de errores*/
 manejadorDeErrores error[CANT_ERRORES];
@@ -521,6 +528,12 @@ char *identificarTipoToken(int tipo)
 								break;
 		case PR_STRING:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_STRING");
 								break;
+		//Funciones
+		case PR_FUNCTION:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_FUNCTION");
+								break;
+		case PR_MAIN:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_MAIN");
+								break;
+		//fin funciones
 		case 0:					strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"-");
 								break;
 	}
