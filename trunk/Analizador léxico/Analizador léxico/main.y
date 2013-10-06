@@ -115,6 +115,8 @@ int registroBHUsado;
 %token PR_INT
 %token PR_FLOAT
 %token PR_STRING
+%token PR_MAIN
+%token PR_FUNCTION
 
 %left OP_SUMA
 %left OP_RESTA
