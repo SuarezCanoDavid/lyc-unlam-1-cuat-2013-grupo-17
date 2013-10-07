@@ -533,6 +533,14 @@ char *identificarTipoToken(int tipo)
 								break;
 		case PR_MAIN:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_MAIN");
 								break;
+		case PR_BEGINPROG:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_BEGINPROG");
+								break;
+		case PR_ENDPROG:		strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ENDPROG");
+								break;
+		case PR_RETURN:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_RETURN");
+								break;
+
+
 		//fin funciones
 		case 0:					strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"-");
 								break;
