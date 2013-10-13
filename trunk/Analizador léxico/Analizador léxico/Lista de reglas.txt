@@ -1,107 +1,119 @@
-01 programa: bloque_declaracion bloque_ejecucion
-02 programa: lista_wprints_cte
+01 programa: PR_MAIN bloque_declaracion  PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+02 programa: PR_MAIN bloque_declaracion  bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+03 programa: PR_MAIN  PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 
-03 bloque_declaracion: PR_VAR declaracion PR_ENDVAR
+04 programa: lista_wprints_cte
 
-04 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA declaracion
-05 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
+05 bloque_declaracion: PR_VAR declaracion PR_ENDVAR
 
-06 lista_variables: lista_variables COMA ID
-07 lista_variables: ID
+06 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA declaracion
+07 declaracion: COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
 
-08 lista_tipos: lista_tipos COMA tipo
-09 lista_tipos: tipo
+08 lista_variables: lista_variables COMA ID
+09 lista_variables: ID
 
-10 tipo: PR_INT
-11 tipo: PR_FLOAT
-12 tipo: PR_STRING
+10 lista_tipos: lista_tipos COMA tipo
+11 lista_tipos: tipo
 
-13 bloque_ejecucion: lista_sentencias
+12 tipo: PR_INT
+13 tipo: PR_FLOAT
+14 tipo: PR_STRING
 
-14 lista_sentencias: lista_sentencias sentencia PUNTO_COMA
-15 lista_sentencias: sentencia PUNTO_COMA
+15 bloque_ejecucion: lista_sentencias
 
-16 sentencia: wprint
-17 sentencia: iteracion
-18 sentencia: decision
-19 sentencia: asignacion
+16 lista_sentencias: lista_sentencias sentencia PUNTO_COMA
+17 lista_sentencias: sentencia PUNTO_COMA
 
-20 lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA
-21 lista_wprints_cte: wprint_cte PUNTO_COMA
+18 sentencia: wprint
+19 sentencia: iteracion
+20 sentencia: decision
+21 sentencia: asignacion
 
-22 wprint: wprint_cte
-23 wprint: wprint_id
+22 lista_wprints_cte: lista_wprints_cte wprint_cte PUNTO_COMA
+23 lista_wprints_cte: wprint_cte PUNTO_COMA
 
-24 wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA
-25 wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
+24 wprint: wprint_cte
+25 wprint: wprint_id
 
-26 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA
+26 wprint_cte: PR_WPRINT PAR_ABRE CTE_STRING PAR_CIERRA
+27 wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
 
-27 iteracion: iteracion_for
-28 iteracion: iteracion_dowhile
+28 wprint_id: PR_WPRINT PAR_ABRE ID PAR_CIERRA
 
-29 iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF
+29 iteracion: iteracion_for
+30 iteracion: iteracion_dowhile
 
-30 iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA
+31 iteracion_for: PR_FOR PAR_ABRE asignacion PUNTO_COMA condicion PUNTO_COMA asignacion PAR_CIERRA lista_sentencias PR_ROF
 
-31 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI
-32 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI
+32 iteracion_dowhile: PR_DO lista_sentencias PR_WHILE PAR_ABRE condicion PAR_CIERRA
 
-33 asignacion: ID OP_ASIGNACION asignacion
-34 asignacion: asignacion_num_o_id
-35 asignacion: asignacion_string
+33 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_FI
+34 decision: PR_IF PAR_ABRE condicion PAR_CIERRA lista_sentencias PR_ELSE lista_sentencias PR_FI
 
-36 asignacion_num_o_id: ID OP_ASIGNACION expresion
+35 asignacion: ID OP_ASIGNACION asignacion
+36 asignacion: asignacion_num_o_id
+37 asignacion: asignacion_string
 
-37 asignacion_string: ID OP_ASIGNACION CTE_STRING
-38 asignacion_string: ID OP_ASIGNACION concatenacion
+38 asignacion_num_o_id: ID OP_ASIGNACION expresion
 
-39 concatenacion: ID OP_CONCATENACION ID
-40 concatenacion: ID OP_CONCATENACION CTE_STRING
-41 concatenacion: CTE_STRING OP_CONCATENACION ID
-42 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING
+39 asignacion_string: ID OP_ASIGNACION CTE_STRING
+40 asignacion_string: ID OP_ASIGNACION concatenacion
 
-43 condicion: proposicion
-44 condicion: proposicion PR_AND proposicion
-45 condicion: proposicion PR_OR proposicion
-46 condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA
+41 concatenacion: ID OP_CONCATENACION ID
+42 concatenacion: ID OP_CONCATENACION CTE_STRING
+43 concatenacion: CTE_STRING OP_CONCATENACION ID
+44 concatenacion: CTE_STRING OP_CONCATENACION CTE_STRING
 
-47 proposicion: expresion OP_MAYOR expresion
-48 proposicion: expresion OP_MAYOR_IGUAL expresion
-49 proposicion: expresion OP_MENOR expresion
-50 proposicion: expresion OP_MENOR_IGUAL expresion
-51 proposicion: expresion OP_IGUAL expresion
-52 proposicion: expresion OP_DISTINTO expresion
+45 condicion: proposicion
+46 condicion: proposicion PR_AND proposicion
+47 condicion: proposicion PR_OR proposicion
+48 condicion: PR_NOT PAR_ABRE proposicion PAR_CIERRA
 
-53 expresion: expresion OP_SUMA termino
-54 expresion: expresion OP_RESTA termino
-55 expresion: termino
+49 proposicion: expresion OP_MAYOR expresion
+50 proposicion: expresion OP_MAYOR_IGUAL expresion
+51 proposicion: expresion OP_MENOR expresion
+52 proposicion: expresion OP_MENOR_IGUAL expresion
+53 proposicion: expresion OP_IGUAL expresion
+54 proposicion: expresion OP_DISTINTO expresion
 
-56 termino: termino OP_MULTIPLICACION factor
-57 termino: termino OP_DIVISION factor
-58 termino: factor
+55 expresion: expresion OP_SUMA termino
+56 expresion: expresion OP_RESTA termino
+57 expresion: termino
 
-59 factor: ID
-60 factor: CTE_ENTERA
-61 factor: CTE_REAL
-62 factor: PAR_ABRE expresion PAR_CIERRA
-63 factor: filterc
+58 termino: termino OP_MULTIPLICACION factor
+59 termino: termino OP_DIVISION factor
+60 termino: factor
 
-64 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA
+61 factor: ID
+62 factor: CTE_ENTERA
+63 factor: CTE_REAL
+64 factor: PAR_ABRE expresion PAR_CIERRA
+65 factor: filterc
+66factor: funcion
 
-65 condicion_f: proposicion_f
-66 condicion_f: proposicion_f PR_AND proposicion_f
-67 condicion_f: proposicion_f PR_OR proposicion_f
-68 condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA
+67 filterc: PR_FILTERC PAR_ABRE condicion_f COMA COR_ABRE lista_expresiones COR_CIERRA PAR_CIERRA
 
-69 proposicion_f: GUION_BAJO OP_MAYOR expresion
-70 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion
-71 proposicion_f: GUION_BAJO OP_MENOR expresion
-72 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion
-73 proposicion_f: GUION_BAJO OP_IGUAL expresion
-74 proposicion_f: GUION_BAJO OP_DISTINTO expresion
+68 condicion_f: proposicion_f
+69 condicion_f: proposicion_f PR_AND proposicion_f
+70 condicion_f: proposicion_f PR_OR proposicion_f
+71 condicion_f: PR_NOT PAR_ABRE proposicion_f PAR_CIERRA
 
-75 lista_expresiones: lista_expresiones COMA expresion
-76 lista_expresiones: expresion
+72 proposicion_f: GUION_BAJO OP_MAYOR expresion
+73 proposicion_f: GUION_BAJO OP_MAYOR_IGUAL expresion
+74 proposicion_f: GUION_BAJO OP_MENOR expresion
+75 proposicion_f: GUION_BAJO OP_MENOR_IGUAL expresion
+76 proposicion_f: GUION_BAJO OP_IGUAL expresion
+77 proposicion_f: GUION_BAJO OP_DISTINTO expresion
 
-77 bloque_funciones: PR_FUNCTION 
+78 lista_expresiones: lista_expresiones COMA expresion
+79 lista_expresiones: expresion
+
+80 bloque_funcion: funcion  bloque_funcion
+81 funcion:PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion bloque_ejecucion PR_RETURN valor_retornado
+82 funcion: PR_FUNCTION ID DOS_PUNTOS tipo  PR_RETURN valor_retornado
+83 funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_ejecucion PR_RETURN valor_retornado
+84 funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion PR_RETURN valor_retornado
+85 valor_retornado : ID
+86 valor_retornado : CTE_ENTERA
+87 valor_retornado :  CTE_REAL 
+88 valor_retornado :  CTE_STRING
