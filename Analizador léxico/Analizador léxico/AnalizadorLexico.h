@@ -25,7 +25,7 @@
 #define LONG_TS			150
 
 /*Cantidad de palabras reservadas*/
-#define CANT_PR			44
+#define CANT_PR			60
 
 //Cantidad Maxima para Cadenas
 #define MAX_LONG_CTE_STRING		30
