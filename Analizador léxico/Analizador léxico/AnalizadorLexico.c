@@ -34,7 +34,7 @@ char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "ELSE", "FI", "WPRI
 										 "for", "rof", "if", "else", "fi", "wprint", "filterc", "do", 
 										"while", "and", "or", "not", "var", "endvar", "int", "float", "string"
 										//Funciones
-										,"FUNCTION","MAIN", "function","main","BEGINPROG","beginprog","ENDPROG","endprog", "RETURN","return"
+										,"FUNCTION","MAIN1", "function","main1","BEGINPROG","beginprog","ENDPROG","endprog", "RETURN","return"
 										};
 
 // Vector para las palabras reservadas
@@ -43,7 +43,7 @@ int vPalabrasReservadasBis[CANT_PR] = { PR_FOR,PR_ROF,PR_IF,PR_ELSE,PR_FI,PR_WPR
 										PR_FOR,PR_ROF,PR_IF,PR_ELSE,PR_FI,PR_WPRINT,PR_FILTERC,PR_DO,
 										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING
 										//FUNCIONES
-										,PR_FUNCTION, PR_MAIN, PR_FUNCTION, PR_MAIN, PR_BEGINPROG,PR_ENDPROG,PR_RETURN
+										,PR_FUNCTION, PR_MAIN, PR_FUNCTION, PR_MAIN, PR_BEGINPROG,PR_BEGINPROG,PR_ENDPROG,PR_ENDPROG,PR_RETURN,PR_RETURN
 										};
 
 /*Manejador de errores*/
@@ -232,7 +232,7 @@ int determinarColumna(char caracter)
 		case 'K':
 		case 'L':
 		case 'M':
-		case 'N':
+		case 'N':  
 		case 'O':
 		case 'P':
 		case 'Q':
@@ -240,7 +240,7 @@ int determinarColumna(char caracter)
 		case 'S':
 		case 'T':
 		case 'U':
-		case 'V':
+		case 'V':  
 		case 'W':
 		case 'X':
 		case 'Y':
@@ -422,6 +422,7 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 	}
 
 	/*Guardo el token identificado, su tipo e yylval en el archivo de tokens*/
+	
 	fprintf(archivoDeTokens,"TOKEN Nº%4d= %-50sTIPO_TOKEN= %-20sYYLVAL= %d\n",
 		++cantTokensIdentificados,tokenActual->token,identificarTipoToken(tipoToken),yylval);
 }
@@ -518,7 +519,8 @@ char *identificarTipoToken(int tipo)
 								break;
 		case PR_NOT:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_NOT");
 								break;
-		case PR_VAR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_VAR");
+		case PR_VAR:			
+			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_VAR");
 								break;
 		case PR_ENDVAR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ENDVAR");
 								break;
@@ -539,6 +541,7 @@ char *identificarTipoToken(int tipo)
 								break;
 		case PR_RETURN:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_RETURN");
 								break;
+	
 
 
 		//fin funciones
@@ -563,7 +566,9 @@ void continuarId(tokenAAnalizar *tokenActual, char caracter)
 
 void finalizarId(tokenAAnalizar *tokenActual, char caracter)
 {
+	 
 	insertarTokenEnTS(tokenActual,ID);
+	 
 }
 
 
