@@ -92,6 +92,7 @@
     <ClInclude Include="tokens.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Debug\Casos de pruba\fuente1 - copia.txt" />
     <None Include="..\Debug\Casos de pruba\fuente1.txt" />
     <None Include="..\Debug\Casos de pruba\fuente11.txt" />
     <None Include="..\Debug\Casos de pruba\filterc.txt" />

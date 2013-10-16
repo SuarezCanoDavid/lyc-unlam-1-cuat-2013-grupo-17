@@ -116,8 +116,9 @@ int registroBHUsado;
 %token PR_FLOAT
 %token PR_STRING
 
-%token PR_MAIN
+
 %token PR_FUNCTION
+%token PR_MAIN
 %token PR_BEGINPROG
 %token PR_ENDPROG
 %token PR_RETURN
@@ -130,20 +131,26 @@ int registroBHUsado;
 
 %start programa
 
+
 %%
-programa:   PR_MAIN bloque_declaracion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+programa:  PR_MAIN  bloque_declaracion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
 				imprimirTercetos();
 				GenerarAssembler();
 			};
 
-programa:   PR_MAIN bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+programa:    bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+			{
+				imprimirTercetos();
+				GenerarAssembler();
+			};
+programa:     bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
 				imprimirTercetos();
 				GenerarAssembler();
 			};
 
-programa:   PR_MAIN  PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+programa:     PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
 				imprimirTercetos();
 				GenerarAssembler();
@@ -155,7 +162,16 @@ programa:	lista_wprints_cte
 				GenerarAssembler();
 			};
 
-
+bloque_funcion: funcion  bloque_funcion;
+bloque_funcion: funcion ;
+funcion:PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion bloque_ejecucion PR_RETURN valor_retornado;
+funcion: PR_FUNCTION ID DOS_PUNTOS tipo  PR_RETURN valor_retornado;
+funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_ejecucion PR_RETURN valor_retornado;
+funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion PR_RETURN valor_retornado;
+valor_retornado : ID;
+valor_retornado : CTE_ENTERA;
+valor_retornado :  CTE_REAL;
+valor_retornado :  CTE_STRING;
 
 bloque_declaracion: PR_VAR declaracion PR_ENDVAR;
 
@@ -221,16 +237,7 @@ tipo:	PR_STRING
 		};
 
 
-bloque_funcion: funcion  bloque_funcion;
-bloque_funcion: funcion ;
-funcion:PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion bloque_ejecucion PR_RETURN valor_retornado;
-funcion: PR_FUNCTION ID DOS_PUNTOS tipo  PR_RETURN valor_retornado;
-funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_ejecucion PR_RETURN valor_retornado;
-funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion PR_RETURN valor_retornado;
-valor_retornado : ID;
-valor_retornado : CTE_ENTERA;
-valor_retornado :  CTE_REAL;
-valor_retornado :  CTE_STRING;
+
 
 
 bloque_ejecucion:	lista_sentencias;
