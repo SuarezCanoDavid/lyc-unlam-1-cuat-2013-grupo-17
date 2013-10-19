@@ -139,18 +139,18 @@ programa:  PR_MAIN  bloque_declaracion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 				GenerarAssembler();
 			};
 
-programa:    bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+programa:  PR_MAIN  bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
 				imprimirTercetos();
 				GenerarAssembler();
 			};
-programa:     bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+programa:  PR_MAIN   bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
 				imprimirTercetos();
 				GenerarAssembler();
 			};
 
-programa:     PR_BEGINPROG bloque_ejecucion PR_ENDPROG
+programa:   PR_MAIN  PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
 				imprimirTercetos();
 				GenerarAssembler();
