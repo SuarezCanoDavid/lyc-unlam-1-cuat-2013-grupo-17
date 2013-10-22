@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <math.h>
 
+//variable para Funciones
+char ambitoActual[20];
+
 /*Archivo de código fuente*/
 FILE *archivoFuente;
 
@@ -345,11 +348,19 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 		{
 			nombreAux[0] = '\0';
 
+			
 			if(tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL || tipoDeToken == CTE_STRING)
 			{
 				nombreAux[0] = '_';
 				nombreAux[1] = '\0';
 			}
+			else
+			{
+				
+				//strcat_s(nombreAux,MAX_LONG_TOKEN+1,ambitoActual);
+				//strcat_s(nombreAux,MAX_LONG_TOKEN+1,'+');
+			}
+
 
 			strcat_s(nombreAux,MAX_LONG_TOKEN+1,tokenActual->token);
 
