@@ -146,7 +146,6 @@ programa:  PR_MAIN  bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecuc
 			{
 				imprimirTercetos();
 				GenerarAssembler();
-				printf("holaHola");
 			};
 programa:  PR_MAIN   bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
@@ -168,16 +167,13 @@ programa:	lista_wprints_cte
 
 bloque_funcion:   bloque_funcion funcion
 			{
-				//printf("hola3");
 			};
 bloque_funcion: funcion 
 				{
-				//printf("hola1");
 				}
 				;
 funcion:	PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion bloque_ejecucion PR_RETURN valor_retornado
 			{
-				printf("hola2");
 			};
 
 funcion: PR_FUNCTION ID DOS_PUNTOS tipo  PR_RETURN valor_retornado;
