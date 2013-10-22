@@ -20,6 +20,7 @@ int cantIDsEnTS = 0;
 /*Variables para controlar los IDs declarados*/
 int cantIDsEnDeclaracion = 0;
 int posicionIDEnTS[50];
+char ambitoActual[20];
 
 /*Variables para controlar los tipos de los IDs declarados*/
 int cantTiposEnDeclaracion = 0;
@@ -135,14 +136,17 @@ int registroBHUsado;
 %%
 programa:  PR_MAIN  bloque_declaracion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
+		
 				imprimirTercetos();
 				GenerarAssembler();
+				
 			};
 
 programa:  PR_MAIN  bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
 				imprimirTercetos();
 				GenerarAssembler();
+				printf("holaHola");
 			};
 programa:  PR_MAIN   bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
@@ -162,9 +166,20 @@ programa:	lista_wprints_cte
 				GenerarAssembler();
 			};
 
-bloque_funcion: funcion  bloque_funcion;
-bloque_funcion: funcion ;
-funcion:PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion bloque_ejecucion PR_RETURN valor_retornado;
+bloque_funcion:   bloque_funcion funcion
+			{
+				//printf("hola3");
+			};
+bloque_funcion: funcion 
+				{
+				//printf("hola1");
+				}
+				;
+funcion:	PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion bloque_ejecucion PR_RETURN valor_retornado
+			{
+				printf("hola2");
+			};
+
 funcion: PR_FUNCTION ID DOS_PUNTOS tipo  PR_RETURN valor_retornado;
 funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_ejecucion PR_RETURN valor_retornado;
 funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion PR_RETURN valor_retornado;
@@ -2058,6 +2073,9 @@ void lanzarError(char *mensaje)
 void verificarDeclaracion(int posicionEnTS)
 {
 	char mensaje[50]; 
+	
+	
+/*Hacer la busqueda para de ambito de las funciones*/
 
 	if(posicionEnTS >= cantIDsEnTS)
 	{
