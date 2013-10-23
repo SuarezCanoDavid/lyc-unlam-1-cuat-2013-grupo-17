@@ -1,25 +1,26 @@
 
 MAIN1
 VAR
-	[contador,mensaje,resultado]:[int,string,int]
+	[contador,mensaje]:[int,string]
 ENDVAR
 
+
 FUNCTION f1:int
-	VAR
-		[contador]:[int]
-	ENDVAR
-	contador=1+1;
-	RETURN contador
+VAR
+	[contador]:[int]
+ENDVAR
+contador = 0;
+contador = contador + 1;
+RETURN contador
+
+FUNCTION f2:string
+VAR
+	[mensaje]:[string]
+ENDVAR
+contador = 5;
+mensaje = "hola";
+RETURN mensaje
 
 BEGINPROG
-if(not(contador+5<=20))
-	if(resultado != contador or contador >= 56)
-		contador = 0;
-	fi;
-	resultado = 5;
-else
-	do
-		resultado = resultado + 1;
-	while(resultado < 20);
-fi;
+	mensaje = f2;
 ENDPROG

@@ -4,9 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-//variable para Funciones
-char ambitoActual[20];
-
 /*Archivo de código fuente*/
 FILE *archivoFuente;
 
@@ -57,6 +54,10 @@ char tipoTokenSalida[LONG_TIPO_TOKEN];
 /*Numero de linea actual*/
 int lineaActual = 1;
 
+/*Ambito actual*/
+extern char ambitoActual[MAX_LONG_TOKEN+1];
+
+extern int enDeclaracion;
 
 void inicializarAL(FILE *fuente)
 {
@@ -77,6 +78,7 @@ void inicializarAL(FILE *fuente)
 		TS[i].nombre[0] = '\0';
 		TS[i].tipo = 0;
 		TS[i].valor[0] = '\0';
+		TS[i].ambito[0] = '\0';
 		TS[i].longitud = 0;
 	}
 
@@ -348,24 +350,26 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 		{
 			nombreAux[0] = '\0';
 
-			
 			if(tipoDeToken == CTE_ENTERA || tipoDeToken == CTE_REAL || tipoDeToken == CTE_STRING)
 			{
 				nombreAux[0] = '_';
 				nombreAux[1] = '\0';
 			}
-			else
-			{
-				
-				//strcat_s(nombreAux,MAX_LONG_TOKEN+1,ambitoActual);
-				//strcat_s(nombreAux,MAX_LONG_TOKEN+1,'+');
-			}
-
 
 			strcat_s(nombreAux,MAX_LONG_TOKEN+1,tokenActual->token);
 
 			/*Busco el token en la TS*/
-			for(i = 0; i < cantTokensEnTS && strcmp(TS[i].nombre,nombreAux) != 0; ++i);
+			i = buscarToken(nombreAux,tipoDeToken,ambitoActual);
+
+			if(enDeclaracion == FALSE)
+			{
+				i = buscarToken(nombreAux,tipoDeToken,"main");
+
+				if(i == cantTokensEnTS)
+				{
+					i = buscarToken(nombreAux,tipoDeToken,"");
+				}
+			}
 
 			/*Si no se encontró el token (i se igualó a cantTokensEnTS), lo inserto en la TS*/
 			if(i == cantTokensEnTS)
@@ -379,20 +383,14 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 					/*Si es una constante string*/
 					if(tipoDeToken == CTE_STRING)
 					{
-						//nombreAux[0] = '_';
 						/*Guardo el valor del token sin las comillas*/
 						for(j = 1; tokenActual->token[j] != '"'; ++j)
 						{
 							TS[i].valor[j-1] = tokenActual->token[j];
-							/*nombreAux[j] = tokenActual->token[j];
-							if(nombreAux[j] == ' ')
-							{
-								nombreAux[j] = '_';
-							}*/
 						}
+
 						TS[i].longitud = j-1;
 						TS[i].valor[TS[i].longitud] = '\0';
-						//nombreAux[j] = '\0';
 					}
 					else /*Si es una constante numerica*/
 					{
@@ -403,15 +401,11 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 						{
 							strcat_s(TS[i].valor,MAX_LONG_TOKEN,".0");
 						}
-
-						/*for(j = 0; nombreAux[j] != '\0'; ++j)
-						{
-							if(nombreAux[j] == '.')
-							{
-								nombreAux[j] = 'p';
-							}
-						}*/
 					}
+				}
+				else /*Si es un ID, hay que indicar el ambito*/
+				{
+					strcat_s(TS[i].ambito,MAX_LONG_TOKEN+1,ambitoActual);
 				}
 
 				/*Vuelvo a limpiar el nombre en la TS*/
@@ -447,8 +441,8 @@ void imprimirTS()
 
 	for(i = 0; i < cantTokensEnTS; ++i)
 	{
-		fprintf(archivoDeTS,"%-3d%-50s%-15s%-50s%-10d\n",
-			i,TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].longitud);
+		fprintf(archivoDeTS,"%-3d%-25s%-20s%-25s%-25s%-10d\n",
+			i,TS[i].nombre,identificarTipoToken(TS[i].tipo),TS[i].valor,TS[i].ambito,TS[i].longitud);
 	}
 
 	fclose(archivoDeTS);
@@ -530,8 +524,7 @@ char *identificarTipoToken(int tipo)
 								break;
 		case PR_NOT:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_NOT");
 								break;
-		case PR_VAR:			
-			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_VAR");
+		case PR_VAR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_VAR");
 								break;
 		case PR_ENDVAR:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_ENDVAR");
 								break;
@@ -552,7 +545,12 @@ char *identificarTipoToken(int tipo)
 								break;
 		case PR_RETURN:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_RETURN");
 								break;
-	
+		case PR_FUNCTION+PR_INT:strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"function:int");
+								break;
+		case PR_FUNCTION+PR_FLOAT:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"function:float");
+									break;
+		case PR_FUNCTION+PR_STRING:	strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"function:string");
+									break;
 
 
 		//fin funciones
@@ -563,6 +561,44 @@ char *identificarTipoToken(int tipo)
 	return tipoTokenSalida;
 }
 
+int buscarToken(char *nombreToken, int tipoToken, const char *ambitoActual)
+{
+	int i = 0; /*Posicion del token en la TS*/
+	int encontrado = FALSE;
+
+	/*Si el token es un ID debo tener en cuenta el ambito*/
+	if(tipoToken == ID)
+	{
+		/*Busco el token en el ambito actual*/
+		while(i < cantTokensEnTS && encontrado == FALSE)
+		{
+			if(strcmp(TS[i].ambito,ambitoActual) == 0 && strcmp(TS[i].nombre,nombreToken) == 0)
+			{
+				encontrado = TRUE;
+			}
+			else
+			{
+				++i;
+			}
+		}
+	}
+	else /*Como no es un ID, no importa el ambito*/
+	{
+		while(i < cantTokensEnTS && encontrado == FALSE)
+		{
+			if(strcmp(TS[i].nombre,nombreToken) == 0)
+			{
+				encontrado = TRUE;
+			}
+			else
+			{
+				++i;
+			}
+		}
+	}
+	
+	return i;
+}
 
 /*ID*/
 void iniciarId(tokenAAnalizar *tokenActual, char caracter)
