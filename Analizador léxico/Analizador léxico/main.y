@@ -20,7 +20,6 @@ int cantIDsEnTS = 0;
 /*Variables para controlar los IDs declarados*/
 int cantIDsEnDeclaracion = 0;
 int posicionIDEnTS[50];
-char ambitoActual[20];
 
 /*Variables para controlar los tipos de los IDs declarados*/
 int cantTiposEnDeclaracion = 0;
@@ -73,6 +72,10 @@ extern Terceto listaDeTercetos[MAX_TERCETOS];
 /*Bandera para indicar que el registro BH está siendo usado*/
 int registroBHUsado;
 
+/*Ambito actual*/
+char ambitoActual[MAX_LONG_TOKEN+1] = "main";
+
+int enDeclaracion = FALSE;
 %}
 
 %token PAR_ABRE
@@ -136,10 +139,8 @@ int registroBHUsado;
 %%
 programa:  PR_MAIN  bloque_declaracion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
 			{
-		
 				imprimirTercetos();
 				GenerarAssembler();
-				
 			};
 
 programa:  PR_MAIN  bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
@@ -165,26 +166,61 @@ programa:	lista_wprints_cte
 				GenerarAssembler();
 			};
 
-bloque_funcion:   bloque_funcion funcion
-			{
-			};
-bloque_funcion: funcion 
+bloque_funcion: bloque_funcion funcion;
+bloque_funcion: funcion;
+
+funcion:	inicio_funcion desarrollo_funcion fin_funcion;
+funcion:	inicio_funcion fin_funcion;
+
+inicio_funcion:	PR_FUNCTION ID DOS_PUNTOS tipo
 				{
-				}
-				;
-funcion:	PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion bloque_ejecucion PR_RETURN valor_retornado
-			{
-			};
+					TS[$2].ambito[0] = '\0';
 
-funcion: PR_FUNCTION ID DOS_PUNTOS tipo  PR_RETURN valor_retornado;
-funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_ejecucion PR_RETURN valor_retornado;
-funcion: PR_FUNCTION ID DOS_PUNTOS tipo bloque_declaracion PR_RETURN valor_retornado;
-valor_retornado : ID;
-valor_retornado : CTE_ENTERA;
-valor_retornado :  CTE_REAL;
-valor_retornado :  CTE_STRING;
+					strcpy_s(ambitoActual,MAX_LONG_TOKEN+1,TS[$2].nombre);
 
-bloque_declaracion: PR_VAR declaracion PR_ENDVAR;
+					TS[$2].tipo = PR_FUNCTION + $4;
+
+					$$ = $4;
+				};
+
+desarrollo_funcion:	bloque_declaracion bloque_ejecucion;
+desarrollo_funcion:	bloque_declaracion;
+desarrollo_funcion:	bloque_ejecucion;
+
+fin_funcion:	PR_RETURN valor_retornado
+				{
+					strcpy_s(ambitoActual,MAX_LONG_TOKEN+1,"main");
+
+					$$ = $2;
+				};
+
+
+valor_retornado :	ID
+					{
+						$$ = TS[$1].tipo;
+					};
+valor_retornado :	CTE_ENTERA
+					{
+						$$ = PR_INT;
+					};
+valor_retornado :	CTE_REAL
+					{
+						$$ = PR_FLOAT;
+					};
+valor_retornado :	CTE_STRING
+					{
+						$$ = PR_STRING;
+					};
+
+bloque_declaracion: PR_VAR 
+					{
+						enDeclaracion = TRUE;
+					}
+					declaracion 
+					PR_ENDVAR
+					{
+						enDeclaracion = FALSE;
+					};
 
 
 declaracion:	declaracion COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos COR_CIERRA
@@ -1159,7 +1195,7 @@ factor: filterc
 			$$ = PR_INT;
 		};
 
-		factor: funcion;
+factor: funcion;
  
 		
 		
@@ -1993,7 +2029,6 @@ lista_expresiones:	expresion
 
 int main(int argc, char *argv[])
 {
-	int i;
 	vaciarPilaDeInt(pilaExpresiones);
 	vaciarPilaDeInt(&pilaCondiciones);
 	vaciarPilaDeCola(&pilaColasIncrementos);
@@ -2069,11 +2104,8 @@ void lanzarError(char *mensaje)
 void verificarDeclaracion(int posicionEnTS)
 {
 	char mensaje[50]; 
-	
-	
-/*Hacer la busqueda para de ambito de las funciones*/
 
-	if(posicionEnTS >= cantIDsEnTS)
+	if(TS[posicionEnTS].tipo == 0)
 	{
 		strcpy_s(mensaje,50,"\"");
 

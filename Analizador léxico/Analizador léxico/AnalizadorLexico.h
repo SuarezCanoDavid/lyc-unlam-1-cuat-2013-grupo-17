@@ -62,6 +62,7 @@ struct tablaDeSimbolos
 	char nombre[MAX_LONG_TOKEN+1];
 	int tipo;
 	char valor[MAX_LONG_TOKEN];
+	char ambito[MAX_LONG_TOKEN+1];
 	int longitud;
 };
 typedef struct tablaDeSimbolos tablaDeSimbolos;
@@ -86,6 +87,7 @@ void insertarCaracterEnToken(tokenAAnalizar *tokenActual, char caracter);
 void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken);
 void imprimirTS();
 char *identificarTipoToken(int tipo);
+int buscarToken(char *nombreToken, int tipoToken, const char *ambitoActual);
 
 /*ID*/
 void iniciarId(tokenAAnalizar *tokenActual, char caracter);
