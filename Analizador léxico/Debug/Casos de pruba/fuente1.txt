@@ -2,6 +2,7 @@
 MAIN1
 VAR
 	[contador,mensaje]:[int,string]
+	[palabra]:[string]
 ENDVAR
 
 
@@ -23,4 +24,8 @@ RETURN mensaje
 
 BEGINPROG
 	mensaje = f2;
+	palabra = "mundo";
+	mensaje = palabra;
+	contador = (20*5)/f1;
+	mensaje = f2 ++ palabra;
 ENDPROG

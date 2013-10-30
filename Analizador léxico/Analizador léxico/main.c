@@ -129,7 +129,7 @@ int enDeclaracion = FALSE;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 2027 "main.y"
+# line 2103 "main.y"
 
 
 
@@ -233,209 +233,204 @@ int yyexca[] = {
   -1, 1,
   0, -1,
   -2, 0,
+  -1, 78,
+  280, 67,
+  -2, 63,
   -1, 80,
   280, 66,
-  -2, 62,
-  -1, 82,
-  280, 65,
-  -2, 83,
-  -1, 210,
+  -2, 84,
+  -1, 204,
   261, 108,
   -2, 111,
   0,
 };
 
 #define YYNPROD 112
-#define YYLAST 391
+#define YYLAST 376
 
 int yyact[] = {
-      32,      88,      42,       9,     104,      75,      73,      50,
-      12,     112,       8,      86,      87,      12,      54,      48,
-      36,      55,      34,      88,      12,      33,      18,      35,
-      88,     152,     110,     112,       9,      86,      87,      91,
-      82,      80,      86,      87,     119,      42,      12,       5,
-      16,      97,      12,     101,     102,     103,      32,     168,
-     169,      91,     137,     138,       2,     151,      91,       5,
-      32,      56,     108,     109,      12,      45,      36,      46,
-      34,      12,      32,      33,      32,      35,     116,     148,
-      36,      99,      34,     221,      96,      33,      32,      35,
-     132,     152,      36,     124,      34,     106,     107,      33,
-      43,      35,     165,     106,     107,     147,      36,     216,
-      34,      92,      45,      33,      46,      35,     106,     107,
-      70,     206,     140,     141,     142,     143,     144,     145,
-     171,     172,     173,     174,     175,     176,      66,      69,
-      67,      68,     130,     131,     207,     197,     196,     197,
-     146,     123,     212,     134,     122,     123,     170,      76,
-      52,      44,      14,     167,     183,     180,     166,      62,
-     217,     215,     199,     194,     179,     136,     114,      72,
-      71,     139,     135,     133,      60,      58,      57,      15,
-     120,      22,     181,     209,      85,      26,      98,      84,
-      39,     150,      21,     118,      83,       6,     218,       7,
-     182,      20,     213,     192,     191,     190,      17,      51,
-      90,      40,     189,      10,     188,      41,     117,      10,
-      19,       7,      47,       7,      49,     187,     198,     149,
-     113,      89,      19,      81,      90,      77,      95,      63,
-      53,      31,     154,      59,     214,      22,       6,     193,
-     153,      79,      64,      16,     115,      30,      78,      29,
-      93,      18,      74,      40,      28,      25,      94,      24,
-      39,      23,      61,      37,      65,      38,      11,       3,
-      88,       1,      48,       0,      58,       0,       0,     100,
-     105,     111,       0,       0,      20,       0,       0,       0,
-      51,      27,       4,     206,       0,      13,       3,       0,
-     121,      77,       0,      51,       0,       0,       0,      27,
-     140,     127,     128,       0,     136,     197,     129,     125,
-     126,       0,       0,       0,       0,       0,       0,       0,
-      98,       0,       0,       0,     109,      85,       0,       0,
-       0,      84,     107,      83,       0,     159,     160,     161,
-     162,     163,     164,     155,       0,     156,     157,     158,
-       0,       0,       0,       0,       0,      51,       0,       0,
-     141,     142,     143,     144,     145,     187,     217,       0,
-     138,     139,     118,       0,       0,       0,       0,       0,
-       0,       0,     184,     185,     186,       0,       0,     195,
-     177,     178,       0,       0,     200,     201,     202,     203,
-     204,     205,     169,     170,     150,       0,     181,     210,
-       0,     188,     189,     190,     191,     192,     198,       0,
-     154,     117,       0,     120,     211,       0,     208,       0,
-       0,      26,       0,     210,       0,      51,     220,       0,
-     209,     182,       0,       0,     219,       0,      21,
+      35,      23,      15,       8,      66,      12,       3,      11,
+      11,      71,       5,     148,      94,      95,      96,      15,
+      39,      42,      37,      86,     107,      36,      35,      38,
+     165,     166,      35,     109,       8,      84,      85,      60,
+      35,     134,     135,     105,     106,      23,      39,     147,
+      37,      35,     120,      36,      70,      38,     113,      35,
+      39,      88,      37,     215,      73,      36,     116,      38,
+      40,      39,     121,      37,     143,      86,      36,      39,
+      38,      37,      86,     148,      36,     109,      38,      84,
+      85,     202,      80,      78,      84,      85,      58,     103,
+     104,      59,     119,     137,     138,     139,     140,     141,
+     142,     103,     104,      88,     129,      68,      65,      69,
+      88,     168,     169,     170,     171,     172,     173,     103,
+     104,      51,      54,      52,      53,      89,      68,     131,
+      69,     127,     128,     192,     179,     178,     179,     118,
+     101,     100,     101,     167,      74,      67,      56,      44,
+     210,     164,     206,     180,     161,     144,      47,     211,
+     209,     195,     191,     176,     133,     111,      98,      97,
+     136,     132,     130,      64,      62,      61,      45,     117,
+      25,     163,     203,      29,     162,      81,      72,      83,
+     146,      24,     115,      22,       9,     212,      20,     207,
+     189,      82,     188,     187,      17,     186,     185,     184,
+      41,      55,      30,     114,       6,      17,       9,       7,
+      14,      49,      48,     194,     145,     110,      16,      21,
+      43,      13,      87,      79,      75,      92,      57,      34,
+       7,     150,       6,      63,     208,      21,     190,     149,
+      25,     112,      33,      32,      77,      22,      31,      20,
+      76,      28,      90,      93,      27,      26,      30,      46,
+      18,      91,      50,      19,      10,      86,      99,      13,
+      62,       4,       2,       1,       0,     102,     108,       0,
+       0,       0,       0,       0,      55,       0,     202,     179,
+       0,       0,       0,       0,       0,      75,       0,      55,
+       0,       0,      72,       0,     137,     122,     123,       0,
+     133,     124,     125,       0,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,     126,       0,       0,
+     104,      81,       0,       0,     106,      83,       0,       0,
+       0,     155,     156,     157,     158,     159,     160,     151,
+      82,     152,     153,     154,       0,       0,       0,       0,
+      55,       0,       0,     138,     139,     140,     141,     142,
+     184,     211,       0,     135,     136,     115,     177,       0,
+       0,       0,       0,       0,       0,       0,     181,     182,
+     183,     174,     175,       0,       0,     193,     162,       0,
+     196,     197,     198,     199,     200,     201,     166,     167,
+     146,       0,     204,     163,     185,     186,     187,     188,
+     189,     194,     150,     114,     117,       0,     205,       0,
+       0,      29,       0,       0,     204,       0,      55,     214,
+       0,     203,       0,       0,       0,     213,       0,      24,
 };
 
 int yypact[] = {
-    -247,   -1000,    -290,    -231,    -124,     -98,    -260,    -278,
-    -187,   -1000,   -1000,    -265,    -177,    -125,   -1000,    -205,
-    -187,    -285,    -187,   -1000,    -294,    -187,    -126,   -1000,
-   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,    -268,
-    -222,     -99,    -100,   -1000,    -101,    -116,    -300,   -1000,
-    -187,   -1000,    -147,    -159,   -1000,    -106,    -107,    -295,
-    -187,    -296,   -1000,    -127,   -1000,   -1000,   -1000,   -1000,
-    -233,    -168,    -197,    -187,   -1000,    -218,    -192,   -1000,
-   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,    -252,   -1000,
-   -1000,   -1000,    -297,   -1000,   -1000,    -187,   -1000,    -184,
-   -1000,   -1000,    -222,    -213,    -254,   -1000,   -1000,   -1000,
-    -238,   -1000,   -1000,   -1000,    -108,   -1000,    -219,    -256,
-   -1000,    -192,    -128,   -1000,   -1000,   -1000,   -1000,   -1000,
-   -1000,    -199,    -238,    -238,    -238,    -238,    -143,    -178,
-   -1000,    -102,   -1000,    -131,    -103,    -109,    -240,    -104,
-    -167,    -132,    -170,    -194,   -1000,    -213,    -213,   -1000,
-   -1000,   -1000,   -1000,   -1000,   -1000,    -239,   -1000,   -1000,
-    -187,    -238,    -238,    -238,    -238,    -238,    -238,    -238,
-    -238,    -238,    -173,    -117,   -1000,    -122,    -243,    -123,
-    -161,    -256,    -256,    -187,   -1000,   -1000,    -110,    -184,
-    -184,    -184,    -184,    -184,    -184,    -118,    -252,    -119,
-    -183,    -183,    -183,   -1000,   -1000,   -1000,   -1000,   -1000,
-   -1000,   -1000,    -111,   -1000,    -252,    -134,   -1000,   -1000,
-   -1000,   -1000,    -112,    -238,    -238,    -238,    -238,    -238,
-    -238,    -157,   -1000,    -136,   -1000,    -252,    -238,   -1000,
-    -184,    -184,    -184,    -184,    -184,    -184,    -197,   -1000,
-   -1000,    -130,    -184,   -1000,    -113,    -166,    -114,   -1000,
-   -1000,    -187,    -238,    -209,   -1000,   -1000,
+    -293,   -1000,   -1000,    -290,    -295,    -271,    -291,    -291,
+   -1000,   -1000,    -265,    -209,    -218,    -284,    -135,    -107,
+    -291,   -1000,    -125,    -301,   -1000,    -218,   -1000,    -160,
+    -218,    -136,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,    -204,    -248,    -108,    -109,   -1000,    -110,
+    -169,    -297,   -1000,    -137,   -1000,    -173,    -250,    -213,
+   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,    -138,
+   -1000,   -1000,   -1000,   -1000,    -191,    -156,    -239,    -218,
+   -1000,    -283,   -1000,   -1000,    -115,    -116,   -1000,    -213,
+    -139,   -1000,   -1000,    -218,   -1000,    -180,   -1000,   -1000,
+    -248,    -236,    -260,   -1000,   -1000,   -1000,    -196,   -1000,
+   -1000,    -117,   -1000,    -243,    -238,   -1000,   -1000,   -1000,
+   -1000,   -1000,   -1000,    -141,    -181,    -223,    -224,    -196,
+    -196,    -196,    -196,    -152,    -166,   -1000,    -111,   -1000,
+    -151,    -112,    -118,    -257,    -113,    -190,    -203,    -126,
+   -1000,   -1000,    -236,    -236,   -1000,   -1000,   -1000,   -1000,
+   -1000,   -1000,    -253,   -1000,   -1000,    -218,    -196,    -196,
+    -196,    -196,    -196,    -196,    -196,    -196,    -196,    -127,
+    -283,    -132,    -266,    -134,    -176,    -238,    -238,    -218,
+   -1000,   -1000,    -119,    -180,    -180,    -180,    -180,    -180,
+    -180,    -283,    -143,   -1000,    -128,    -197,    -197,    -197,
+   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,   -1000,    -120,
+   -1000,    -145,   -1000,    -283,   -1000,   -1000,   -1000,    -121,
+    -196,    -196,    -196,    -196,    -196,    -196,    -189,   -1000,
+   -1000,   -1000,    -196,   -1000,    -180,    -180,    -180,    -180,
+    -180,    -180,    -239,    -130,    -180,   -1000,    -122,    -133,
+    -123,   -1000,   -1000,    -218,    -196,    -233,   -1000,   -1000,
 };
 
 int yypgo[] = {
-       0,     241,     173,     177,     175,     239,     184,     238,
-     237,     168,     176,     236,     235,     234,     166,     162,
-     170,     161,     233,     231,     229,     165,     257,     228,
-     223,     221,     220,     216,     190,     215,     212,     211,
-     210,     209,     208,     206,     205,     160,     203,     167,
-     171,     172,     164,     201,     200,     199,     198,     163,
-     169,     197,     188,     186,     181,     180,     179,     178,
-     174,
+       0,     235,     234,     233,     163,     231,     180,     183,
+     164,     228,     227,     166,     153,     226,     224,     223,
+     158,     156,     161,     152,     221,     220,     217,     155,
+     178,     214,     211,     210,     209,     207,     179,     206,
+     204,     203,     201,     199,     198,     197,     196,     151,
+     195,     169,     162,     157,     159,     194,     189,     188,
+     187,     154,     160,     175,     174,     173,     171,     170,
+     168,     167,     165,
 };
 
 int yyr1[] = {
-       0,       1,       1,       1,       1,       1,       4,       4,
-       6,       6,       7,       8,       8,       8,       9,      11,
-      11,      11,      11,      12,       2,      13,      13,      14,
-      14,      15,      15,      10,      10,      10,       3,      16,
-      16,      17,      17,      17,      17,       5,       5,      18,
-      18,      22,      22,      23,      19,      19,      26,      27,
-      29,      30,      24,      31,      32,      25,      20,      35,
-      33,      34,      36,      34,      21,      21,      21,      21,
-      38,      39,      39,      28,      28,      28,      28,      40,
-      40,      40,      40,      40,      40,      37,      37,      37,
-      41,      41,      41,      42,      42,      42,      42,      42,
-      42,      44,      46,      43,      45,      45,      45,      45,
-      49,      48,      50,      48,      51,      48,      52,      48,
-      53,      48,      54,      48,      55,      56,      47,      47,
+       0,       1,       2,       2,       3,       3,       3,       7,
+       7,       8,       8,       9,      10,      10,      10,      11,
+      13,      13,      13,      13,      14,       6,      15,      15,
+      16,      16,      17,      17,      12,      12,      12,       4,
+      18,      18,      19,      19,      19,      19,       5,       5,
+      20,      20,      24,      24,      25,      21,      21,      28,
+      29,      31,      32,      26,      33,      34,      27,      22,
+      37,      35,      36,      38,      36,      23,      23,      23,
+      23,      40,      41,      41,      30,      30,      30,      30,
+      42,      42,      42,      42,      42,      42,      39,      39,
+      39,      43,      43,      43,      44,      44,      44,      44,
+      44,      46,      48,      45,      47,      47,      47,      47,
+      51,      50,      52,      50,      53,      50,      54,      50,
+      55,      50,      56,      50,      57,      58,      49,      49,
 };
 
 int yyr2[] = {
-       2,       5,       6,       5,       4,       1,       2,       1,
-       3,       2,       4,       2,       1,       1,       2,       1,
-       1,       1,       1,       0,       4,       8,       7,       3,
-       1,       3,       1,       1,       1,       1,       1,       3,
-       2,       1,       1,       1,       1,       3,       2,       1,
-       1,       4,       4,       4,       1,       1,       0,       0,
-       0,       0,      14,       0,       0,       8,       2,       0,
-       6,       1,       0,       4,       3,       3,       3,       3,
-       3,       1,       1,       1,       3,       3,       4,       3,
-       3,       3,       3,       3,       3,       3,       3,       1,
-       3,       3,       1,       1,       1,       1,       3,       1,
+       2,       1,       5,       4,       1,       2,       1,       2,
+       1,       3,       2,       4,       2,       1,       1,       2,
+       1,       1,       1,       1,       0,       4,       8,       7,
+       3,       1,       3,       1,       1,       1,       1,       1,
+       3,       2,       1,       1,       1,       1,       3,       2,
+       1,       1,       4,       4,       4,       1,       1,       0,
+       0,       0,       0,      14,       0,       0,       8,       2,
+       0,       6,       1,       0,       4,       3,       3,       3,
+       3,       3,       1,       1,       1,       3,       3,       4,
+       3,       3,       3,       3,       3,       3,       3,       3,
+       1,       3,       3,       1,       1,       1,       1,       3,
        1,       0,       0,      10,       1,       3,       3,       4,
        0,       4,       0,       4,       0,       4,       0,       4,
        0,       4,       0,       4,       0,       0,       5,       1,
 };
 
 int yychk[] = {
-   -1000,      -1,     299,      -5,     -22,     286,      -2,      -4,
-     300,     293,      -6,      -7,     298,     -22,     262,     257,
-     300,      -4,     300,      -6,      -3,     -16,     -17,     -18,
-     -19,     -20,     -21,     -22,     -23,     -24,     -25,     -33,
-     265,     286,     283,     288,     281,     -12,      -8,      -9,
-      -2,      -3,     302,     265,     262,     266,     268,      -3,
-     300,      -3,     301,     -17,     262,     -34,     282,     285,
-     279,     257,     257,     -31,     257,     -13,     259,      -9,
-      -3,     -11,     265,     267,     268,     266,     263,     258,
-     258,     301,      -3,     301,     262,     -36,     -21,     -37,
-     266,     -38,     265,     -41,     -39,     -42,     267,     268,
-     257,     -43,      -6,     287,     265,     -21,     -16,     -35,
-     294,     259,     -14,     265,     -10,     295,     296,     297,
-     301,     -16,     269,     270,     271,     272,     280,     -37,
-     265,     -44,     258,     -26,     289,     -28,     -40,     292,
-     -37,     -14,     260,     261,     282,     -41,     -41,     -42,
-     -42,     -39,     265,     266,     258,     257,     262,     257,
-     258,     290,     291,     257,     273,     274,     275,     276,
-     277,     278,     260,     263,     265,     -45,     -48,     292,
-     264,     -27,     -32,     -16,     -40,     -40,     -40,     -37,
-     -37,     -37,     -37,     -37,     -37,     263,     259,     261,
-     290,     291,     257,     273,     274,     275,     276,     277,
-     278,     -28,     -28,     258,     259,     -15,     -10,     259,
-     -48,     -48,     -48,     -49,     -50,     -51,     -52,     -53,
-     -54,     -29,     258,     -15,     260,     261,     -46,     258,
-     -37,     -37,     -37,     -37,     -37,     -37,     262,     260,
-     -10,     -47,     -37,     -21,     260,     -55,     -30,     258,
-     261,     258,     -56,     -16,     -47,     284,
+   -1000,      -1,      -2,     299,      -3,     300,      -6,      -7,
+     293,      -8,      -9,     298,     300,      -5,     -24,     286,
+      -7,      -8,     -14,     -10,     -11,      -6,      -4,     302,
+     -18,     -19,     -20,     -21,     -22,     -23,     -24,     -25,
+     -26,     -27,     -35,     265,     286,     283,     288,     281,
+     265,      -4,     301,     -24,     262,     257,     -15,     259,
+     -11,      -4,     -13,     265,     267,     268,     266,     -19,
+     262,     -36,     282,     285,     279,     257,     257,     -33,
+     257,     263,     301,     262,     266,     268,     294,     259,
+     -16,     265,     262,     -38,     -23,     -39,     266,     -40,
+     265,     -43,     -41,     -44,     267,     268,     257,     -45,
+     287,     265,     -23,     -18,     -37,     -12,     295,     296,
+     297,     258,     258,     -16,     260,     261,     -18,     269,
+     270,     271,     272,     280,     -39,     265,     -46,     258,
+     -28,     289,     -30,     -42,     292,     -39,     260,     263,
+     265,     282,     -43,     -43,     -44,     -44,     -41,     265,
+     266,     258,     257,     262,     257,     258,     290,     291,
+     257,     273,     274,     275,     276,     277,     278,     263,
+     259,     -47,     -50,     292,     264,     -29,     -34,     -18,
+     -42,     -42,     -42,     -39,     -39,     -39,     -39,     -39,
+     -39,     259,     -17,     -12,     261,     290,     291,     257,
+     273,     274,     275,     276,     277,     278,     -30,     -30,
+     258,     -17,     260,     261,     259,     -50,     -50,     -50,
+     -51,     -52,     -53,     -54,     -55,     -56,     -31,     258,
+     260,     -12,     -48,     258,     -39,     -39,     -39,     -39,
+     -39,     -39,     262,     -49,     -39,     -23,     260,     -57,
+     -32,     258,     261,     258,     -58,     -18,     -49,     284,
 };
 
 int yydef[] = {
-       0,      -2,       0,       5,       0,       0,       0,       0,
-       0,      19,       7,       0,       0,       0,      38,       0,
-       0,       0,       0,       6,       0,      30,       0,      33,
-      34,      35,      36,      39,      40,      44,      45,       0,
-       0,       0,       0,      51,       0,       0,       0,       9,
-      12,      13,       0,       0,      37,       0,       0,       0,
-       0,       0,       4,       0,      32,      54,      57,      58,
-       0,       0,       0,       0,      55,       0,       0,       8,
-      11,      14,      15,      16,      17,      18,       0,      41,
-      42,       1,       0,       3,      31,       0,      60,      61,
-      -2,      63,      -2,      79,       0,      82,      84,      85,
-       0,      87,      88,      89,       0,      46,       0,       0,
-      20,       0,       0,      24,      10,      27,      28,      29,
-       2,       0,       0,       0,       0,       0,       0,       0,
-      83,       0,      43,       0,       0,       0,      67,       0,
-       0,       0,       0,       0,      59,      77,      78,      80,
-      81,      64,      65,      66,      86,       0,      47,      52,
+       0,      -2,       1,       0,       0,       0,       4,       6,
+      20,       8,       0,       0,       0,       0,       0,       0,
+       5,       7,       0,       0,      10,      13,      14,       0,
+      31,       0,      34,      35,      36,      37,      40,      41,
+      45,      46,       0,       0,       0,       0,      52,       0,
+       0,       0,       3,       0,      39,       0,       0,       0,
+       9,      12,      15,      16,      17,      18,      19,       0,
+      33,      55,      58,      59,       0,       0,       0,       0,
+      56,       0,       2,      38,       0,       0,      21,       0,
+       0,      25,      32,       0,      61,      62,      -2,      64,
+      -2,      80,       0,      83,      85,      86,       0,      88,
+      89,       0,      47,       0,       0,      11,      28,      29,
+      30,      42,      43,       0,       0,       0,       0,       0,
+       0,       0,       0,       0,       0,      84,       0,      44,
+       0,       0,       0,      68,       0,       0,       0,       0,
+      24,      60,      78,      79,      81,      82,      65,      66,
+      67,      87,       0,      48,      53,       0,       0,       0,
        0,       0,       0,       0,       0,       0,       0,       0,
-       0,       0,       0,       0,      23,       0,      92,       0,
-       0,       0,       0,      56,      68,      69,       0,      71,
-      72,      73,      74,      75,      76,       0,       0,       0,
-       0,       0,       0,      96,      98,     100,     102,     104,
-     106,      48,       0,      70,       0,       0,      26,      90,
-      93,      94,       0,       0,       0,       0,       0,       0,
-       0,       0,      53,       0,      22,       0,       0,      95,
-      97,      99,     101,     103,     105,     107,       0,      21,
-      25,       0,      -2,      49,       0,       0,       0,      91,
-     109,       0,       0,       0,     110,      50,
+       0,       0,      92,       0,       0,       0,       0,      57,
+      69,      70,       0,      72,      73,      74,      75,      76,
+      77,       0,       0,      27,       0,       0,       0,       0,
+      96,      98,     100,     102,     104,     106,      49,       0,
+      71,       0,      23,       0,      90,      93,      94,       0,
+       0,       0,       0,       0,       0,       0,       0,      54,
+      22,      26,       0,      95,      97,      99,     101,     103,
+     105,     107,       0,       0,      -2,      50,       0,       0,
+       0,      91,     109,       0,       0,       0,     110,      51,
 };
 
 int *yyxi;
@@ -629,35 +624,55 @@ yyparse()
       case 1:
 # line 141 "main.y"
       {
-      				imprimirTercetos();
-      				GenerarAssembler();
-      			} break;
-      case 2:
-# line 147 "main.y"
+      			imprimirTercetos();
+      			GenerarAssembler();
+      		} break;
+      case 9:
+# line 157 "main.y"
       {
-      				imprimirTercetos();
-      				GenerarAssembler();
-      			} break;
-      case 3:
-# line 152 "main.y"
-      {
-      				imprimirTercetos();
-      				GenerarAssembler();
-      			} break;
-      case 4:
-# line 158 "main.y"
-      {
-      				imprimirTercetos();
-      				GenerarAssembler();
-      			} break;
-      case 5:
-# line 164 "main.y"
-      {
-      				imprimirTercetos();
-      				GenerarAssembler();
+      				if((TS[yypvt[-2]].tipo-PR_FUNCTION == PR_STRING && TS[yypvt[-0]].tipo != PR_STRING) || (TS[yypvt[-2]].tipo-PR_FUNCTION != PR_STRING && TS[yypvt[-0]].tipo == PR_STRING))
+      				{
+      					lanzarError("El tipo retornado no es compatible con el declarado");
+      				}
+      
+				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = OP_ASIGNACION;
+      				tercetoAux.tipoDeX = TOKEN;
+      				tercetoAux.y = yypvt[-2];
+      				tercetoAux.tipoDeY = INDICE_TS;
+      				tercetoAux.z = yypvt[-0];
+      				tercetoAux.tipoDeZ = INDICE_TS; 
+      				crearTerceto(&tercetoAux);
+      
+				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = PR_RETURN;
+      				tercetoAux.tipoDeX = TOKEN;
+      				crearTerceto(&tercetoAux);
       			} break;
       case 10:
-# line 176 "main.y"
+# line 179 "main.y"
+      {
+      				if((TS[yypvt[-1]].tipo-PR_FUNCTION == PR_STRING && TS[yypvt[-0]].tipo != PR_STRING) || (TS[yypvt[-1]].tipo-PR_FUNCTION != PR_STRING && TS[yypvt[-0]].tipo == PR_STRING))
+      				{
+      					lanzarError("El tipo retornado no es compatible con el declarado");
+      				}
+      
+				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = OP_ASIGNACION;
+      				tercetoAux.tipoDeX = TOKEN;
+      				tercetoAux.y = yypvt[-1];
+      				tercetoAux.tipoDeY = INDICE_TS;
+      				tercetoAux.z = yypvt[-0];
+      				tercetoAux.tipoDeZ = INDICE_TS; 
+      				crearTerceto(&tercetoAux);
+      
+				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = PR_RETURN;
+      				tercetoAux.tipoDeX = TOKEN;
+      				crearTerceto(&tercetoAux);
+      			} break;
+      case 11:
+# line 201 "main.y"
       {
       					TS[yypvt[-2]].ambito[0] = '\0';
       
@@ -665,58 +680,54 @@ yyparse()
       
 					TS[yypvt[-2]].tipo = PR_FUNCTION + yypvt[-0];
       
-					yyval = yypvt[-0];
+					borrarTerceto(&tercetoAux);
+      					tercetoAux.x = PR_FUNCTION;
+      					tercetoAux.tipoDeX = TOKEN;
+      					tercetoAux.y = yypvt[-2];
+      					tercetoAux.tipoDeY = INDICE_TS;
+      					crearTerceto(&tercetoAux);
+      
+					yyval = yypvt[-2];
       				} break;
-      case 14:
-# line 191 "main.y"
+      case 15:
+# line 223 "main.y"
       {
       					strcpy_s(ambitoActual,MAX_LONG_TOKEN+1,"main");
       
 					yyval = yypvt[-0];
       				} break;
-      case 15:
-# line 199 "main.y"
-      {
-      						yyval = TS[yypvt[-0]].tipo;
-      					} break;
       case 16:
-# line 203 "main.y"
+# line 231 "main.y"
       {
-      						yyval = PR_INT;
+      						yyval = yypvt[-0];
       					} break;
       case 17:
-# line 207 "main.y"
+# line 235 "main.y"
       {
-      						yyval = PR_FLOAT;
+      						yyval = yypvt[-0];
       					} break;
       case 18:
-# line 211 "main.y"
+# line 239 "main.y"
       {
-      						yyval = PR_STRING;
+      						yyval = yypvt[-0];
       					} break;
       case 19:
-# line 216 "main.y"
+# line 243 "main.y"
+      {
+      						yyval = yypvt[-0];
+      					} break;
+      case 20:
+# line 248 "main.y"
       {
       						enDeclaracion = TRUE;
       					} break;
-      case 20:
-# line 221 "main.y"
+      case 21:
+# line 253 "main.y"
       {
       						enDeclaracion = FALSE;
       					} break;
-      case 21:
-# line 227 "main.y"
-      {
-      					equilibrarDeclaracion();
-      	
-      					asignarTipoDeDato();
-      	
-      					cantIDsEnTS += cantIDsEnDeclaracion;
-      					cantIDsEnDeclaracion = 0;
-      					cantTiposEnDeclaracion = 0;
-      				} break;
       case 22:
-# line 238 "main.y"
+# line 259 "main.y"
       {
       					equilibrarDeclaracion();
       	
@@ -727,52 +738,53 @@ yyparse()
       					cantTiposEnDeclaracion = 0;
       				} break;
       case 23:
-# line 250 "main.y"
+# line 270 "main.y"
       {
-      						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
-      					} break;
+      					equilibrarDeclaracion();
+      	
+      					asignarTipoDeDato();
+      	
+      					cantIDsEnTS += cantIDsEnDeclaracion;
+      					cantIDsEnDeclaracion = 0;
+      					cantTiposEnDeclaracion = 0;
+      				} break;
       case 24:
-# line 255 "main.y"
+# line 282 "main.y"
       {
       						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
       					} break;
       case 25:
-# line 261 "main.y"
+# line 287 "main.y"
       {
-      					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
-      				} break;
+      						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
+      					} break;
       case 26:
-# line 266 "main.y"
+# line 293 "main.y"
       {
       					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       				} break;
       case 27:
-# line 272 "main.y"
+# line 298 "main.y"
+      {
+      					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
+      				} break;
+      case 28:
+# line 304 "main.y"
       {
       			yyval = PR_INT;
       		} break;
-      case 28:
-# line 277 "main.y"
+      case 29:
+# line 309 "main.y"
       {
       			yyval = PR_FLOAT;
       		} break;
-      case 29:
-# line 282 "main.y"
+      case 30:
+# line 314 "main.y"
       {
       			yyval = PR_STRING;
       		} break;
-      case 41:
-# line 317 "main.y"
-      {
-      				borrarTerceto(&tercetoAux);
-      				tercetoAux.x = PR_WPRINT;
-      				tercetoAux.tipoDeX = TOKEN;
-      				tercetoAux.y = yypvt[-1];
-      				tercetoAux.tipoDeY = INDICE_TS;
-      				crearTerceto(&tercetoAux);
-      			} break;
       case 42:
-# line 327 "main.y"
+# line 347 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_WPRINT;
@@ -782,9 +794,28 @@ yyparse()
       				crearTerceto(&tercetoAux);
       			} break;
       case 43:
-# line 338 "main.y"
+# line 357 "main.y"
+      {
+      				borrarTerceto(&tercetoAux);
+      				tercetoAux.x = PR_WPRINT;
+      				tercetoAux.tipoDeX = TOKEN;
+      				tercetoAux.y = yypvt[-1];
+      				tercetoAux.tipoDeY = INDICE_TS;
+      				crearTerceto(&tercetoAux);
+      			} break;
+      case 44:
+# line 368 "main.y"
       {
       				verificarDeclaracion(yypvt[-1]);
+      
+				if(TS[yypvt[-1]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-1]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-1]].tipo-PR_STRING == PR_FUNCTION)
+      				{
+      					borrarTerceto(&tercetoAux);
+      					tercetoAux.tipoDeX = CALL;
+      					tercetoAux.y = yypvt[-1];
+      					tercetoAux.tipoDeY = INDICE_TS;
+      					crearTerceto(&tercetoAux);
+      				}
       
 				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_WPRINT;
@@ -793,23 +824,23 @@ yyparse()
       				tercetoAux.tipoDeY = INDICE_TS;
       				crearTerceto(&tercetoAux);
       			} break;
-      case 46:
-# line 360 "main.y"
+      case 47:
+# line 399 "main.y"
       {
       					pushInt(cantTercetos,&pilaCondiciones);
       				} break;
-      case 47:
-# line 365 "main.y"
+      case 48:
+# line 404 "main.y"
       {
       					registroBHUsado = FALSE;
       				} break;
-      case 48:
-# line 370 "main.y"
+      case 49:
+# line 409 "main.y"
       {
       					pushInt(cantTercetos,&pilaDesplazamientos);
       				} break;
-      case 49:
-# line 377 "main.y"
+      case 50:
+# line 416 "main.y"
       {
       					ptrColaIncremento = (ColaDeTercetos *)malloc(sizeof(ColaDeTercetos));
       
@@ -823,8 +854,8 @@ yyparse()
 					pushCola(ptrColaIncremento,&pilaColasIncrementos);
       					cantTercetos = VerTope(&pilaDesplazamientos);
       				} break;
-      case 50:
-# line 396 "main.y"
+      case 51:
+# line 435 "main.y"
       {
       					ptrColaIncremento = popCola(&pilaColasIncrementos);
       					aux = cantTercetos - popInt(&pilaDesplazamientos);
@@ -847,38 +878,38 @@ yyparse()
       					tercetoAux.tipoDeY = NRO_TERCETO;
       					crearTerceto(&tercetoAux);
       				} break;
-      case 51:
-# line 421 "main.y"
+      case 52:
+# line 460 "main.y"
       {
       						pushInt(cantTercetos,&pilaCondiciones);
       					} break;
-      case 52:
-# line 430 "main.y"
+      case 53:
+# line 469 "main.y"
       {
       						registroBHUsado = FALSE;
       					} break;
-      case 53:
-# line 437 "main.y"
+      case 54:
+# line 476 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].tipoDeX = JNZ;
       						listaDeTercetos[aux].y = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
-      case 55:
-# line 450 "main.y"
+      case 56:
+# line 489 "main.y"
       {
       						registroBHUsado = FALSE;
       					} break;
-      case 57:
-# line 461 "main.y"
+      case 58:
+# line 500 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].y = cantTercetos;
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
-      case 58:
-# line 468 "main.y"
+      case 59:
+# line 507 "main.y"
       {
       						borrarTerceto(&tercetoAux);
       						aux = popInt(&pilaCondiciones);
@@ -887,15 +918,15 @@ yyparse()
       						listaDeTercetos[aux].y = cantTercetos;
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
-      case 59:
-# line 480 "main.y"
+      case 60:
+# line 519 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].y = cantTercetos;
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
-      case 60:
-# line 488 "main.y"
+      case 61:
+# line 527 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -920,6 +951,11 @@ yyparse()
       					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
       				}
       
+				if(TS[yypvt[-2]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_STRING == PR_FUNCTION)
+      				{
+      					lanzarError("No puede asignar un valor a una funcion");
+      				}
+      
 				if(TS[yypvt[-2]].tipo == PR_INT && TS[yypvt[-0]].tipo == PR_FLOAT)
       				{
       					printf("\nADVERTENCIA\nLINEA: %d\nDESCRIPCION: Asignacion de tipo FLOAT a tipo INT con posible perdida de precision\n",lineaActual);
@@ -936,8 +972,8 @@ yyparse()
       
 				yyval = yypvt[-2];
       			} break;
-      case 61:
-# line 530 "main.y"
+      case 62:
+# line 574 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -961,6 +997,11 @@ yyparse()
       					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
       				}
       
+				if(TS[yypvt[-2]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_STRING == PR_FUNCTION)
+      				{
+      					lanzarError("No puede asignar un valor a una funcion");
+      				}
+      
 				if(TS[yypvt[-2]].tipo == PR_INT && yypvt[-0] == PR_FLOAT)
       				{
       					printf("\nADVERTENCIA\nLINEA: %d\nDESCRIPCION: Asignacion de tipo FLOAT a tipo INT con posible perdida de precision\n",lineaActual);
@@ -977,8 +1018,8 @@ yyparse()
       
 				yyval = yypvt[-2];
       			} break;
-      case 62:
-# line 571 "main.y"
+      case 63:
+# line 620 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -990,6 +1031,11 @@ yyparse()
 				if(TS[yypvt[-2]].tipo == PR_FLOAT)
       				{
       					lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+      				}
+      
+				if(TS[yypvt[-2]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_STRING == PR_FUNCTION)
+      				{
+      					lanzarError("No puede asignar un valor a una funcion");
       				}
       
 				borrarTerceto(&tercetoAux);
@@ -1003,8 +1049,8 @@ yyparse()
       
 				yyval = yypvt[-2];
       			} break;
-      case 63:
-# line 597 "main.y"
+      case 64:
+# line 651 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -1018,6 +1064,11 @@ yyparse()
       					lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
       				}
       
+				if(TS[yypvt[-2]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-2]].tipo-PR_STRING == PR_FUNCTION)
+      				{
+      					lanzarError("No puede asignar un valor a una funcion");
+      				}
+      
 				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
       				tercetoAux.tipoDeX = TOKEN;
@@ -1029,8 +1080,8 @@ yyparse()
       
 				yyval = yypvt[-2];
       			} break;
-      case 64:
-# line 623 "main.y"
+      case 65:
+# line 682 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_CONCATENACION;
@@ -1041,18 +1092,27 @@ yyparse()
       					tercetoAux.tipoDeZ = INDICE_TS;
       					crearTerceto(&tercetoAux);
       				} break;
-      case 65:
-# line 635 "main.y"
+      case 66:
+# line 694 "main.y"
       {
       									verificarDeclaracion(yypvt[-0]);
       
-									if(TS[yypvt[-0]].tipo != PR_STRING)
+									if(TS[yypvt[-0]].tipo != PR_STRING && TS[yypvt[-0]].tipo-PR_FUNCTION != PR_STRING)
       									{
       										lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
       									}
+      
+									if(TS[yypvt[-0]].tipo-PR_STRING == PR_FUNCTION)
+      									{
+      										borrarTerceto(&tercetoAux);
+      										tercetoAux.tipoDeX = CALL;
+      										tercetoAux.y = yypvt[-0];
+      										tercetoAux.tipoDeY = INDICE_TS;
+      										crearTerceto(&tercetoAux);
+      									}
       								} break;
-      case 67:
-# line 648 "main.y"
+      case 68:
+# line 716 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
@@ -1073,8 +1133,8 @@ yyparse()
       				tercetoAux.tipoDeX = JZ;
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
-      case 68:
-# line 670 "main.y"
+      case 69:
+# line 738 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_AND;
@@ -1087,8 +1147,8 @@ yyparse()
       				tercetoAux.tipoDeX = JZ;
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
-      case 69:
-# line 684 "main.y"
+      case 70:
+# line 752 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_OR;
@@ -1101,8 +1161,8 @@ yyparse()
       				tercetoAux.tipoDeX = JZ;
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
-      case 70:
-# line 698 "main.y"
+      case 71:
+# line 766 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_NOT;
@@ -1129,8 +1189,8 @@ yyparse()
       				tercetoAux.tipoDeX = JZ;
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
-      case 71:
-# line 727 "main.y"
+      case 72:
+# line 795 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1179,8 +1239,8 @@ yyparse()
       
 					registroBHUsado = TRUE;
       				} break;
-      case 72:
-# line 777 "main.y"
+      case 73:
+# line 845 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1229,8 +1289,8 @@ yyparse()
       
 					registroBHUsado = TRUE;
       				} break;
-      case 73:
-# line 827 "main.y"
+      case 74:
+# line 895 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1279,8 +1339,8 @@ yyparse()
       
 					registroBHUsado = TRUE;
       				} break;
-      case 74:
-# line 877 "main.y"
+      case 75:
+# line 945 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1329,8 +1389,8 @@ yyparse()
       
 					registroBHUsado = TRUE;
       				} break;
-      case 75:
-# line 927 "main.y"
+      case 76:
+# line 995 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1379,8 +1439,8 @@ yyparse()
       
 					registroBHUsado = TRUE;
       				} break;
-      case 76:
-# line 977 "main.y"
+      case 77:
+# line 1045 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1429,8 +1489,8 @@ yyparse()
       
 					registroBHUsado = TRUE;
       				} break;
-      case 77:
-# line 1028 "main.y"
+      case 78:
+# line 1096 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1456,8 +1516,8 @@ yyparse()
       					yyval = PR_INT;
       				}
       			} break;
-      case 78:
-# line 1055 "main.y"
+      case 79:
+# line 1123 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1483,13 +1543,13 @@ yyparse()
       					yyval = PR_INT;
       				}
       			} break;
-      case 79:
-# line 1082 "main.y"
+      case 80:
+# line 1150 "main.y"
       {
       				yyval = yypvt[-0];
       			} break;
-      case 80:
-# line 1088 "main.y"
+      case 81:
+# line 1156 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1515,8 +1575,8 @@ yyparse()
       					yyval = PR_INT;
       				}
       			} break;
-      case 81:
-# line 1115 "main.y"
+      case 82:
+# line 1183 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1542,26 +1602,39 @@ yyparse()
       					yyval = PR_INT;
       				}
       			} break;
-      case 82:
-# line 1142 "main.y"
+      case 83:
+# line 1210 "main.y"
       {
       				yyval = yypvt[-0];
       			} break;
-      case 83:
-# line 1148 "main.y"
+      case 84:
+# line 1216 "main.y"
       {
       			verificarDeclaracion(yypvt[-0]);
+      
+			if(TS[yypvt[-0]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-0]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-0]].tipo-PR_STRING == PR_FUNCTION)
+      			{
+      				borrarTerceto(&tercetoAux);
+      				tercetoAux.tipoDeX = CALL;
+      				tercetoAux.y = yypvt[-0];
+      				tercetoAux.tipoDeY = INDICE_TS;
+      				crearTerceto(&tercetoAux);
+      
+				yyval = TS[yypvt[-0]].tipo-PR_FUNCTION;
+      			}
+      			else
+      			{
+      				yyval = TS[yypvt[-0]].tipo;
+      			}
       
 			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
       			tercetoAux.tipoDeX = INDICE_TS;
       
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
-      
-			yyval = TS[yypvt[-0]].tipo;
       		} break;
-      case 84:
-# line 1161 "main.y"
+      case 85:
+# line 1242 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
@@ -1571,8 +1644,8 @@ yyparse()
       
 			yyval = PR_INT;
       		} break;
-      case 85:
-# line 1172 "main.y"
+      case 86:
+# line 1253 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
@@ -1582,8 +1655,8 @@ yyparse()
       
 			yyval = PR_FLOAT;
       		} break;
-      case 86:
-# line 1183 "main.y"
+      case 87:
+# line 1264 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = popInt(pilaExpresiones);
@@ -1593,13 +1666,13 @@ yyparse()
       
 			yyval = yypvt[-1];
       		} break;
-      case 87:
-# line 1194 "main.y"
+      case 88:
+# line 1275 "main.y"
       {
       			yyval = PR_INT;
       		} break;
       case 89:
-# line 1205 "main.y"
+# line 1281 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.tipoDeX = VAR_FILTERC;
@@ -1614,37 +1687,37 @@ yyparse()
       				pushInt(aux,pilaExpresiones);
       			} break;
       case 90:
-# line 1226 "main.y"
+# line 1302 "main.y"
       {
       				tercetosInicialesFilterc[0] = cantTercetos;
       			} break;
       case 91:
-# line 1235 "main.y"
+# line 1311 "main.y"
       {
       				pilaExpresiones = &pilaExpresionesNormal;
       			} break;
       case 92:
-# line 1241 "main.y"
+# line 1317 "main.y"
       {
       					tipoCondicionFilterc = 0;
       				} break;
       case 93:
-# line 1246 "main.y"
+# line 1322 "main.y"
       {
       					tipoCondicionFilterc = PR_AND;
       				} break;
       case 94:
-# line 1251 "main.y"
+# line 1327 "main.y"
       {
       					tipoCondicionFilterc = PR_OR;
       				} break;
       case 95:
-# line 1256 "main.y"
+# line 1332 "main.y"
       {
       					tipoCondicionFilterc = PR_NOT;
       				} break;
       case 96:
-# line 1264 "main.y"
+# line 1340 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1656,7 +1729,7 @@ yyparse()
       					}
       				} break;
       case 97:
-# line 1276 "main.y"
+# line 1352 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -1724,7 +1797,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 98:
-# line 1346 "main.y"
+# line 1422 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1736,7 +1809,7 @@ yyparse()
       					}
       				} break;
       case 99:
-# line 1358 "main.y"
+# line 1434 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -1804,7 +1877,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 100:
-# line 1428 "main.y"
+# line 1504 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1816,7 +1889,7 @@ yyparse()
       					}
       				} break;
       case 101:
-# line 1440 "main.y"
+# line 1516 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -1884,7 +1957,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 102:
-# line 1510 "main.y"
+# line 1586 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1896,7 +1969,7 @@ yyparse()
       					}
       				} break;
       case 103:
-# line 1522 "main.y"
+# line 1598 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -1964,7 +2037,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 104:
-# line 1592 "main.y"
+# line 1668 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1976,7 +2049,7 @@ yyparse()
       					}
       				} break;
       case 105:
-# line 1604 "main.y"
+# line 1680 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -2044,7 +2117,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 106:
-# line 1674 "main.y"
+# line 1750 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -2056,7 +2129,7 @@ yyparse()
       					}
       				} break;
       case 107:
-# line 1686 "main.y"
+# line 1762 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -2124,7 +2197,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 108:
-# line 1755 "main.y"
+# line 1831 "main.y"
       {
       						if(yypvt[-0] == PR_STRING)
       						{
@@ -2257,12 +2330,12 @@ yyparse()
       						crearTerceto(&tercetoAux);
       					} break;
       case 109:
-# line 1888 "main.y"
+# line 1964 "main.y"
       {
       						tercetosInicialesFilterc[0] = cantTercetos;
       					} break;
       case 111:
-# line 1895 "main.y"
+# line 1971 "main.y"
       {
       						if(yypvt[-0] == PR_STRING)
       						{

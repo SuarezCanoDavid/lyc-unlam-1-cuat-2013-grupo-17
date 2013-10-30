@@ -25,6 +25,7 @@
 #define AX			19
 #define CADENA_AUX	20
 #define	ERROR		21
+#define CALL		22
 
 
 struct Terceto
