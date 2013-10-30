@@ -133,44 +133,69 @@ int enDeclaracion = FALSE;
 %left OP_DIVISION
 %right OP_ASIGNACION
 
-%start programa
+%start inicio
 
 
 %%
-programa:  PR_MAIN  bloque_declaracion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
-			{
-				imprimirTercetos();
-				GenerarAssembler();
-			};
+inicio:	programa
+		{
+			imprimirTercetos();
+			GenerarAssembler();
+		};
+		
+programa:	PR_MAIN dec_y_func PR_BEGINPROG bloque_ejecucion PR_ENDPROG;
+programa:	PR_MAIN PR_BEGINPROG lista_wprints_cte PR_ENDPROG;
 
-programa:  PR_MAIN  bloque_declaracion bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
-			{
-				imprimirTercetos();
-				GenerarAssembler();
-			};
-programa:  PR_MAIN   bloque_funcion PR_BEGINPROG bloque_ejecucion PR_ENDPROG
-			{
-				imprimirTercetos();
-				GenerarAssembler();
-			};
-
-programa:   PR_MAIN  PR_BEGINPROG bloque_ejecucion PR_ENDPROG
-			{
-				imprimirTercetos();
-				GenerarAssembler();
-			};
-
-programa:	lista_wprints_cte
-			{
-				imprimirTercetos();
-				GenerarAssembler();
-			};
+dec_y_func:	bloque_declaracion;
+dec_y_func:	bloque_declaracion bloque_funcion;
+dec_y_func: bloque_funcion;
 
 bloque_funcion: bloque_funcion funcion;
 bloque_funcion: funcion;
 
-funcion:	inicio_funcion desarrollo_funcion fin_funcion;
-funcion:	inicio_funcion fin_funcion;
+funcion:	inicio_funcion desarrollo_funcion fin_funcion
+			{
+				if((TS[$1].tipo-PR_FUNCTION == PR_STRING && TS[$3].tipo != PR_STRING) || (TS[$1].tipo-PR_FUNCTION != PR_STRING && TS[$3].tipo == PR_STRING))
+				{
+					lanzarError("El tipo retornado no es compatible con el declarado");
+				}
+
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = OP_ASIGNACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $1;
+				tercetoAux.tipoDeY = INDICE_TS;
+				tercetoAux.z = $3;
+				tercetoAux.tipoDeZ = INDICE_TS; 
+				crearTerceto(&tercetoAux);
+
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_RETURN;
+				tercetoAux.tipoDeX = TOKEN;
+				crearTerceto(&tercetoAux);
+			};
+
+funcion:	inicio_funcion fin_funcion
+			{
+				if((TS[$1].tipo-PR_FUNCTION == PR_STRING && TS[$2].tipo != PR_STRING) || (TS[$1].tipo-PR_FUNCTION != PR_STRING && TS[$2].tipo == PR_STRING))
+				{
+					lanzarError("El tipo retornado no es compatible con el declarado");
+				}
+
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = OP_ASIGNACION;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $1;
+				tercetoAux.tipoDeY = INDICE_TS;
+				tercetoAux.z = $2;
+				tercetoAux.tipoDeZ = INDICE_TS; 
+				crearTerceto(&tercetoAux);
+
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_RETURN;
+				tercetoAux.tipoDeX = TOKEN;
+				crearTerceto(&tercetoAux);
+			};
 
 inicio_funcion:	PR_FUNCTION ID DOS_PUNTOS tipo
 				{
@@ -180,7 +205,14 @@ inicio_funcion:	PR_FUNCTION ID DOS_PUNTOS tipo
 
 					TS[$2].tipo = PR_FUNCTION + $4;
 
-					$$ = $4;
+					borrarTerceto(&tercetoAux);
+					tercetoAux.x = PR_FUNCTION;
+					tercetoAux.tipoDeX = TOKEN;
+					tercetoAux.y = $2;
+					tercetoAux.tipoDeY = INDICE_TS;
+					crearTerceto(&tercetoAux);
+
+					$$ = $2;
 				};
 
 desarrollo_funcion:	bloque_declaracion bloque_ejecucion;
@@ -197,19 +229,19 @@ fin_funcion:	PR_RETURN valor_retornado
 
 valor_retornado :	ID
 					{
-						$$ = TS[$1].tipo;
+						$$ = $1;
 					};
 valor_retornado :	CTE_ENTERA
 					{
-						$$ = PR_INT;
+						$$ = $1;
 					};
 valor_retornado :	CTE_REAL
 					{
-						$$ = PR_FLOAT;
+						$$ = $1;
 					};
 valor_retornado :	CTE_STRING
 					{
-						$$ = PR_STRING;
+						$$ = $1;
 					};
 
 bloque_declaracion: PR_VAR 
@@ -285,8 +317,6 @@ tipo:	PR_STRING
 
 
 
-
-
 bloque_ejecucion:	lista_sentencias;
 
 lista_sentencias:	lista_sentencias sentencia PUNTO_COMA;
@@ -337,6 +367,15 @@ wprint_cte: PR_WPRINT PAR_ABRE CTE_REAL PAR_CIERRA
 wprint_id:	PR_WPRINT PAR_ABRE ID PAR_CIERRA
 			{
 				verificarDeclaracion($3);
+
+				if(TS[$3].tipo-PR_INT == PR_FUNCTION || TS[$3].tipo-PR_FLOAT == PR_FUNCTION || TS[$3].tipo-PR_STRING == PR_FUNCTION)
+				{
+					borrarTerceto(&tercetoAux);
+					tercetoAux.tipoDeX = CALL;
+					tercetoAux.y = $3;
+					tercetoAux.tipoDeY = INDICE_TS;
+					crearTerceto(&tercetoAux);
+				}
 
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = PR_WPRINT;
@@ -509,6 +548,11 @@ asignacion: ID OP_ASIGNACION asignacion
 					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
 				}
 
+				if(TS[$1].tipo-PR_INT == PR_FUNCTION || TS[$1].tipo-PR_FLOAT == PR_FUNCTION || TS[$1].tipo-PR_STRING == PR_FUNCTION)
+				{
+					lanzarError("No puede asignar un valor a una funcion");
+				}
+
 				if(TS[$1].tipo == PR_INT && TS[$3].tipo == PR_FLOAT)
 				{
 					printf("\nADVERTENCIA\nLINEA: %d\nDESCRIPCION: Asignacion de tipo FLOAT a tipo INT con posible perdida de precision\n",lineaActual);
@@ -550,6 +594,11 @@ asignacion: ID OP_ASIGNACION expresion
 					lanzarError("No se puede asignar un tipo FLOAT a un tipo STRING");
 				}
 
+				if(TS[$1].tipo-PR_INT == PR_FUNCTION || TS[$1].tipo-PR_FLOAT == PR_FUNCTION || TS[$1].tipo-PR_STRING == PR_FUNCTION)
+				{
+					lanzarError("No puede asignar un valor a una funcion");
+				}
+
 				if(TS[$1].tipo == PR_INT && $3 == PR_FLOAT)
 				{
 					printf("\nADVERTENCIA\nLINEA: %d\nDESCRIPCION: Asignacion de tipo FLOAT a tipo INT con posible perdida de precision\n",lineaActual);
@@ -581,6 +630,11 @@ asignacion: ID OP_ASIGNACION CTE_STRING
 					lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
 				}
 
+				if(TS[$1].tipo-PR_INT == PR_FUNCTION || TS[$1].tipo-PR_FLOAT == PR_FUNCTION || TS[$1].tipo-PR_STRING == PR_FUNCTION)
+				{
+					lanzarError("No puede asignar un valor a una funcion");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.x = OP_ASIGNACION;
 				tercetoAux.tipoDeX = TOKEN;
@@ -605,6 +659,11 @@ asignacion: ID OP_ASIGNACION concatenacion
 				if(TS[$1].tipo == PR_FLOAT)
 				{
 					lanzarError("No puede asignar un tipo STRING a un tipo FLOAT");
+				}
+
+				if(TS[$1].tipo-PR_INT == PR_FUNCTION || TS[$1].tipo-PR_FLOAT == PR_FUNCTION || TS[$1].tipo-PR_STRING == PR_FUNCTION)
+				{
+					lanzarError("No puede asignar un valor a una funcion");
 				}
 
 				borrarTerceto(&tercetoAux);
@@ -635,9 +694,18 @@ concatenacion_parte_extrema:	ID
 								{
 									verificarDeclaracion($1);
 
-									if(TS[$1].tipo != PR_STRING)
+									if(TS[$1].tipo != PR_STRING && TS[$1].tipo-PR_FUNCTION != PR_STRING)
 									{
 										lanzarError("Solo puede usar el operador concatenacion con tipos STRING");
+									}
+
+									if(TS[$1].tipo-PR_STRING == PR_FUNCTION)
+									{
+										borrarTerceto(&tercetoAux);
+										tercetoAux.tipoDeX = CALL;
+										tercetoAux.y = $1;
+										tercetoAux.tipoDeY = INDICE_TS;
+										crearTerceto(&tercetoAux);
 									}
 								};
 
@@ -1148,13 +1216,26 @@ factor:	ID
 		{
 			verificarDeclaracion($1);
 
+			if(TS[$1].tipo-PR_INT == PR_FUNCTION || TS[$1].tipo-PR_FLOAT == PR_FUNCTION || TS[$1].tipo-PR_STRING == PR_FUNCTION)
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.tipoDeX = CALL;
+				tercetoAux.y = $1;
+				tercetoAux.tipoDeY = INDICE_TS;
+				crearTerceto(&tercetoAux);
+
+				$$ = TS[$1].tipo-PR_FUNCTION;
+			}
+			else
+			{
+				$$ = TS[$1].tipo;
+			}
+
 			borrarTerceto(&tercetoAux);
 			tercetoAux.x = $1;
 			tercetoAux.tipoDeX = INDICE_TS;
 
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
-
-			$$ = TS[$1].tipo;
 		};
 
 factor: CTE_ENTERA
@@ -1194,12 +1275,7 @@ factor: filterc
 		{
 			$$ = PR_INT;
 		};
-
-factor: funcion;
  
-		
-		
-
 
 filterc:	PR_FILTERC
 			{
