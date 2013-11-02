@@ -30,4 +30,5 @@ void asmNot(int);
 void asmWprint(int);
 void asmConcatenacion(int);
 void adecuarTS();
+void asmCall(int);
 #endif

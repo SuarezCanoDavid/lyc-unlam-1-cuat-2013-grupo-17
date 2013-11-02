@@ -3,6 +3,7 @@
 #include "tokens.h"
 #include "GCI.h"
 #include "Pila.h"
+#include <string.h>
 
 
 /*Tabla de símbolos*/
@@ -48,10 +49,12 @@ void DeclararVariables()
 	{
 		switch(TS[i].tipo)
 		{
+			case PR_INT+PR_FUNCTION:
 			case PR_INT:
+			case PR_FLOAT+PR_FUNCTION:
 			case PR_FLOAT: fprintf(fileAssembler, "%s dd ?\n",TS[i].nombre);
 						   break;
-
+			case PR_STRING+PR_FUNCTION:
 			case PR_STRING:	fprintf(fileAssembler, "%s db '$',60 dup(?)\n", TS[i].nombre);    
 							fprintf(fileAssembler, "%s_long dd 1\n", TS[i].nombre); 
 							break;
@@ -63,6 +66,8 @@ void DeclararVariables()
 			case CTE_STRING: fprintf(fileAssembler, "%s db \"%s\",'$',%d dup(?)\n", TS[i].nombre,  TS[i].valor, MAX_LONG_CTE_STRING-TS[i].longitud);
 							 fprintf(fileAssembler, "%s_long dd %d\n", TS[i].nombre,  TS[i].longitud+1);
 							 break;
+			
+							
 		}
 	}
 	
@@ -144,8 +149,11 @@ int GenerarAssemblerByTerceto(int idTerceto)
 		}
 	}
 
+	if(listaDeTercetos[idTerceto].tipoDeX==CALL)
+	{
+		asmCall(idTerceto);
 
-	
+	}
 	if(listaDeTercetos[idTerceto].tipoDeX==INDICE_TS)
 	{
 		//ej. [2](a,_,_) -> subo el valor a el coprocesador
@@ -270,12 +278,28 @@ int TercetoTokes(int token, int idTerceto)
 		asmWprint(idTerceto);
 		break;
 
+	case CALL:
+		asmCall(idTerceto);
+		break;
 	}
 
 	return valorDevuelto;
 
 }
+void asmCall(int idTerceto)
+{
+	
+	char aux[MAX_LONG_TOKEN+1]="";
+	int i;
+	for(i=1; TS[listaDeTercetos[idTerceto].y].nombre[i]!='_';i++)
+	{
+		aux[i-1]=TS[listaDeTercetos[idTerceto].y].nombre[i];
+	}
+	aux[i-1]='\0';
+		
+		fprintf(fileAssembler, "\t call  %s \n",aux);
 
+}
 void asmConcatenacion(int idTerceto)
 {
 	//verifico que se pueda realizar la concatenacion
@@ -629,5 +653,28 @@ void adecuarTS()
 		{
 			sprintf_s(TS[i].nombre,MAX_LONG_TOKEN+1,"_cte%d",contadorCte++);
 		}
+		
+		if(TS[i].tipo==PR_INT ||TS[i].tipo==PR_STRING ||TS[i].tipo==PR_FLOAT)
+		{
+			char aux[MAX_LONG_TOKEN+1]="_";
+			strcat_s(aux,MAX_LONG_TOKEN,TS[i].ambito);
+			strcat_s(aux,MAX_LONG_TOKEN,"_");
+			strcat_s(aux,MAX_LONG_TOKEN,TS[i].nombre);
+
+			sprintf_s(TS[i].nombre,MAX_LONG_TOKEN+1,"%s",aux);
+
+		}
+		if(TS[i].tipo-PR_INT == PR_FUNCTION || TS[i].tipo-PR_FLOAT == PR_FUNCTION || TS[i].tipo-PR_STRING == PR_FUNCTION)
+		{
+			char aux1[MAX_LONG_TOKEN+1]="_";
+			strcat_s(aux1,MAX_LONG_TOKEN,TS[i].nombre);
+			strcat_s(aux1,MAX_LONG_TOKEN,"_");
+			strcat_s(aux1,MAX_LONG_TOKEN,"RETURN");
+
+			sprintf_s(TS[i].nombre,MAX_LONG_TOKEN+1,"%s",aux1);
+		}
+
+	
+
 	}
 }
