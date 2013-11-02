@@ -203,6 +203,11 @@ inicio_funcion:	PR_FUNCTION ID DOS_PUNTOS tipo
 
 					strcpy_s(ambitoActual,MAX_LONG_TOKEN+1,TS[$2].nombre);
 
+					if(TS[$2].tipo != 0)
+					{
+						lanzarError("La funcion no puede tener el nombre de una variable ya declarada");
+					}
+
 					TS[$2].tipo = PR_FUNCTION + $4;
 
 					borrarTerceto(&tercetoAux);
@@ -280,11 +285,21 @@ declaracion:	COR_ABRE lista_variables COR_CIERRA DOS_PUNTOS COR_ABRE lista_tipos
 
 lista_variables:	lista_variables COMA ID
 					{
+						if(strcmp(TS[$3].nombre,ambitoActual) == 0)
+						{
+							lanzarError("Nombre de la variable y de funcion deben ser distintas");
+						}
+
 						posicionIDEnTS[cantIDsEnDeclaracion++] = $3;
 					};
 
 lista_variables:	ID
 					{
+						if(strcmp(TS[$1].nombre,ambitoActual) == 0)
+						{
+							lanzarError("Nombre de la variable y de funcion deben ser distintas");
+						}
+
 						posicionIDEnTS[cantIDsEnDeclaracion++] = $1;
 					};
 
@@ -370,6 +385,11 @@ wprint_id:	PR_WPRINT PAR_ABRE ID PAR_CIERRA
 
 				if(TS[$3].tipo-PR_INT == PR_FUNCTION || TS[$3].tipo-PR_FLOAT == PR_FUNCTION || TS[$3].tipo-PR_STRING == PR_FUNCTION)
 				{
+					if(strcmp(ambitoActual,"main") != 0)
+					{
+						lanzarError("No se puede llamar a una funcion dentro de otra");
+					}
+
 					borrarTerceto(&tercetoAux);
 					tercetoAux.tipoDeX = CALL;
 					tercetoAux.y = $3;
@@ -701,6 +721,11 @@ concatenacion_parte_extrema:	ID
 
 									if(TS[$1].tipo-PR_STRING == PR_FUNCTION)
 									{
+										if(strcmp(ambitoActual,"main") != 0)
+										{
+											lanzarError("No se puede llamar a una funcion dentro de otra");
+										}
+
 										borrarTerceto(&tercetoAux);
 										tercetoAux.tipoDeX = CALL;
 										tercetoAux.y = $1;
@@ -1218,6 +1243,11 @@ factor:	ID
 
 			if(TS[$1].tipo-PR_INT == PR_FUNCTION || TS[$1].tipo-PR_FLOAT == PR_FUNCTION || TS[$1].tipo-PR_STRING == PR_FUNCTION)
 			{
+				if(strcmp(ambitoActual,"main") != 0)
+				{
+					lanzarError("No se puede llamar a una funcion dentro de otra");
+				}
+
 				borrarTerceto(&tercetoAux);
 				tercetoAux.tipoDeX = CALL;
 				tercetoAux.y = $1;

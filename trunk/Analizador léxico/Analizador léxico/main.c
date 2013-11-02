@@ -129,7 +129,7 @@ int enDeclaracion = FALSE;
 YYSTYPE yylval, yyval;
 #define YYERRCODE 256
 
-# line 2103 "main.y"
+# line 2133 "main.y"
 
 
 
@@ -678,6 +678,11 @@ yyparse()
       
 					strcpy_s(ambitoActual,MAX_LONG_TOKEN+1,TS[yypvt[-2]].nombre);
       
+					if(TS[yypvt[-2]].tipo != 0)
+      					{
+      						lanzarError("La funcion no puede tener el nombre de una variable ya declarada");
+      					}
+      
 					TS[yypvt[-2]].tipo = PR_FUNCTION + yypvt[-0];
       
 					borrarTerceto(&tercetoAux);
@@ -690,44 +695,44 @@ yyparse()
 					yyval = yypvt[-2];
       				} break;
       case 15:
-# line 223 "main.y"
+# line 228 "main.y"
       {
       					strcpy_s(ambitoActual,MAX_LONG_TOKEN+1,"main");
       
 					yyval = yypvt[-0];
       				} break;
       case 16:
-# line 231 "main.y"
+# line 236 "main.y"
       {
       						yyval = yypvt[-0];
       					} break;
       case 17:
-# line 235 "main.y"
+# line 240 "main.y"
       {
       						yyval = yypvt[-0];
       					} break;
       case 18:
-# line 239 "main.y"
+# line 244 "main.y"
       {
       						yyval = yypvt[-0];
       					} break;
       case 19:
-# line 243 "main.y"
+# line 248 "main.y"
       {
       						yyval = yypvt[-0];
       					} break;
       case 20:
-# line 248 "main.y"
+# line 253 "main.y"
       {
       						enDeclaracion = TRUE;
       					} break;
       case 21:
-# line 253 "main.y"
+# line 258 "main.y"
       {
       						enDeclaracion = FALSE;
       					} break;
       case 22:
-# line 259 "main.y"
+# line 264 "main.y"
       {
       					equilibrarDeclaracion();
       	
@@ -738,7 +743,7 @@ yyparse()
       					cantTiposEnDeclaracion = 0;
       				} break;
       case 23:
-# line 270 "main.y"
+# line 275 "main.y"
       {
       					equilibrarDeclaracion();
       	
@@ -749,42 +754,52 @@ yyparse()
       					cantTiposEnDeclaracion = 0;
       				} break;
       case 24:
-# line 282 "main.y"
-      {
-      						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
-      					} break;
-      case 25:
 # line 287 "main.y"
       {
-      						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
+      						if(strcmp(TS[yypvt[-0]].nombre,ambitoActual) == 0)
+      						{
+      							lanzarError("Nombre de la variable y de funcion deben ser distintas");
+      						}
+      
+						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
+      					} break;
+      case 25:
+# line 297 "main.y"
+      {
+      						if(strcmp(TS[yypvt[-0]].nombre,ambitoActual) == 0)
+      						{
+      							lanzarError("Nombre de la variable y de funcion deben ser distintas");
+      						}
+      
+						posicionIDEnTS[cantIDsEnDeclaracion++] = yypvt[-0];
       					} break;
       case 26:
-# line 293 "main.y"
+# line 308 "main.y"
       {
       					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       				} break;
       case 27:
-# line 298 "main.y"
+# line 313 "main.y"
       {
       					tipoDeID[cantTiposEnDeclaracion++] = yypvt[-0];
       				} break;
       case 28:
-# line 304 "main.y"
+# line 319 "main.y"
       {
       			yyval = PR_INT;
       		} break;
       case 29:
-# line 309 "main.y"
+# line 324 "main.y"
       {
       			yyval = PR_FLOAT;
       		} break;
       case 30:
-# line 314 "main.y"
+# line 329 "main.y"
       {
       			yyval = PR_STRING;
       		} break;
       case 42:
-# line 347 "main.y"
+# line 362 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_WPRINT;
@@ -794,7 +809,7 @@ yyparse()
       				crearTerceto(&tercetoAux);
       			} break;
       case 43:
-# line 357 "main.y"
+# line 372 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_WPRINT;
@@ -804,13 +819,18 @@ yyparse()
       				crearTerceto(&tercetoAux);
       			} break;
       case 44:
-# line 368 "main.y"
+# line 383 "main.y"
       {
       				verificarDeclaracion(yypvt[-1]);
       
 				if(TS[yypvt[-1]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-1]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-1]].tipo-PR_STRING == PR_FUNCTION)
       				{
-      					borrarTerceto(&tercetoAux);
+      					if(strcmp(ambitoActual,"main") != 0)
+      					{
+      						lanzarError("No se puede llamar a una funcion dentro de otra");
+      					}
+      
+					borrarTerceto(&tercetoAux);
       					tercetoAux.tipoDeX = CALL;
       					tercetoAux.y = yypvt[-1];
       					tercetoAux.tipoDeY = INDICE_TS;
@@ -825,22 +845,22 @@ yyparse()
       				crearTerceto(&tercetoAux);
       			} break;
       case 47:
-# line 399 "main.y"
+# line 419 "main.y"
       {
       					pushInt(cantTercetos,&pilaCondiciones);
       				} break;
       case 48:
-# line 404 "main.y"
+# line 424 "main.y"
       {
       					registroBHUsado = FALSE;
       				} break;
       case 49:
-# line 409 "main.y"
+# line 429 "main.y"
       {
       					pushInt(cantTercetos,&pilaDesplazamientos);
       				} break;
       case 50:
-# line 416 "main.y"
+# line 436 "main.y"
       {
       					ptrColaIncremento = (ColaDeTercetos *)malloc(sizeof(ColaDeTercetos));
       
@@ -855,7 +875,7 @@ yyparse()
       					cantTercetos = VerTope(&pilaDesplazamientos);
       				} break;
       case 51:
-# line 435 "main.y"
+# line 455 "main.y"
       {
       					ptrColaIncremento = popCola(&pilaColasIncrementos);
       					aux = cantTercetos - popInt(&pilaDesplazamientos);
@@ -879,17 +899,17 @@ yyparse()
       					crearTerceto(&tercetoAux);
       				} break;
       case 52:
-# line 460 "main.y"
+# line 480 "main.y"
       {
       						pushInt(cantTercetos,&pilaCondiciones);
       					} break;
       case 53:
-# line 469 "main.y"
+# line 489 "main.y"
       {
       						registroBHUsado = FALSE;
       					} break;
       case 54:
-# line 476 "main.y"
+# line 496 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].tipoDeX = JNZ;
@@ -897,19 +917,19 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 56:
-# line 489 "main.y"
+# line 509 "main.y"
       {
       						registroBHUsado = FALSE;
       					} break;
       case 58:
-# line 500 "main.y"
+# line 520 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].y = cantTercetos;
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 59:
-# line 507 "main.y"
+# line 527 "main.y"
       {
       						borrarTerceto(&tercetoAux);
       						aux = popInt(&pilaCondiciones);
@@ -919,14 +939,14 @@ yyparse()
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 60:
-# line 519 "main.y"
+# line 539 "main.y"
       {
       						aux = popInt(&pilaCondiciones);
       						listaDeTercetos[aux].y = cantTercetos;
       						listaDeTercetos[aux].tipoDeY = NRO_TERCETO;
       					} break;
       case 61:
-# line 527 "main.y"
+# line 547 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -973,7 +993,7 @@ yyparse()
 				yyval = yypvt[-2];
       			} break;
       case 62:
-# line 574 "main.y"
+# line 594 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -1019,7 +1039,7 @@ yyparse()
 				yyval = yypvt[-2];
       			} break;
       case 63:
-# line 620 "main.y"
+# line 640 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -1050,7 +1070,7 @@ yyparse()
 				yyval = yypvt[-2];
       			} break;
       case 64:
-# line 651 "main.y"
+# line 671 "main.y"
       {
       				verificarDeclaracion(yypvt[-2]);
       
@@ -1081,7 +1101,7 @@ yyparse()
 				yyval = yypvt[-2];
       			} break;
       case 65:
-# line 682 "main.y"
+# line 702 "main.y"
       {
       					borrarTerceto(&tercetoAux);
       					tercetoAux.x = OP_CONCATENACION;
@@ -1093,7 +1113,7 @@ yyparse()
       					crearTerceto(&tercetoAux);
       				} break;
       case 66:
-# line 694 "main.y"
+# line 714 "main.y"
       {
       									verificarDeclaracion(yypvt[-0]);
       
@@ -1104,7 +1124,12 @@ yyparse()
       
 									if(TS[yypvt[-0]].tipo-PR_STRING == PR_FUNCTION)
       									{
-      										borrarTerceto(&tercetoAux);
+      										if(strcmp(ambitoActual,"main") != 0)
+      										{
+      											lanzarError("No se puede llamar a una funcion dentro de otra");
+      										}
+      
+										borrarTerceto(&tercetoAux);
       										tercetoAux.tipoDeX = CALL;
       										tercetoAux.y = yypvt[-0];
       										tercetoAux.tipoDeY = INDICE_TS;
@@ -1112,7 +1137,7 @@ yyparse()
       									}
       								} break;
       case 68:
-# line 716 "main.y"
+# line 741 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = OP_ASIGNACION;
@@ -1134,7 +1159,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 69:
-# line 738 "main.y"
+# line 763 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_AND;
@@ -1148,7 +1173,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 70:
-# line 752 "main.y"
+# line 777 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_OR;
@@ -1162,7 +1187,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 71:
-# line 766 "main.y"
+# line 791 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.x = PR_NOT;
@@ -1190,7 +1215,7 @@ yyparse()
       				pushInt(crearTerceto(&tercetoAux),&pilaCondiciones);
       			} break;
       case 72:
-# line 795 "main.y"
+# line 820 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1240,7 +1265,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 73:
-# line 845 "main.y"
+# line 870 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1290,7 +1315,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 74:
-# line 895 "main.y"
+# line 920 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1340,7 +1365,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 75:
-# line 945 "main.y"
+# line 970 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1390,7 +1415,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 76:
-# line 995 "main.y"
+# line 1020 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1440,7 +1465,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 77:
-# line 1045 "main.y"
+# line 1070 "main.y"
       {
       					if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       					{
@@ -1490,7 +1515,7 @@ yyparse()
 					registroBHUsado = TRUE;
       				} break;
       case 78:
-# line 1096 "main.y"
+# line 1121 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1517,7 +1542,7 @@ yyparse()
       				}
       			} break;
       case 79:
-# line 1123 "main.y"
+# line 1148 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1544,12 +1569,12 @@ yyparse()
       				}
       			} break;
       case 80:
-# line 1150 "main.y"
+# line 1175 "main.y"
       {
       				yyval = yypvt[-0];
       			} break;
       case 81:
-# line 1156 "main.y"
+# line 1181 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1576,7 +1601,7 @@ yyparse()
       				}
       			} break;
       case 82:
-# line 1183 "main.y"
+# line 1208 "main.y"
       {
       				if(yypvt[-2] == PR_STRING || yypvt[-0] == PR_STRING)
       				{
@@ -1603,18 +1628,23 @@ yyparse()
       				}
       			} break;
       case 83:
-# line 1210 "main.y"
+# line 1235 "main.y"
       {
       				yyval = yypvt[-0];
       			} break;
       case 84:
-# line 1216 "main.y"
+# line 1241 "main.y"
       {
       			verificarDeclaracion(yypvt[-0]);
       
 			if(TS[yypvt[-0]].tipo-PR_INT == PR_FUNCTION || TS[yypvt[-0]].tipo-PR_FLOAT == PR_FUNCTION || TS[yypvt[-0]].tipo-PR_STRING == PR_FUNCTION)
       			{
-      				borrarTerceto(&tercetoAux);
+      				if(strcmp(ambitoActual,"main") != 0)
+      				{
+      					lanzarError("No se puede llamar a una funcion dentro de otra");
+      				}
+      
+				borrarTerceto(&tercetoAux);
       				tercetoAux.tipoDeX = CALL;
       				tercetoAux.y = yypvt[-0];
       				tercetoAux.tipoDeY = INDICE_TS;
@@ -1634,7 +1664,7 @@ yyparse()
 			pushInt(crearTerceto(&tercetoAux),pilaExpresiones);
       		} break;
       case 85:
-# line 1242 "main.y"
+# line 1272 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
@@ -1645,7 +1675,7 @@ yyparse()
 			yyval = PR_INT;
       		} break;
       case 86:
-# line 1253 "main.y"
+# line 1283 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = yypvt[-0];
@@ -1656,7 +1686,7 @@ yyparse()
 			yyval = PR_FLOAT;
       		} break;
       case 87:
-# line 1264 "main.y"
+# line 1294 "main.y"
       {
       			borrarTerceto(&tercetoAux);
       			tercetoAux.x = popInt(pilaExpresiones);
@@ -1667,12 +1697,12 @@ yyparse()
 			yyval = yypvt[-1];
       		} break;
       case 88:
-# line 1275 "main.y"
+# line 1305 "main.y"
       {
       			yyval = PR_INT;
       		} break;
       case 89:
-# line 1281 "main.y"
+# line 1311 "main.y"
       {
       				borrarTerceto(&tercetoAux);
       				tercetoAux.tipoDeX = VAR_FILTERC;
@@ -1687,37 +1717,37 @@ yyparse()
       				pushInt(aux,pilaExpresiones);
       			} break;
       case 90:
-# line 1302 "main.y"
+# line 1332 "main.y"
       {
       				tercetosInicialesFilterc[0] = cantTercetos;
       			} break;
       case 91:
-# line 1311 "main.y"
+# line 1341 "main.y"
       {
       				pilaExpresiones = &pilaExpresionesNormal;
       			} break;
       case 92:
-# line 1317 "main.y"
+# line 1347 "main.y"
       {
       					tipoCondicionFilterc = 0;
       				} break;
       case 93:
-# line 1322 "main.y"
+# line 1352 "main.y"
       {
       					tipoCondicionFilterc = PR_AND;
       				} break;
       case 94:
-# line 1327 "main.y"
+# line 1357 "main.y"
       {
       					tipoCondicionFilterc = PR_OR;
       				} break;
       case 95:
-# line 1332 "main.y"
+# line 1362 "main.y"
       {
       					tipoCondicionFilterc = PR_NOT;
       				} break;
       case 96:
-# line 1340 "main.y"
+# line 1370 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1729,7 +1759,7 @@ yyparse()
       					}
       				} break;
       case 97:
-# line 1352 "main.y"
+# line 1382 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -1797,7 +1827,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 98:
-# line 1422 "main.y"
+# line 1452 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1809,7 +1839,7 @@ yyparse()
       					}
       				} break;
       case 99:
-# line 1434 "main.y"
+# line 1464 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -1877,7 +1907,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 100:
-# line 1504 "main.y"
+# line 1534 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1889,7 +1919,7 @@ yyparse()
       					}
       				} break;
       case 101:
-# line 1516 "main.y"
+# line 1546 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -1957,7 +1987,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 102:
-# line 1586 "main.y"
+# line 1616 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -1969,7 +1999,7 @@ yyparse()
       					}
       				} break;
       case 103:
-# line 1598 "main.y"
+# line 1628 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -2037,7 +2067,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 104:
-# line 1668 "main.y"
+# line 1698 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -2049,7 +2079,7 @@ yyparse()
       					}
       				} break;
       case 105:
-# line 1680 "main.y"
+# line 1710 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -2117,7 +2147,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 106:
-# line 1750 "main.y"
+# line 1780 "main.y"
       {
       					if(registroCHUsado == FALSE)
       					{
@@ -2129,7 +2159,7 @@ yyparse()
       					}
       				} break;
       case 107:
-# line 1762 "main.y"
+# line 1792 "main.y"
       {
       					if(yypvt[-0] == PR_STRING)
       					{
@@ -2197,7 +2227,7 @@ yyparse()
 					registroCHUsado = TRUE;
       				} break;
       case 108:
-# line 1831 "main.y"
+# line 1861 "main.y"
       {
       						if(yypvt[-0] == PR_STRING)
       						{
@@ -2330,12 +2360,12 @@ yyparse()
       						crearTerceto(&tercetoAux);
       					} break;
       case 109:
-# line 1964 "main.y"
+# line 1994 "main.y"
       {
       						tercetosInicialesFilterc[0] = cantTercetos;
       					} break;
       case 111:
-# line 1971 "main.y"
+# line 2001 "main.y"
       {
       						if(yypvt[-0] == PR_STRING)
       						{

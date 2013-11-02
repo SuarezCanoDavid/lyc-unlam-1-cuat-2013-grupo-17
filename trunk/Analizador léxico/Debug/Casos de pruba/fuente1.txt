@@ -8,19 +8,22 @@ ENDVAR
 
 FUNCTION f1:int
 VAR
-	[contador]:[int]
+	[contador]:[int,float]
 ENDVAR
-contador = 0;
+contador = 5;
 contador = contador + 1;
 RETURN contador
 
 FUNCTION f2:string
 VAR
-	[mensaje]:[string]
+	[mensaje1]:[string]
 ENDVAR
 contador = 5;
-mensaje = "hola";
+mensaje1 = "hola";
 RETURN mensaje
+
+FUNCTION f3:string
+RETURN palabra
 
 BEGINPROG
 	mensaje = f2;
@@ -28,4 +31,5 @@ BEGINPROG
 	mensaje = palabra;
 	contador = (20*5)/f1;
 	mensaje = f2 ++ palabra;
+
 ENDPROG

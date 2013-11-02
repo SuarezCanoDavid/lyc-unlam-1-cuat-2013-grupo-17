@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-
 /*Archivo de código fuente*/
 FILE *archivoFuente;
 
@@ -361,7 +360,7 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 			/*Busco el token en la TS*/
 			i = buscarToken(nombreAux,tipoDeToken,ambitoActual);
 
-			if(enDeclaracion == FALSE)
+			if(i == cantTokensEnTS && enDeclaracion == FALSE)
 			{
 				i = buscarToken(nombreAux,tipoDeToken,"main");
 
@@ -428,8 +427,8 @@ void insertarTokenEnTS(tokenAAnalizar *tokenActual, const int tipoDeToken)
 
 	/*Guardo el token identificado, su tipo e yylval en el archivo de tokens*/
 	
-	fprintf(archivoDeTokens,"TOKEN Nº%4d= %-50sTIPO_TOKEN= %-20sYYLVAL= %d\n",
-		++cantTokensIdentificados,tokenActual->token,identificarTipoToken(tipoToken),yylval);
+	fprintf(archivoDeTokens,"TOKEN Nº%4d= %-50sTIPO_TOKEN= %-20sYYLVAL= %d AMBITO: %s\n",
+		++cantTokensIdentificados,tokenActual->token,identificarTipoToken(tipoToken),yylval,ambitoActual);
 }
 
 void imprimirTS()
@@ -565,16 +564,18 @@ int buscarToken(char *nombreToken, int tipoToken, const char *ambitoActual)
 {
 	int i = 0; /*Posicion del token en la TS*/
 	int encontrado = FALSE;
-
 	/*Si el token es un ID debo tener en cuenta el ambito*/
 	if(tipoToken == ID)
 	{
 		/*Busco el token en el ambito actual*/
 		while(i < cantTokensEnTS && encontrado == FALSE)
 		{
+			//printf("ambito: %-10s, actual: %-10s; nombre: %-15s, nombretoken: %-15s i: %d\n",TS[i].ambito,ambitoActual,TS[i].nombre,nombreToken,i);
 			if(strcmp(TS[i].ambito,ambitoActual) == 0 && strcmp(TS[i].nombre,nombreToken) == 0)
 			{
 				encontrado = TRUE;
+
+				//printf("Encontrado\n");
 			}
 			else
 			{
@@ -596,7 +597,7 @@ int buscarToken(char *nombreToken, int tipoToken, const char *ambitoActual)
 			}
 		}
 	}
-	
+	//printf("\n\n el valor de i es: %d\n",i);
 	return i;
 }
 
