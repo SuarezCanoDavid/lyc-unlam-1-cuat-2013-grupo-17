@@ -177,7 +177,7 @@ int GenerarAssemblerByTerceto(int idTerceto)
 		asmSalto(idTerceto);
 	}
 
-	//VAMOS CON EL QUERIADO FILTERC
+	//VAMOS CON EL QUERIDO FILTERC
 	if(listaDeTercetos[idTerceto].tipoDeX==VAR_FILTERC)
 	{
 		fprintf(fileAssembler,"\tfldz\n");
@@ -281,10 +281,25 @@ int TercetoTokes(int token, int idTerceto)
 	case CALL:
 		asmCall(idTerceto);
 		break;
+	case PR_FUNCTION:
+		asmEtiquetaFuncion(idTerceto);
 	}
 
 	return valorDevuelto;
 
+}
+
+void asmEtiquetaFuncion(int idTerceto)
+{
+	char aux[MAX_LONG_TOKEN+1]="";
+	int i;
+	for(i=1; TS[listaDeTercetos[idTerceto].y].nombre[i]!='_';i++)
+	{
+		aux[i-1]=TS[listaDeTercetos[idTerceto].y].nombre[i];
+	}
+	aux[i-1]='\0';
+
+	fprintf(fileAssembler, "   %s :\n",aux);
 }
 void asmCall(int idTerceto)
 {
