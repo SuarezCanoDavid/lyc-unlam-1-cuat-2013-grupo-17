@@ -31,4 +31,5 @@ void asmWprint(int);
 void asmConcatenacion(int);
 void adecuarTS();
 void asmCall(int);
+void asmEtiquetaFuncion(int);
 #endif
