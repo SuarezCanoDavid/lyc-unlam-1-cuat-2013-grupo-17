@@ -1,7 +1,9 @@
+main1
 VAR
 	[contador,mensaje,resultado]:[int,string,int]
 ENDVAR
 
+beginprog
 mensaje = "Una iteracion";
 
 -/Se escribe 10 veces el siguiente mensaje/-
@@ -12,10 +14,9 @@ ROF;
 -/Se prueba el filterc/-
 resultado = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]);
 
-
-@{?
 wprint(resultado);
 
-WPRINT(153.91);
+WPRINT(153.90);
 
+endprog
 -/FIN DEL PROGRAMA/-

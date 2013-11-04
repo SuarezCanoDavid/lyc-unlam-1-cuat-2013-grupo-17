@@ -1,10 +1,11 @@
+main1
 VAR
 	[contador1,mensaje1,pi1]:[int,string]
-	[contador2,mensaje2,pi2]:[int,string,float,int]
+	[contador2,mensaje2,pi2]:[int,string,float]
 	[contador3,mensaje3,pi3]:[int,string,float]
 ENDVAR
-
-contador2 = 10;
+beginprog
+contador2=15
 
 for(contador1 = 0; contador1 < contador2; contador1 = contador1 + 1)
 	do
@@ -17,4 +18,4 @@ for(contador1 = 0; contador1 < contador2; contador1 = contador1 + 1)
 rof;
 contador3 = filterc(_>1 AND _<10,[contador2-5,pi3*5,9-(5+3)/2]);
 wprint("fin del programa");
-		
+endprog		

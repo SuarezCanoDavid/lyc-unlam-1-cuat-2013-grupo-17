@@ -1,9 +1,10 @@
+main1
 VAR
 	[contador]:[int]
 	[a,b,c]:[int,int,int]
 	[pi,mensaje]:[float,string]
 ENDVAR
-
+beginprog
 a = 1;
 pi = 3.14;
 
@@ -18,3 +19,4 @@ WHILE(a == 1);
 
 WPRINT("PI es mas o menos: ");
 WPRINT(pi);
+endprog

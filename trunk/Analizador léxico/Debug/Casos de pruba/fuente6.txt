@@ -1,8 +1,10 @@
+MAIN1
 VAR
 	 [a,b,c]:[float,float,float]
 	 [resultado]:[float]
 ENDVAR
 
+BEGINPROG
 a=0;
 b=0;
 c=0;
@@ -16,3 +18,5 @@ for(a = 0; a < 5; a = a + 1)
  rof;
 
 wprint (a);
+
+ENDPROG
