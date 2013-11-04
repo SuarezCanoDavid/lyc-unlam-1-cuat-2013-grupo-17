@@ -1,9 +1,10 @@
+main1
 VAR
-	[a,b,c,d]:[int,int,int,int]
+	[a,b,c,d]:[float,int,int,int]
 	[cadena1,cadena2]:[string,string]
 	[e]:[float]
 ENDVAR
-
+beginprog
 a = 3;
 b = 4;
 c = d = 3;
@@ -25,3 +26,4 @@ e = 15.999999;
 a = 5*20/5 + e;
 wprint(a);
 wprint(e);
+endprog
