@@ -79,6 +79,15 @@ void DeclararVariables()
 	fprintf(fileAssembler,"_parteEntera     dd ?\n");
 	fprintf(fileAssembler,"_mul_10          dd 10.0\n");
 	fprintf(fileAssembler,"_x87_round       dw 077fh\n");
+	fprintf(fileAssembler,"_x87_env			db 28 dup(?)\n");
+	fprintf(fileAssembler,"_x87_stack0		dd ?\n");
+	fprintf(fileAssembler,"_x87_stack1		dd ?\n");
+	fprintf(fileAssembler,"_x87_stack2		dd ?\n");
+	fprintf(fileAssembler,"_x87_stack3		dd ?\n");
+	fprintf(fileAssembler,"_x87_stack4		dd ?\n");
+	fprintf(fileAssembler,"_x87_stack5		dd ?\n");
+	fprintf(fileAssembler,"_x87_stack6		dd ?\n");
+	fprintf(fileAssembler,"_x87_stack7		dd ?\n");
 	fprintf(fileAssembler,"_cadenaAux		db MAXTEXTSIZE dup(?)\n");
 	fprintf(fileAssembler,"_cadenaAux_long  dd 0\n");
 }
@@ -114,22 +123,27 @@ void GeneracionCodigo()
 		printf("%d ",popInt(&PilaDeEtiquetas));
 	}*/
 	
-
+	for(i = 0; listaDeTercetos[i].x != PR_BEGINPROG; ++i);
 	//recorro todos los tercetos
-	for(i=0;i<cantTercetos;i++)
+	for(;i<cantTercetos;i++)
 	{
 		if(GenerarAssemblerByTerceto(i)==1)
 			i++;
 
 	}
 
-	fprintf(fileAssembler, "etiqueta_%d:\n",cantTercetos);
+	//fprintf(fileAssembler, "etiqueta_%d:\n",cantTercetos);
 
 	//Finalizar
-	fprintf(fileAssembler,"ERROR:\n");
+	fprintf(fileAssembler,"\nERROR:\n");
 	fprintf(fileAssembler,"\tmov ax, 4C00h\n");
-	fprintf(fileAssembler,"\tint 21h\n");
+	fprintf(fileAssembler,"\tint 21h\n\n");
 
+	for(i = 0; listaDeTercetos[i].x != PR_BEGINPROG; ++i)
+	{
+		if(GenerarAssemblerByTerceto(i)==1)
+			i++;
+	}
 }
 
 int GenerarAssemblerByTerceto(int idTerceto)
@@ -157,7 +171,10 @@ int GenerarAssemblerByTerceto(int idTerceto)
 	if(listaDeTercetos[idTerceto].tipoDeX==INDICE_TS)
 	{
 		//ej. [2](a,_,_) -> subo el valor a el coprocesador
-		fprintf(fileAssembler,"\tfld %s\n", TS[listaDeTercetos[idTerceto].x].nombre);
+		if(TS[listaDeTercetos[idTerceto].x].tipo != PR_STRING+PR_FUNCTION && TS[listaDeTercetos[idTerceto].x].tipo != PR_STRING)
+		{
+			fprintf(fileAssembler,"\tfld %s\n", TS[listaDeTercetos[idTerceto].x].nombre);
+		}
 	}
 	//VAMOS CON LOS TOKENS!!!!!
 	if(listaDeTercetos[idTerceto].tipoDeX==TOKEN)
@@ -283,6 +300,10 @@ int TercetoTokes(int token, int idTerceto)
 		break;
 	case PR_FUNCTION:
 		asmEtiquetaFuncion(idTerceto);
+		break;
+	case PR_RETURN:
+		asmEtiquetaReturn(idTerceto);
+		break;
 	}
 
 	return valorDevuelto;
@@ -299,8 +320,36 @@ void asmEtiquetaFuncion(int idTerceto)
 	}
 	aux[i-1]='\0';
 
-	fprintf(fileAssembler, "   %s :\n",aux);
+	fprintf(fileAssembler, "%s:\n",aux);
+	fprintf(fileAssembler, "\tpush ebx\n");
+	fprintf(fileAssembler, "\tpush ecx\n");
+	fprintf(fileAssembler, "\tfstenv _x87_env\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack0\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack1\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack2\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack3\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack4\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack5\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack6\n");
+	fprintf(fileAssembler, "\tfstp _x87_stack7\n\n");
 }
+
+void asmEtiquetaReturn(int idTerceto)
+{
+	fprintf(fileAssembler, "\n\tfld _x87_stack7\n");
+	fprintf(fileAssembler, "\tfld _x87_stack6\n");
+	fprintf(fileAssembler, "\tfld _x87_stack5\n");
+	fprintf(fileAssembler, "\tfld _x87_stack4\n");
+	fprintf(fileAssembler, "\tfld _x87_stack3\n");
+	fprintf(fileAssembler, "\tfld _x87_stack2\n");
+	fprintf(fileAssembler, "\tfld _x87_stack1\n");
+	fprintf(fileAssembler, "\tfld _x87_stack0\n");
+	fprintf(fileAssembler, "\tfldenv _x87_env\n");
+	fprintf(fileAssembler, "\tpop ebx\n");
+	fprintf(fileAssembler, "\tpop ecx\n");
+	fprintf(fileAssembler, "\tret\n\n");
+}
+
 void asmCall(int idTerceto)
 {
 	
@@ -312,7 +361,7 @@ void asmCall(int idTerceto)
 	}
 	aux[i-1]='\0';
 		
-		fprintf(fileAssembler, "\t call  %s \n",aux);
+		fprintf(fileAssembler, "\tcall %s\n",aux);
 
 }
 void asmConcatenacion(int idTerceto)
@@ -332,22 +381,22 @@ void asmConcatenacion(int idTerceto)
 	fprintf(fileAssembler, "\tmov ecx, %s_long\n",TS[listaDeTercetos[idTerceto].y].nombre);
 	fprintf(fileAssembler, "\tsub ecx, 1\n");
 	fprintf(fileAssembler, "\trep movsb\n");
-	fprintf(fileAssembler, "\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
+	fprintf(fileAssembler, "\tmov esi, OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
 	fprintf(fileAssembler, "\tmov ecx, %s_long\n", TS[listaDeTercetos[idTerceto].z].nombre);
 	fprintf(fileAssembler, "\trep movsb\n");
 
 	fprintf(fileAssembler,"\tmov eax, _cadenaAux_long\n");
 	fprintf(fileAssembler,"\tmov %s_long, eax\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
 	fprintf(fileAssembler,"\tcld\n");
-	fprintf(fileAssembler,"\tmov esi,OFFSET _cadenaAux\n");
-	fprintf(fileAssembler,"\tmov edi,OFFSET %s\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
+	fprintf(fileAssembler,"\tmov esi, OFFSET _cadenaAux\n");
+	fprintf(fileAssembler,"\tmov edi, OFFSET %s\n",TS[listaDeTercetos[idTerceto+1].y].nombre);
 	fprintf(fileAssembler,"\tmov ecx, eax\n");
 	fprintf(fileAssembler,"\trep movsb\n");
 }
 
 void asmWprint(int idTerceto)
 {
-	if(TS[listaDeTercetos[idTerceto].y].tipo== PR_STRING ||TS[listaDeTercetos[idTerceto].y].tipo== CTE_STRING )
+	if(TS[listaDeTercetos[idTerceto].y].tipo== PR_STRING ||TS[listaDeTercetos[idTerceto].y].tipo== CTE_STRING ||TS[listaDeTercetos[idTerceto].y].tipo== PR_STRING+PR_FUNCTION)
 	{
 		fprintf(fileAssembler, "\tcld\n");
 		fprintf(fileAssembler, "\tmov esi, OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
@@ -488,6 +537,7 @@ void asmAsignacion(int idTerceto)
 				 break;
 		case INDICE_TS: switch(TS[listaDeTercetos[idTerceto].y].tipo)
 						{
+							case PR_INT+PR_FUNCTION:
 							case PR_INT:	 if(listaDeTercetos[idTerceto].tipoDeZ == INDICE_TS)
 											 {
 											 	 fprintf(fileAssembler,"\tfld %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
@@ -498,6 +548,7 @@ void asmAsignacion(int idTerceto)
 											 break; 
 							//case CTE_REAL:
 							//case CTE_ENTERA:
+							case PR_FLOAT+PR_FUNCTION:
 							case PR_FLOAT:	 if(listaDeTercetos[idTerceto].tipoDeZ == INDICE_TS)
 											 {
 												 fprintf(fileAssembler,"\tfld %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
@@ -505,12 +556,24 @@ void asmAsignacion(int idTerceto)
 											 fprintf(fileAssembler,"\tfstp %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
 											 break;
 							//case CTE_STRING:
+							case PR_STRING+PR_FUNCTION:
 							case PR_STRING:  if(listaDeTercetos[idTerceto].tipoDeZ == INDICE_TS)
 											 {
 												 fprintf(fileAssembler,"\tmov eax, %s_long\n",TS[listaDeTercetos[idTerceto].z].nombre);
 												 fprintf(fileAssembler,"\tmov %s_long, eax\n", TS[listaDeTercetos[idTerceto].y].nombre);
 												 fprintf(fileAssembler,"\tcld\n");
 												 fprintf(fileAssembler,"\tmov esi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].z].nombre);
+												 fprintf(fileAssembler,"\tmov edi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
+												 fprintf(fileAssembler,"\tmov ecx, eax\n");
+												 fprintf(fileAssembler,"\trep movsb\n");
+											 }
+
+											 if(listaDeTercetos[idTerceto].tipoDeZ == NRO_TERCETO && listaDeTercetos[listaDeTercetos[idTerceto].z].tipoDeX == INDICE_TS)
+											 {
+												 fprintf(fileAssembler,"\tmov eax, %s_long\n",TS[listaDeTercetos[listaDeTercetos[idTerceto].z].x].nombre);
+												 fprintf(fileAssembler,"\tmov %s_long, eax\n", TS[listaDeTercetos[idTerceto].y].nombre);
+												 fprintf(fileAssembler,"\tcld\n");
+												 fprintf(fileAssembler,"\tmov esi,OFFSET %s\n",TS[listaDeTercetos[listaDeTercetos[idTerceto].z].x].nombre);
 												 fprintf(fileAssembler,"\tmov edi,OFFSET %s\n",TS[listaDeTercetos[idTerceto].y].nombre);
 												 fprintf(fileAssembler,"\tmov ecx, eax\n");
 												 fprintf(fileAssembler,"\trep movsb\n");

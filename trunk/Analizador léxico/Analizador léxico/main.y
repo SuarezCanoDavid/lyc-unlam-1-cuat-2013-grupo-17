@@ -143,8 +143,39 @@ inicio:	programa
 			GenerarAssembler();
 		};
 		
-programa:	PR_MAIN dec_y_func PR_BEGINPROG bloque_ejecucion PR_ENDPROG;
-programa:	PR_MAIN PR_BEGINPROG lista_wprints_cte PR_ENDPROG;
+programa:	PR_MAIN dec_y_func
+			PR_BEGINPROG
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_BEGINPROG;
+				tercetoAux.tipoDeX = TOKEN;
+				crearTerceto(&tercetoAux);
+			} 
+			bloque_ejecucion
+			PR_ENDPROG
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_ENDPROG;
+				tercetoAux.tipoDeX = TOKEN;
+				crearTerceto(&tercetoAux);
+			};
+
+programa:	PR_MAIN 
+			PR_BEGINPROG
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_BEGINPROG;
+				tercetoAux.tipoDeX = TOKEN;
+				crearTerceto(&tercetoAux);
+			}
+			lista_wprints_cte
+			PR_ENDPROG
+			{
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_ENDPROG;
+				tercetoAux.tipoDeX = TOKEN;
+				crearTerceto(&tercetoAux);
+			};
 
 dec_y_func:	bloque_declaracion;
 dec_y_func:	bloque_declaracion bloque_funcion;
