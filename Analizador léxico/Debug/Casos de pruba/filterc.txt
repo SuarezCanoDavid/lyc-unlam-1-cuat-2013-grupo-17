@@ -1,7 +1,10 @@
+MAIN1
 VAR
 	[a,b,c]:[int,int,int]
 	[resultado]:[int]
 ENDVAR
+
+BEGINPROG
 
 if(a<b)
 	for(a = 0; a < 10; a = a + 1)
@@ -13,3 +16,4 @@ if(a<b)
 		resultado = filterc(_>0 OR _<15,[a,b,c]);
 	rof;/-
 fi;
+ENDPROG
