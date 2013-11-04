@@ -1,35 +1,33 @@
-
 MAIN1
 VAR
 	[contador,mensaje]:[int,string]
 	[palabra]:[string]
 ENDVAR
 
-
-FUNCTION f1:int
+FUNCTION getContadorLocal:int
 VAR
-	[contador]:[int,float]
+	[contador]:[int]
 ENDVAR
-contador = 5;
-contador = contador + 1;
+	contador = 5;
 RETURN contador
 
-FUNCTION f2:string
-VAR
-	[mensaje1]:[string]
-ENDVAR
-contador = 5;
-mensaje1 = "hola";
-RETURN mensaje
+FUNCTION getContadorGlobal:int
+	contador = 4;
+RETURN contador
 
-FUNCTION f3:string
+FUNCTION getHola:string
+	palabra = "hola";
 RETURN palabra
 
 BEGINPROG
-	mensaje = f2;
-	palabra = "mundo";
-	mensaje = palabra;
-	contador = (20*5)/f1;
-	mensaje = f2 ++ palabra;
+	contador = 6;
 
+	wprint("Contador global: ");
+	wprint(getContadorGlobal);
+
+	wprint("Contador local: ");
+	wprint(getContadorLocal);
+
+	mensaje = getHola ++ " mundo";
+	wprint(mensaje);
 ENDPROG
