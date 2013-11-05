@@ -1,0 +1,19 @@
+MAIN1
+VAR
+	[e]:[int]
+ENDVAR
+
+FUNCTION f1:int
+VAR
+	[contador,mensaje]:[int,string]
+	[palabra]:[string]
+ENDVAR
+
+contador = 5;
+contador = contador + 1;
+RETURN contador
+
+BEGINPROG
+	e=f1;
+	
+ENDPROG
