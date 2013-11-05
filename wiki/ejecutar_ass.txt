@@ -1,0 +1,17 @@
+1. Abrir CMD
+
+2. Posicionarse en : ...\trunk\Analizador léxico\Debug
+
+3. escribir: TASM.EXE final.asm
+
+4. Genera 1 archivos: FINAL.OBJ
+
+5. Abrir CMD
+
+6. Posicionarse en : ...\trunk\Analizador léxico\Debug
+
+7. Escribir: TLINK.EXE final.obj /v /s /m /3
+
+8. Genera 2 archivos: FINAL.EXE y FINAL.MAP
+
+9. Ejecutar FINAL.EXE
