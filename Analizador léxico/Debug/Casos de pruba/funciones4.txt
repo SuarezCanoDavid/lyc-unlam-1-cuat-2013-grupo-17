@@ -1,0 +1,35 @@
+
+MAIN1
+VAR
+	[contador,mensaje]:[int,string]
+	[palabra]:[string]
+ENDVAR
+
+
+FUNCTION f1:int
+VAR
+	[contador]:[int,float]
+ENDVAR
+contador = 5;
+contador = contador + 1;
+RETURN contador
+
+FUNCTION f2:string
+VAR
+	[mensaje1]:[string]
+ENDVAR
+contador = 5;
+mensaje1 = "hola";
+RETURN mensaje
+
+FUNCTION f3:string
+RETURN palabra
+
+BEGINPROG
+	mensaje = f2;
+	palabra = "mundo";
+	mensaje = palabra;
+	contador = (20*5)/f1;
+	mensaje = f2 ++ palabra;
+
+ENDPROG
