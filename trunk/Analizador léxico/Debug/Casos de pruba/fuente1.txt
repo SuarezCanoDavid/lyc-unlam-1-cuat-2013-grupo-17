@@ -1,7 +1,7 @@
 MAIN1
 VAR
 	[contador,mensaje]:[int,string]
-	[palabra]:[string]
+	[palabra,i]:[string,int]
 ENDVAR
 
 FUNCTION getContadorLocal:int
@@ -12,22 +12,36 @@ ENDVAR
 RETURN contador
 
 FUNCTION getContadorGlobal:int
-	contador = 4;
+
 RETURN contador
 
 FUNCTION getHola:string
-	palabra = "hola";
+	IF(contador == 4 OR contador == 8)
+		palabra = "hola";
+	ELSE
+		palabra = "chau";
+	FI;
 RETURN palabra
 
 BEGINPROG
 	contador = 6;
+	i = 0;
 
 	wprint("Contador global: ");
-	wprint(getContadorGlobal);
+
+	for(i = 0; i < 10; i = i + 1)
+		wprint(getContadorGlobal);
+	rof;
+
 
 	wprint("Contador local: ");
-	wprint(getContadorLocal);
 
-	mensaje = getHola ++ " mundo";
-	wprint(mensaje);
+	for(i = 0; i < 10; i = i + 1)
+		wprint(getContadorLocal);
+	rof;
+
+	for(contador = 0; getContadorGlobal < 10; contador = getContadorGlobal + 1)
+		mensaje = getHola ++ " mundo";
+		wprint(mensaje);
+	rof;
 ENDPROG

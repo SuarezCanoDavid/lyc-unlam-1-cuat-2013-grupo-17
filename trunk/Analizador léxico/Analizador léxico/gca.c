@@ -112,18 +112,8 @@ void GeneracionCodigo()
 	//LLeno la Pila de Eriquetas
 	LlenarPilaEtiquetas();
 	
-
-	
-	//Ordeno la Pila de etiquetas
-	OrdenarPila(&PilaDeEtiquetas);
-
-	
-	/*while(PilaVacia(&PilaDeEtiquetas)==0)
-	{
-		printf("%d ",popInt(&PilaDeEtiquetas));
-	}*/
-	
 	for(i = 0; listaDeTercetos[i].x != PR_BEGINPROG; ++i);
+
 	//recorro todos los tercetos
 	for(;i<cantTercetos;i++)
 	{
@@ -131,8 +121,6 @@ void GeneracionCodigo()
 			i++;
 
 	}
-
-	//fprintf(fileAssembler, "etiqueta_%d:\n",cantTercetos);
 
 	//Finalizar
 	fprintf(fileAssembler,"\nERROR:\n");
@@ -149,18 +137,11 @@ void GeneracionCodigo()
 int GenerarAssemblerByTerceto(int idTerceto)
 {
 	int valorDevuelto=0;
-	//Creacion de las etiquetas
 	
-	//printf("%d  %d \n", idTerceto,VerTope(&PilaDeEtiquetas));
-	if(PilaVacia(&PilaDeEtiquetas)==0 && idTerceto==VerTope(&PilaDeEtiquetas))
+	//Creacion de las etiquetas
+	if(contiene(&PilaDeEtiquetas,idTerceto) == TRUE)
 	{
 		fprintf(fileAssembler, "etiqueta_%d:\n", idTerceto);
-		popInt(&PilaDeEtiquetas);
-
-		while(idTerceto==VerTope(&PilaDeEtiquetas))
-		{
-			popInt(&PilaDeEtiquetas);
-		}
 	}
 
 	if(listaDeTercetos[idTerceto].tipoDeX==CALL)

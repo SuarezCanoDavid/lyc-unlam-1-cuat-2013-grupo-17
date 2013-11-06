@@ -34,7 +34,7 @@ int PilaVacia(PilaDeInt *pila)
 {
 	if(pila->tope==0)
 		return 1;
-		return 0;
+	return 0;
 }
 
 void OrdenarPila(PilaDeInt *pila)
@@ -59,6 +59,24 @@ int comparar (const void * a, const void * b)
 			return 1;
 		}
 	}
+}
+
+int contiene(PilaDeInt *pila,int elemento)
+{
+	int encontrado = FALSE;
+	int i = 0;
+
+	while(i < pila->tope && encontrado == FALSE)
+	{
+		if(pila->contenedor[i] == elemento)
+		{
+			encontrado = TRUE;
+		}
+
+		++i;
+	}
+
+	return encontrado;
 }
 
 
