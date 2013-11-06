@@ -5,6 +5,8 @@
 #define PILA_H
 
 #define TAM_PILA	50
+#define TRUE	1
+#define FALSE	0
 
 struct PilaDeInt
 {
@@ -20,6 +22,7 @@ int VerTope(PilaDeInt *pila);
 void OrdenarPila(PilaDeInt *pila);
 int comparar (const void* p1, const void* p2);
 int PilaVacia(PilaDeInt *);
+int contiene(PilaDeInt *,int);
 struct PilaDeColas
 {
 	ColaDeTercetos *contenedor[TAM_PILA];
