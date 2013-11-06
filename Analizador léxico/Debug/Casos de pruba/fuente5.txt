@@ -1,23 +1,57 @@
-main1
+MAIN1
 VAR
-	[contador,mensaje,resultado,seee]:[int,string,int,float]
+	[contador,mensaje,resultado,seee,a]:[int,string,int,float,float]
 ENDVAR
 
-beginprog
+FUNCTION f1: int
+VAR
+	[contador1, resultado1]:[int,int]
+ENDVAR
+contador1=1;
+-/
+if(not(contador1+5<=20))
+	if(resultado1 != contador1 or contador1 >= 56)
+		contador1 = 0;
+	fi;
+	resultado1 = 5;
+else
+	do
+		resultado1 = resultado1 + 1;
+	while(resultado1 < 20);
 
-mensaje = "Una iteracion";
+fi;
+/-
 
--/Se escribe 10 veces el siguiente mensaje/-
+if( 3>1)
+   contador1=19999;
+	 fi;
+	  RETURN contador1
+
+
+BEGINPROG
+a=2.1;
+mensaje="hola";
+FOR(contador = 0; contador < 10; contador = contador + 1)
+	WPRINT(mensaje);
+
+resultado = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]);
+wprint(resultado);
+
+seee = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]) + 50 + 3 * f1 - 5 * a;
+wprint(seee);
+
+ROF;
+-/Se escribe 10 veces el siguiente mensaje
 
 FOR(contador = 0; contador < 10; contador = contador + 1)
 	WPRINT(mensaje);
 ROF;
 
 seee= 123456789.99999999;
--/Se prueba el filterc/-
+Se prueba el filterc
 
 resultado = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]);
-
+/-
 wprint(resultado);
 
 -/FIN DEL PROGRAMA/-

@@ -1,30 +1,169 @@
-TOKEN Nº   1= VAR                                               TIPO_TOKEN= PR_VAR              YYLVAL= -1
-TOKEN Nº   2= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1
-TOKEN Nº   3= a                                                 TIPO_TOKEN= ID                  YYLVAL= 0
-TOKEN Nº   4= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
-TOKEN Nº   5= b                                                 TIPO_TOKEN= ID                  YYLVAL= 1
-TOKEN Nº   6= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
-TOKEN Nº   7= resultado                                         TIPO_TOKEN= ID                  YYLVAL= 2
-TOKEN Nº   8= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1
-TOKEN Nº   9= :                                                 TIPO_TOKEN= DOS_PUNTOS          YYLVAL= -1
-TOKEN Nº  10= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1
-TOKEN Nº  11= float                                             TIPO_TOKEN= PR_FLOAT            YYLVAL= -1
-TOKEN Nº  12= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
-TOKEN Nº  13= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1
-TOKEN Nº  14= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1
-TOKEN Nº  15= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1
-TOKEN Nº  16= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1
-TOKEN Nº  17= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1
-TOKEN Nº  18= mensaje                                           TIPO_TOKEN= ID                  YYLVAL= 3
-TOKEN Nº  19= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1
-TOKEN Nº  20= :                                                 TIPO_TOKEN= DOS_PUNTOS          YYLVAL= -1
-TOKEN Nº  21= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1
-TOKEN Nº  22= string                                            TIPO_TOKEN= PR_STRING           YYLVAL= -1
-TOKEN Nº  23= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1
-TOKEN Nº  24= ENDVAR                                            TIPO_TOKEN= PR_ENDVAR           YYLVAL= -1
-TOKEN Nº  25= a                                                 TIPO_TOKEN= ID                  YYLVAL= 0
-TOKEN Nº  26= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1
-TOKEN Nº  27= b                                                 TIPO_TOKEN= ID                  YYLVAL= 1
-TOKEN Nº  28= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1
-TOKEN Nº  29= mensaje                                           TIPO_TOKEN= ID                  YYLVAL= 3
-TOKEN Nº  30= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1
+TOKEN Nº   1= MAIN1                                             TIPO_TOKEN= PR_MAIN             YYLVAL= -1 AMBITO: main
+TOKEN Nº   2= VAR                                               TIPO_TOKEN= PR_VAR              YYLVAL= -1 AMBITO: main
+TOKEN Nº   3= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº   4= contador                                          TIPO_TOKEN= ID                  YYLVAL= 0 AMBITO: main
+TOKEN Nº   5= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº   6= mensaje                                           TIPO_TOKEN= ID                  YYLVAL= 1 AMBITO: main
+TOKEN Nº   7= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº   8= resultado                                         TIPO_TOKEN= ID                  YYLVAL= 2 AMBITO: main
+TOKEN Nº   9= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº  10= seee                                              TIPO_TOKEN= ID                  YYLVAL= 3 AMBITO: main
+TOKEN Nº  11= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº  12= a                                                 TIPO_TOKEN= ID                  YYLVAL= 4 AMBITO: main
+TOKEN Nº  13= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  14= :                                                 TIPO_TOKEN= DOS_PUNTOS          YYLVAL= -1 AMBITO: main
+TOKEN Nº  15= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº  16= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1 AMBITO: main
+TOKEN Nº  17= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº  18= string                                            TIPO_TOKEN= PR_STRING           YYLVAL= -1 AMBITO: main
+TOKEN Nº  19= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº  20= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1 AMBITO: main
+TOKEN Nº  21= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº  22= float                                             TIPO_TOKEN= PR_FLOAT            YYLVAL= -1 AMBITO: main
+TOKEN Nº  23= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº  24= float                                             TIPO_TOKEN= PR_FLOAT            YYLVAL= -1 AMBITO: main
+TOKEN Nº  25= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  26= ENDVAR                                            TIPO_TOKEN= PR_ENDVAR           YYLVAL= -1 AMBITO: main
+TOKEN Nº  27= FUNCTION                                          TIPO_TOKEN= PR_FUNCTION         YYLVAL= -1 AMBITO: main
+TOKEN Nº  28= f1                                                TIPO_TOKEN= ID                  YYLVAL= 5 AMBITO: main
+TOKEN Nº  29= :                                                 TIPO_TOKEN= DOS_PUNTOS          YYLVAL= -1 AMBITO: main
+TOKEN Nº  30= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1 AMBITO: main
+TOKEN Nº  31= VAR                                               TIPO_TOKEN= PR_VAR              YYLVAL= -1 AMBITO: f1
+TOKEN Nº  32= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1 AMBITO: f1
+TOKEN Nº  33= contador1                                         TIPO_TOKEN= ID                  YYLVAL= 6 AMBITO: f1
+TOKEN Nº  34= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: f1
+TOKEN Nº  35= resultado1                                        TIPO_TOKEN= ID                  YYLVAL= 7 AMBITO: f1
+TOKEN Nº  36= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1 AMBITO: f1
+TOKEN Nº  37= :                                                 TIPO_TOKEN= DOS_PUNTOS          YYLVAL= -1 AMBITO: f1
+TOKEN Nº  38= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1 AMBITO: f1
+TOKEN Nº  39= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1 AMBITO: f1
+TOKEN Nº  40= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: f1
+TOKEN Nº  41= int                                               TIPO_TOKEN= PR_INT              YYLVAL= -1 AMBITO: f1
+TOKEN Nº  42= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1 AMBITO: f1
+TOKEN Nº  43= ENDVAR                                            TIPO_TOKEN= PR_ENDVAR           YYLVAL= -1 AMBITO: f1
+TOKEN Nº  44= contador1                                         TIPO_TOKEN= ID                  YYLVAL= 6 AMBITO: f1
+TOKEN Nº  45= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: f1
+TOKEN Nº  46= 1                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 8 AMBITO: f1
+TOKEN Nº  47= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: f1
+TOKEN Nº  48= if                                                TIPO_TOKEN= PR_IF               YYLVAL= -1 AMBITO: f1
+TOKEN Nº  49= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: f1
+TOKEN Nº  50= 3                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 9 AMBITO: f1
+TOKEN Nº  51= >                                                 TIPO_TOKEN= OP_MAYOR            YYLVAL= -1 AMBITO: f1
+TOKEN Nº  52= 1                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 8 AMBITO: f1
+TOKEN Nº  53= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: f1
+TOKEN Nº  54= contador1                                         TIPO_TOKEN= ID                  YYLVAL= 6 AMBITO: f1
+TOKEN Nº  55= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: f1
+TOKEN Nº  56= 19999                                             TIPO_TOKEN= CTE_ENTERA          YYLVAL= 10 AMBITO: f1
+TOKEN Nº  57= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: f1
+TOKEN Nº  58= fi                                                TIPO_TOKEN= PR_FI               YYLVAL= -1 AMBITO: f1
+TOKEN Nº  59= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: f1
+TOKEN Nº  60= RETURN                                            TIPO_TOKEN= PR_RETURN           YYLVAL= -1 AMBITO: f1
+TOKEN Nº  61= contador1                                         TIPO_TOKEN= ID                  YYLVAL= 6 AMBITO: f1
+TOKEN Nº  62= BEGINPROG                                         TIPO_TOKEN= PR_BEGINPROG        YYLVAL= -1 AMBITO: main
+TOKEN Nº  63= a                                                 TIPO_TOKEN= ID                  YYLVAL= 4 AMBITO: main
+TOKEN Nº  64= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: main
+TOKEN Nº  65= 2.1                                               TIPO_TOKEN= CTE_REAL            YYLVAL= 11 AMBITO: main
+TOKEN Nº  66= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  67= mensaje                                           TIPO_TOKEN= ID                  YYLVAL= 1 AMBITO: main
+TOKEN Nº  68= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: main
+TOKEN Nº  69= "hola"                                            TIPO_TOKEN= CTE_STRING          YYLVAL= 12 AMBITO: main
+TOKEN Nº  70= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  71= FOR                                               TIPO_TOKEN= PR_FOR              YYLVAL= -1 AMBITO: main
+TOKEN Nº  72= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº  73= contador                                          TIPO_TOKEN= ID                  YYLVAL= 0 AMBITO: main
+TOKEN Nº  74= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: main
+TOKEN Nº  75= 0                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 13 AMBITO: main
+TOKEN Nº  76= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  77= contador                                          TIPO_TOKEN= ID                  YYLVAL= 0 AMBITO: main
+TOKEN Nº  78= <                                                 TIPO_TOKEN= OP_MENOR            YYLVAL= -1 AMBITO: main
+TOKEN Nº  79= 10                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 14 AMBITO: main
+TOKEN Nº  80= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  81= contador                                          TIPO_TOKEN= ID                  YYLVAL= 0 AMBITO: main
+TOKEN Nº  82= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: main
+TOKEN Nº  83= contador                                          TIPO_TOKEN= ID                  YYLVAL= 0 AMBITO: main
+TOKEN Nº  84= +                                                 TIPO_TOKEN= OP_SUMA             YYLVAL= -1 AMBITO: main
+TOKEN Nº  85= 1                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 8 AMBITO: main
+TOKEN Nº  86= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  87= WPRINT                                            TIPO_TOKEN= PR_WPRINT           YYLVAL= -1 AMBITO: main
+TOKEN Nº  88= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº  89= mensaje                                           TIPO_TOKEN= ID                  YYLVAL= 1 AMBITO: main
+TOKEN Nº  90= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  91= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº  92= resultado                                         TIPO_TOKEN= ID                  YYLVAL= 2 AMBITO: main
+TOKEN Nº  93= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: main
+TOKEN Nº  94= FILTERC                                           TIPO_TOKEN= PR_FILTERC          YYLVAL= -1 AMBITO: main
+TOKEN Nº  95= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº  96= _                                                 TIPO_TOKEN= GUION_BAJO          YYLVAL= -1 AMBITO: main
+TOKEN Nº  97= >                                                 TIPO_TOKEN= OP_MAYOR            YYLVAL= -1 AMBITO: main
+TOKEN Nº  98= 0                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 13 AMBITO: main
+TOKEN Nº  99= AND                                               TIPO_TOKEN= PR_AND              YYLVAL= -1 AMBITO: main
+TOKEN Nº 100= _                                                 TIPO_TOKEN= GUION_BAJO          YYLVAL= -1 AMBITO: main
+TOKEN Nº 101= <                                                 TIPO_TOKEN= OP_MENOR            YYLVAL= -1 AMBITO: main
+TOKEN Nº 102= 10                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 14 AMBITO: main
+TOKEN Nº 103= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº 104= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº 105= 11                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 15 AMBITO: main
+TOKEN Nº 106= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº 107= 15                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 16 AMBITO: main
+TOKEN Nº 108= -                                                 TIPO_TOKEN= OP_RESTA            YYLVAL= -1 AMBITO: main
+TOKEN Nº 109= 8                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 17 AMBITO: main
+TOKEN Nº 110= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº 111= 3                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 9 AMBITO: main
+TOKEN Nº 112= *                                                 TIPO_TOKEN= OP_MULTIPLICACION   YYLVAL= -1 AMBITO: main
+TOKEN Nº 113= 3                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 9 AMBITO: main
+TOKEN Nº 114= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 115= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 116= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 117= wprint                                            TIPO_TOKEN= PR_WPRINT           YYLVAL= -1 AMBITO: main
+TOKEN Nº 118= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº 119= resultado                                         TIPO_TOKEN= ID                  YYLVAL= 2 AMBITO: main
+TOKEN Nº 120= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 121= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 122= seee                                              TIPO_TOKEN= ID                  YYLVAL= 3 AMBITO: main
+TOKEN Nº 123= =                                                 TIPO_TOKEN= OP_ASIGNACION       YYLVAL= -1 AMBITO: main
+TOKEN Nº 124= FILTERC                                           TIPO_TOKEN= PR_FILTERC          YYLVAL= -1 AMBITO: main
+TOKEN Nº 125= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº 126= _                                                 TIPO_TOKEN= GUION_BAJO          YYLVAL= -1 AMBITO: main
+TOKEN Nº 127= >                                                 TIPO_TOKEN= OP_MAYOR            YYLVAL= -1 AMBITO: main
+TOKEN Nº 128= 0                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 13 AMBITO: main
+TOKEN Nº 129= AND                                               TIPO_TOKEN= PR_AND              YYLVAL= -1 AMBITO: main
+TOKEN Nº 130= _                                                 TIPO_TOKEN= GUION_BAJO          YYLVAL= -1 AMBITO: main
+TOKEN Nº 131= <                                                 TIPO_TOKEN= OP_MENOR            YYLVAL= -1 AMBITO: main
+TOKEN Nº 132= 10                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 14 AMBITO: main
+TOKEN Nº 133= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº 134= [                                                 TIPO_TOKEN= COR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº 135= 11                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 15 AMBITO: main
+TOKEN Nº 136= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº 137= 15                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 16 AMBITO: main
+TOKEN Nº 138= -                                                 TIPO_TOKEN= OP_RESTA            YYLVAL= -1 AMBITO: main
+TOKEN Nº 139= 8                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 17 AMBITO: main
+TOKEN Nº 140= ,                                                 TIPO_TOKEN= COMA                YYLVAL= -1 AMBITO: main
+TOKEN Nº 141= 3                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 9 AMBITO: main
+TOKEN Nº 142= *                                                 TIPO_TOKEN= OP_MULTIPLICACION   YYLVAL= -1 AMBITO: main
+TOKEN Nº 143= 3                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 9 AMBITO: main
+TOKEN Nº 144= ]                                                 TIPO_TOKEN= COR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 145= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 146= +                                                 TIPO_TOKEN= OP_SUMA             YYLVAL= -1 AMBITO: main
+TOKEN Nº 147= 50                                                TIPO_TOKEN= CTE_ENTERA          YYLVAL= 18 AMBITO: main
+TOKEN Nº 148= +                                                 TIPO_TOKEN= OP_SUMA             YYLVAL= -1 AMBITO: main
+TOKEN Nº 149= 3                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 9 AMBITO: main
+TOKEN Nº 150= *                                                 TIPO_TOKEN= OP_MULTIPLICACION   YYLVAL= -1 AMBITO: main
+TOKEN Nº 151= f1                                                TIPO_TOKEN= ID                  YYLVAL= 5 AMBITO: main
+TOKEN Nº 152= -                                                 TIPO_TOKEN= OP_RESTA            YYLVAL= -1 AMBITO: main
+TOKEN Nº 153= 5                                                 TIPO_TOKEN= CTE_ENTERA          YYLVAL= 19 AMBITO: main
+TOKEN Nº 154= *                                                 TIPO_TOKEN= OP_MULTIPLICACION   YYLVAL= -1 AMBITO: main
+TOKEN Nº 155= a                                                 TIPO_TOKEN= ID                  YYLVAL= 4 AMBITO: main
+TOKEN Nº 156= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 157= wprint                                            TIPO_TOKEN= PR_WPRINT           YYLVAL= -1 AMBITO: main
+TOKEN Nº 158= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº 159= seee                                              TIPO_TOKEN= ID                  YYLVAL= 3 AMBITO: main
+TOKEN Nº 160= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 161= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 162= ROF                                               TIPO_TOKEN= PR_ROF              YYLVAL= -1 AMBITO: main
+TOKEN Nº 163= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 164= wprint                                            TIPO_TOKEN= PR_WPRINT           YYLVAL= -1 AMBITO: main
+TOKEN Nº 165= (                                                 TIPO_TOKEN= PAR_ABRE            YYLVAL= -1 AMBITO: main
+TOKEN Nº 166= resultado                                         TIPO_TOKEN= ID                  YYLVAL= 2 AMBITO: main
+TOKEN Nº 167= )                                                 TIPO_TOKEN= PAR_CIERRA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 168= ;                                                 TIPO_TOKEN= PUNTO_COMA          YYLVAL= -1 AMBITO: main
+TOKEN Nº 169= ENDPROG                                           TIPO_TOKEN= PR_ENDPROG          YYLVAL= -1 AMBITO: main

@@ -121,5 +121,17 @@
     <None Include="main.y">
       <Filter>Archivos de recursos</Filter>
     </None>
+    <None Include="..\Debug\Casos de pruba\funciones2.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\funciones3.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\funciones4.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\funciones5.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
   </ItemGroup>
 </Project>

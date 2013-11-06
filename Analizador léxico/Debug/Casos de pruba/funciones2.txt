@@ -14,6 +14,9 @@ contador = contador + 1;
 RETURN contador
 
 BEGINPROG
-	e=f1;
+e=5;
+	e=f1*f1+e;
+
+	wprint(e);
 	
 ENDPROG
