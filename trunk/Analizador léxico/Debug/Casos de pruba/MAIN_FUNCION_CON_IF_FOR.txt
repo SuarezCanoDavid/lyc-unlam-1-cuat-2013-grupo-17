@@ -1,0 +1,29 @@
+MAIN1
+VAR
+	[e]:[int]
+ENDVAR
+
+FUNCTION f1:int
+VAR
+	[contador,mensaje,a,b,c]:[int,string,int,int,int]
+	[palabra]:[string]
+ENDVAR
+
+FOR(contador = 0; contador < 50 AND b != 0; contador = contador + 1)
+		IF(c == 25)
+			b = 0;
+			a = 0;
+		FI;
+	ROF;
+
+contador = 5;
+contador = contador + 1;
+RETURN contador
+
+BEGINPROG
+e=5;
+	e=f1*f1+e;
+
+	wprint(e);
+	
+ENDPROG
