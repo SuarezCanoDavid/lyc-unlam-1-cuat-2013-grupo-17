@@ -1,0 +1,30 @@
+MAIN1
+VAR
+	[contador,mensaje]:[int,string]
+	[palabra]:[string]
+ENDVAR
+
+FUNCTION f1:int
+VAR
+	[contador]:[int,float]
+ENDVAR
+contador = 5;
+contador = contador + 1;
+RETURN contador
+
+
+FUNCTION f3:string
+RETURN palabra
+
+BEGINPROG
+	palabra= "pepe";
+	mensaje = f3;
+	palabra = "mundo";	
+	mensaje = palabra;
+	contador = (20*5)/f1;
+	mensaje = palabra ++ f3;
+	wprint(mensaje);
+	wprint(palabra);
+	wprint(contador);
+
+ENDPROG
