@@ -1,0 +1,8 @@
+WPRINT("Prueba de wprints");
+WPRINT("Hola mundo");
+WPRINT(3.15);
+WPRINT(99.0);
+WPRINT("Prueba de wprints");
+WPRINT("Hola mundo");
+WPRINT(3.15);
+WPRINT(99.0);

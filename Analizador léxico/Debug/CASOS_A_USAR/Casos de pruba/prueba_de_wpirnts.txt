@@ -1,9 +1,4 @@
-main1
-beginprog
-
 WPRINT("Prueba de wprints");
 WPRINT("Hola mundo");
 WPRINT(3.15);
-WPRINT(999999.9999);
-
-endprog
+WPRINT(9999999999999.9999999999);

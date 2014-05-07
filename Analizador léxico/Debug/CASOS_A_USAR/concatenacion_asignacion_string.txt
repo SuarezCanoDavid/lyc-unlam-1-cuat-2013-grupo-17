@@ -1,0 +1,16 @@
+VAR
+	[a,b,resultado]:[float,int,int]
+	[mensaje1,mensaje2,mensaje3,msg]:[string,string,string,string]
+ENDVAR
+
+a = 5.65;
+b = 23;
+
+wprint(b);
+
+mensaje1 ="los poemas de pepeeeeeeeeee";
+mensaje2 =" y pepaaaaaaaaaaaaaaaaaaaaa";
+
+mensaje3 = msg = mensaje1 ++ mensaje2;
+wprint (mensaje3);
+wprint (msg);

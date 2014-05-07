@@ -133,5 +133,17 @@
     <None Include="..\Debug\Casos de pruba\funciones5.txt">
       <Filter>Archivos de recursos\Casos de prueba</Filter>
     </None>
+    <None Include="..\Debug\Casos de pruba\MAIN_2FUNCIONES_USO_GLOBAL.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\MAIN_2FUNCIONES_USO_LOCAL_GLOBAL.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\MAIN_FUNCION.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
+    <None Include="..\Debug\Casos de pruba\MAIN_FUNCION_CON_IF_FOR.txt">
+      <Filter>Archivos de recursos\Casos de prueba</Filter>
+    </None>
   </ItemGroup>
 </Project>

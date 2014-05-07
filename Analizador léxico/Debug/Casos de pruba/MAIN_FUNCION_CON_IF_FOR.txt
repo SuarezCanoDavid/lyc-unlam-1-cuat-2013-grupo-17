@@ -1,6 +1,6 @@
 MAIN1
 VAR
-	[e]:[int]
+	[contador,e]:[int,int]
 ENDVAR
 
 FUNCTION f1:int
@@ -18,12 +18,14 @@ FOR(contador = 0; contador < 50 AND b != 0; contador = contador + 1)
 
 contador = 5;
 contador = contador + 1;
+wprint(contador);
 RETURN contador
 
 BEGINPROG
 e=5;
 	e=f1*f1+e;
-
+	contador=8;
 	wprint(e);
+	wprint(contador);
 	
 ENDPROG

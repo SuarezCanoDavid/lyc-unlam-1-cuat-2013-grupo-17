@@ -7,9 +7,12 @@ FUNCTION f1:int
 VAR
 	[contador,mensaje]:[int,string]
 	[palabra]:[string]
+	[a,b,c]:[int,int,float]
 ENDVAR
-
-contador = 5;
+a=4;
+b=6;
+c=12.5;
+contador = filterc(_>0 AND _<15,[a,b,c]);
 contador = contador + 1;
 RETURN contador
 

@@ -1,0 +1,23 @@
+MAIN
+VAR
+	[contador,mensaje,resultado]:[int,string,int]
+ENDVAR
+FUNCTION f1:int
+	VAR
+		[contador]:[int]
+	ENDVAR
+	contador=1+1;
+	RETURN contador
+
+BEGINPROG
+if(not(contador+5<=20))
+	if(resultado != contador or contador >= 56)
+		contador = 0;
+	fi;
+	resultado = 5;
+else
+	do
+		resultado = resultado + 1;
+	while(resultado < 20);
+fi;
+ENDPROG
