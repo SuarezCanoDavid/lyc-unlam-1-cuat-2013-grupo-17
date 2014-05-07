@@ -1,0 +1,7 @@
+VAR
+	[contador,mensaje,resultado]:[int,string,int]
+	[a,b,c,d]:[int,int,int,int]
+	[a1,b1,c1,d1]:[int,int,int]
+ENDVAR
+a = filterc(_>=5,[a,b,d]);
+wprint(a);

@@ -1,0 +1,12 @@
+VAR
+	[a,b,resultado,mensaje]:[int,int,int,string]
+ENDVAR
+
+a=15;
+b=5;
+
+	resultado=a+b;
+mensaje="Hola Mundoooooo";
+
+
+

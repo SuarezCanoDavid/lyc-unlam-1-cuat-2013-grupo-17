@@ -1,0 +1,21 @@
+VAR
+	[a,b,c]:[int,int,int]
+ENDVAR
+a=10;
+b=20;
+c=13;
+
+if(a > b and a <= c)
+	if(c > b)
+		a = a + 1;
+		wprint("hola1");
+	else
+		b = b + 2;
+	fi;
+else
+	if(a < c)
+		c = c + 3;
+		wprint("hola2");
+	fi;
+fi;
+wprint("chauuuuu");

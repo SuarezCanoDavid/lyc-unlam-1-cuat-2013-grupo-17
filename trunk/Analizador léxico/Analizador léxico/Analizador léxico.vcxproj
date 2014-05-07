@@ -107,6 +107,10 @@
     <None Include="..\Debug\Casos de pruba\funciones4.txt" />
     <None Include="..\Debug\Casos de pruba\funciones5.txt" />
     <None Include="..\Debug\Casos de pruba\if_anidados.txt" />
+    <None Include="..\Debug\Casos de pruba\MAIN_2FUNCIONES_USO_GLOBAL.txt" />
+    <None Include="..\Debug\Casos de pruba\MAIN_2FUNCIONES_USO_LOCAL_GLOBAL.txt" />
+    <None Include="..\Debug\Casos de pruba\MAIN_FUNCION.txt" />
+    <None Include="..\Debug\Casos de pruba\MAIN_FUNCION_CON_IF_FOR.txt" />
     <None Include="..\Debug\Casos de pruba\programa_complejo.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_declaraciones.txt" />
     <None Include="..\Debug\Casos de pruba\prueba_de_wpirnts.txt" />

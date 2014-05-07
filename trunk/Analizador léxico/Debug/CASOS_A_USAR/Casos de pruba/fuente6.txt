@@ -1,0 +1,11 @@
+VAR
+	[a,b,resultado]:[int,int,int]
+ENDVAR
+
+a=b=resultado=(4 - 3) * 10 / 2;
+wprint(a);
+wprint(b);
+wprint(resultado);
+
+WPRINT(6.00000000000000000);
+

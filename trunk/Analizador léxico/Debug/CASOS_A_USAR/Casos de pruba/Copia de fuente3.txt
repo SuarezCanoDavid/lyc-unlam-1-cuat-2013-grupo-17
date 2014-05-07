@@ -1,0 +1,16 @@
+VAR
+	[cadena1,cadena2,mensaje1]:[string,string,string]
+	[mensaje2]:[string]
+	[a]:[float]
+ENDVAR
+
+cadena1 = "hola ";
+cadena2 = "mundo ";
+
+mensaje2 = mensaje1 = cadena1 ++ cadena2;
+wprint(mensaje2);
+
+a = 0.000000000000000000000000000000001 * 10000000000000000000000000000000000000.0;
+
+wprint(a);
+

@@ -1,0 +1,33 @@
+MAIN
+VAR -/declaracion de variables del prog principal /-
+	[a,b]:[float ,float]
+	[pi]:[int]
+	[msg]:[string] 
+  
+
+ENDVAR
+
+-/Inicio de zona de funciones/-
+FUNCTION f1 : float
+	VAR 		-/Declaracion de variables locales de f1/-	
+	[a]:[float ]
+	 [msg]:[string] 
+	  
+	ENDVAR
+	-/cuerpo de la funcion f1/-
+	msg= "Dentro de función f1";
+	a= pi*radio*radio;
+	wprint(msg);
+RETURN a;  -/esto implica f1=a/-
+
+-/inicio del programa principal/-
+BEGINPROG
+	msg="Dentro de programa principal";
+	radio=25.8;
+	resultado=f1;
+	wprint(resultado);
+
+	radio = 51.6;
+	resultado = f1;
+	wprint(resultado);
+ENDPROG

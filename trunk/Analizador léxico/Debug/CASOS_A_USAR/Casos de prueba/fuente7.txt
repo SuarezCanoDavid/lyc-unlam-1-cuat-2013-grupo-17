@@ -1,0 +1,18 @@
+VAR
+	[a,b,resultado,mensaje]:[int,int,int,string]
+ENDVAR
+
+a=15;
+b=5;
+
+	resultado=a+b;
+mensaje="pirulooooo";
+wprint(mensaje);
+wprint(a);
+wprint("este es un mensaje");
+wprint(1.0);
+
+
+
+
+
