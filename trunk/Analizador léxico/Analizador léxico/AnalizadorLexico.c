@@ -34,6 +34,9 @@ char palabrasReservadas[CANT_PR][10] = { "FOR", "ROF", "IF", "ELSE", "FI", "WPRI
 										"while", "and", "or", "not", "var", "endvar", "int", "float", "string"
 										//Funciones
 										,"FUNCTION","MAIN1", "function","main1","BEGINPROG","beginprog","ENDPROG","endprog", "RETURN","return"
+										//Entrada
+										,"scanf", "SCANF"
+
 										};
 
 // Vector para las palabras reservadas
@@ -43,6 +46,8 @@ int vPalabrasReservadasBis[CANT_PR] = { PR_FOR,PR_ROF,PR_IF,PR_ELSE,PR_FI,PR_WPR
 										PR_WHILE,PR_AND,PR_OR,PR_NOT,PR_VAR,PR_ENDVAR,PR_INT,PR_FLOAT,PR_STRING
 										//FUNCIONES
 										,PR_FUNCTION, PR_MAIN, PR_FUNCTION, PR_MAIN, PR_BEGINPROG,PR_BEGINPROG,PR_ENDPROG,PR_ENDPROG,PR_RETURN,PR_RETURN
+										//Entrada
+										,PR_SCANF, PR_SCANF
 										};
 
 /*Manejador de errores*/
@@ -553,6 +558,9 @@ char *identificarTipoToken(int tipo)
 
 
 		//fin funciones
+		case PR_SCANF:			strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"PR_SCANF");
+							break;
+
 		case 0:					strcpy_s(tipoTokenSalida,sizeof(char)*LONG_TIPO_TOKEN,"-");
 								break;
 	}

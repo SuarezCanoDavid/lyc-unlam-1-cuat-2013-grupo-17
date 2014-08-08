@@ -1,0 +1,33 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 0055EH 0055FH _TEXT              CODE
+ 00560H 00750H 001F1H _DATA              DATA
+ 00760H 00A5FH 00300H STACK              STACK
+
+
+Detailed map of segments
+
+ 0000:0000 0128 C=CODE   S=_TEXT          G=(none)  M=FINAL.ASM  ACBP=48
+ 0000:0128 0437 C=CODE   S=_TEXT          G=(none)  M=NUMBERS.ASM ACBP=48
+ 0056:0000 019A C=DATA   S=_DATA          G=DGROUP  M=FINAL.ASM  ACBP=48
+ 0056:019A 0057 C=DATA   S=_DATA          G=DGROUP  M=NUMBERS.ASM ACBP=48
+ 0056:0200 0200 C=STACK  S=STACK          G=DGROUP  M=FINAL.ASM  ACBP=75
+ 0056:0400 0100 C=STACK  S=STACK          G=DGROUP  M=NUMBERS.ASM ACBP=74
+
+  Address         Publics by Name
+
+ 0000:00128       ATOF
+ 0000:0046F       ATOI
+ 0000:00271       FTOA
+ 0000:00395       ITOA
+
+  Address         Publics by Value
+
+ 0000:0046F       ATOI
+ 0000:00395       ITOA
+ 0000:00271       FTOA
+ 0000:00128       ATOF
+
+Program entry point at 0000:0128
+
