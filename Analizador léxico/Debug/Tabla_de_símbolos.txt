@@ -1,20 +1,20 @@
 0  _main_contador           PR_INT                                       main                     0         
 1  _main_mensaje            PR_STRING                                    main                     0         
-2  _main_resultado          PR_INT                                       main                     0         
-3  _main_seee               PR_FLOAT                                     main                     0         
-4  _main_a                  PR_FLOAT                                     main                     0         
-5  _f1_RETURN               function:int                                                          0         
-6  _f1_contador1            PR_INT                                       f1                       0         
-7  _f1_resultado1           PR_INT                                       f1                       0         
-8  _cte0                    CTE_ENTERA          1.0                                               0         
-9  _cte1                    CTE_ENTERA          3.0                                               0         
-10 _cte2                    CTE_ENTERA          19999.0                                           0         
-11 _cte3                    CTE_REAL            2.1                                               0         
-12 _cte4                    CTE_STRING          hola                                              4         
-13 _cte5                    CTE_ENTERA          0.0                                               0         
-14 _cte6                    CTE_ENTERA          10.0                                              0         
-15 _cte7                    CTE_ENTERA          11.0                                              0         
-16 _cte8                    CTE_ENTERA          15.0                                              0         
-17 _cte9                    CTE_ENTERA          8.0                                               0         
-18 _cte10                   CTE_ENTERA          50.0                                              0         
-19 _cte11                   CTE_ENTERA          5.0                                               0         
+2  _main_palabra            PR_STRING                                    main                     0         
+3  _main_i                  PR_INT                                       main                     0         
+4  _getContadorLocal_RETURN function:int                                                          0         
+5  _getContadorLocal_contadorPR_INT                                       getContadorLocal         0         
+6  _cte0                    CTE_ENTERA          5.0                                               0         
+7  _getContadorGlobal_RETURNfunction:int                                                          0         
+8  _getHola_RETURN          function:string                                                       0         
+9  _cte1                    CTE_ENTERA          4.0                                               0         
+10 _cte2                    CTE_ENTERA          8.0                                               0         
+11 _cte3                    CTE_STRING          hola                                              4         
+12 _cte4                    CTE_STRING          chau                                              4         
+13 _cte5                    CTE_ENTERA          6.0                                               0         
+14 _cte6                    CTE_ENTERA          0.0                                               0         
+15 _cte7                    CTE_STRING          Contador global:                                  17        
+16 _cte8                    CTE_ENTERA          10.0                                              0         
+17 _cte9                    CTE_ENTERA          1.0                                               0         
+18 _cte10                   CTE_STRING          Contador local:                                   16        
+19 _cte11                   CTE_STRING           mundo                                            6         

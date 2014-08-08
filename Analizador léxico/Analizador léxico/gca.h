@@ -33,4 +33,7 @@ void adecuarTS();
 void asmCall(int);
 void asmEtiquetaFuncion(int);
 void asmEtiquetaReturn(int);
+void asmScanf(int);
+void GenerarCodigoInput();
+void GenerarConversiones();
 #endif

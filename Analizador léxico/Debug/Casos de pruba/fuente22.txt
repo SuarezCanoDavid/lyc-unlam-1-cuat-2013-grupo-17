@@ -1,0 +1,29 @@
+MAIN1
+VAR
+	[contador,mensaje,resultado,valor]:[int,string,int,string]
+ENDVAR
+beginprog
+ 
+
+ 
+-/Se escribe 10 veces el siguiente mensaje   
+FOR(contador = 0; contador < 10; contador = contador + 1)
+	resultado=1+1;
+ 
+  WPRINT(resultado);
+
+ROF;
+
+ 
+  resultado = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]); 
+/- 
+scanf(contador);
+  WPRINT(contador);
+ resultado=1+1;
+
+
+   WPRINT(resultado);
+ 
+
+endprog
+-/FIN DEL PROGRAMA/-

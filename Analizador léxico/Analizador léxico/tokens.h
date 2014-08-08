@@ -49,6 +49,8 @@
 #define PR_BEGINPROG 300
 #define PR_ENDPROG 301
 #define PR_RETURN 302
+// Entrada
+#define PR_SCANF 303
 
 
 #endif

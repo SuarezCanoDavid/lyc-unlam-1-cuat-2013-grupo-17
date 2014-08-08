@@ -121,12 +121,13 @@ int enDeclaracion = FALSE;
 %token PR_STRING
 
 
+
 %token PR_FUNCTION
 %token PR_MAIN
 %token PR_BEGINPROG
 %token PR_ENDPROG
 %token PR_RETURN
-
+%token PR_SCANF
 %left OP_SUMA
 %left OP_RESTA
 %left OP_MULTIPLICACION
@@ -370,6 +371,8 @@ lista_sentencias:	lista_sentencias sentencia PUNTO_COMA;
 lista_sentencias:	sentencia PUNTO_COMA;
 
 
+sentencia:	scanf;
+
 sentencia:	wprint;
 
 sentencia:	iteracion;
@@ -383,6 +386,31 @@ lista_wprints_cte:	lista_wprints_cte wprint_cte PUNTO_COMA;
 
 lista_wprints_cte:	wprint_cte PUNTO_COMA;
 
+
+scanf : PR_SCANF PAR_ABRE ID PAR_CIERRA
+		{
+		if(TS[$3].tipo-PR_INT == PR_FUNCTION || TS[$3].tipo-PR_FLOAT == PR_FUNCTION || TS[$3].tipo-PR_STRING == PR_FUNCTION)
+				{
+					if(strcmp(ambitoActual,"main") != 0)
+					{
+						lanzarError("No se puede llamar a una funcion dentro de otra");
+					}
+
+					borrarTerceto(&tercetoAux);
+					 
+					tercetoAux.tipoDeX = CALL;
+					tercetoAux.y = $3;
+					tercetoAux.tipoDeY = INDICE_TS;
+					crearTerceto(&tercetoAux);
+ 
+				}
+				borrarTerceto(&tercetoAux);
+				tercetoAux.x = PR_SCANF;
+				tercetoAux.tipoDeX = TOKEN;
+				tercetoAux.y = $3;
+				tercetoAux.tipoDeY = INDICE_TS;
+				crearTerceto(&tercetoAux);
+		};
 
 wprint:	wprint_cte;
 

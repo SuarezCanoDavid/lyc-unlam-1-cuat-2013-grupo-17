@@ -1,0 +1,70 @@
+MAIN1
+VAR
+	[a,b,c,d,aux]:[int,int,int,int,int]
+	[cadena1,cadena2]:[string,string]
+	[e]:[float]
+
+
+ENDVAR
+
+FUNCTION getContadorLocal:int
+VAR
+	[contador]:[int]
+ENDVAR
+	contador = 5;
+RETURN contador
+
+FUNCTION getContadorGlobal:int
+
+RETURN contador
+
+beginprog
+ 
+aux=0;
+a = 3;
+b = 4;
+c = d = 3;
+d = 6;
+a =  FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]); 
+if(a != b and a != c)
+	if(c == d)
+		-/wprint("VERDADERO - VERDADERO");/- 
+		aux=1;
+	else
+		-/wprint("VERDADERO - FALSO");/- 
+		aux=2;
+	fi;
+else
+	if(a <= b)
+		aux=3;
+		-/wprint("FALSO - VERDADERO");/- 
+	fi;
+fi;
+
+
+ 
+-/Se escribe 10 veces el siguiente mensaje   /- 
+a=1;
+DO
+FOR(contador = 0; getContadorGlobal < 10; contador = getContadorGlobal + 1)
+	 
+		 IF(contador  == 5)
+			 
+			a = getContadorLocal;
+		FI;
+  
+
+ROF;
+WHILE(a == 5);
+
+ 
+  resultado = FILTERC(_ > 0 AND _ < 10,[11,15-8,3*3]); 
+
+  WPRINT(resultado);
+ 
+  WPRINT(aux);
+ 
+ 
+
+endprog
+-/FIN DEL PROGRAMA/-
